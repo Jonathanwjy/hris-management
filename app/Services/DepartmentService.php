@@ -14,6 +14,12 @@ class DepartmentService
         });
     }
 
+    public function update(Department $department, array $data): Department
+    {
+        $department->update($data);
+        return $department;
+    }
+
     public function getDepartment()
     {
         return Department::all();

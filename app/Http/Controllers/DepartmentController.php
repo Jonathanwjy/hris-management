@@ -45,4 +45,15 @@ class DepartmentController extends Controller
             'department' => $department,
         ]);
     }
+
+    public function update(DepartmentRequest $request, Department $department)
+    {
+        $department = $this->departmentService->update(
+            $department,
+            $request->validated()
+        );
+
+        return to_route('department.index')
+            ->with('success', 'Department berhasil diupdate');
+    }
 }
