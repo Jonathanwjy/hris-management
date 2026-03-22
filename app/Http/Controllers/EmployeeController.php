@@ -11,4 +11,6 @@ class EmployeeController extends Controller
     {
         return Inertia::render('admin/employee/index');
     }
+
+    public function store(Request $request) {}
 }
