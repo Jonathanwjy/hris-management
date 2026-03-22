@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
+import { ArrowBigDownIcon, BookmarkCheck, Calendar1Icon, DollarSign, FolderClosed, LayoutGrid, LucideBaggageClaim, UserRound } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -13,18 +13,44 @@ const mainNavItems: NavItem[] = [
         url: '/dashboard',
         icon: LayoutGrid,
     },
+    {
+        title: 'Task',
+        url: '/task',
+        icon: BookmarkCheck,
+    },
+
+    {
+        title: 'Presences',
+        url: '/precense',
+        icon: Calendar1Icon,
+    },
+    {
+        title: 'Payrolls',
+        url: '/payroll',
+        icon: DollarSign,
+    },
+    {
+        title: 'Leave Request',
+        url: '/leave',
+        icon: ArrowBigDownIcon,
+    },
 ];
 
 const footerNavItems: NavItem[] = [
     {
-        title: 'Repository',
-        url: 'https://github.com/laravel/react-starter-kit',
-        icon: Folder,
+        title: 'Departments',
+        url: '/department',
+        icon: LucideBaggageClaim,
     },
     {
-        title: 'Documentation',
-        url: 'https://laravel.com/docs/starter-kits',
-        icon: BookOpen,
+        title: 'Roles',
+        url: '/role',
+        icon: FolderClosed,
+    },
+    {
+        title: 'Employees',
+        url: '/employee',
+        icon: UserRound,
     },
 ];
 
