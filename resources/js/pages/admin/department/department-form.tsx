@@ -20,20 +20,19 @@ interface DepartmentFormProps {
 export default function DepartmentForm({ department }: DepartmentFormProps) {
     const isEdit = !!department;
 
-    const { data, setData, post, processing, errors } = useForm({
+    const { data, setData, post, put, processing, errors } = useForm({
         name: department?.name ?? '',
         description: department?.description ?? '',
-        status: department?.status ?? '',
-        _method: isEdit ? 'PUT' : 'POST',
+        status: department?.status ?? 'active',
     });
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
 
         if (isEdit) {
-            post(`/admin/department/update/${department.id}`);
+            put(`/department/update/${department.id}`);
         } else {
-            post('/admin/department/store');
+            post('/department/store');
         }
     };
 

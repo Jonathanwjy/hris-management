@@ -10,7 +10,14 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function DepartmentIndex() {
+interface Department {
+    id: number;
+    name: string;
+    description: string;
+    status: string;
+}
+
+export default function DepartmentIndex({ departments = [] }: { departments: Department[] }) {
     return (
         <>
             <Head title="Department"></Head>
@@ -20,6 +27,33 @@ export default function DepartmentIndex() {
                     <Button>
                         <Link href="department/create">Add Department</Link>
                     </Button>
+                </div>
+
+                <div className="w-full px-8">
+                    <table className="border-primary w-full border text-left">
+                        <thead>
+                            <tr>
+                                <th className="border-b p-2">No</th>
+                                <th className="p-2">Nama</th>
+                                <th className="p-2">Description</th>
+                                <th className="p-2">Action Button</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {departments.map((department, index) => (
+                                <tr key={department.id}>
+                                    <td className="p-2">{index + 1}</td>
+                                    <td className="p-2">{department.name}</td>
+                                    <td className="p-2">{department.description}</td>
+                                    <td className="p-2">
+                                        <Button>
+                                            <Link href={`/department/edit/${department.id}`}>Edit</Link>
+                                        </Button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
             </AppLayout>
         </>

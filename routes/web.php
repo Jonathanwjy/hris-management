@@ -20,8 +20,11 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::prefix('department')->group(function () {
         Route::get('/', [DepartmentController::class, 'index'])->name('department.index');
         Route::get('create', [DepartmentController::class, 'create'])->name('department.create');
+        Route::post('store', [DepartmentController::class, 'store'])->name('department.store');
+        Route::get('edit/{department}', [DepartmentController::class, 'edit'])->name('depeartment.edit');
     });
 });
+
 
 require __DIR__ . '/settings.php';
 require __DIR__ . '/auth.php';
