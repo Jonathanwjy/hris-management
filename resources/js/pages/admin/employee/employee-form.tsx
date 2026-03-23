@@ -12,7 +12,7 @@ interface Employee {
     full_name: string;
     email: string;
     phone_number: string;
-    hire_date: Date;
+    hire_date: string;
     department_id: number;
     role_id: number;
     status: EmployeeStatus;
@@ -25,7 +25,7 @@ interface Department {
 
 interface Role {
     id: number;
-    name: string;
+    title: string;
 }
 
 interface EmployeeFormProps {
@@ -41,7 +41,7 @@ export default function EmployeeFrom({ employee, roles, departments }: EmployeeF
         full_name: employee?.full_name ?? '',
         email: employee?.email ?? '',
         phone_number: employee?.phone_number ?? '',
-        hire_date: employee?.hire_date,
+        hire_date: employee?.hire_date ? employee.hire_date.split('T')[0] : '',
         department_id: employee?.department_id ? String(employee.department_id) : '',
         role_id: employee?.role_id ? String(employee.role_id) : '',
         status: employee?.status ?? 'active',
@@ -52,7 +52,7 @@ export default function EmployeeFrom({ employee, roles, departments }: EmployeeF
         if (isEdit) {
             put(`/employee/edit/${employee.id}`);
         } else {
-            post('/employee/create');
+            post('/employee/store');
         }
     };
 
@@ -90,7 +90,7 @@ export default function EmployeeFrom({ employee, roles, departments }: EmployeeF
                     <Input
                         id="phone_number"
                         type="text"
-                        placeholder="adi@gmail.com"
+                        placeholder="08...."
                         value={data.phone_number}
                         onChange={(e) => setData('phone_number', e.target.value)}
                         className="text-muted-foreground mt-1"
@@ -103,8 +103,8 @@ export default function EmployeeFrom({ employee, roles, departments }: EmployeeF
                     <Input
                         id="hire_date"
                         type="date"
-                        value={data.hire_date ? data.hire_date.toISOString().split('T')[0] : ''}
-                        onChange={(e) => setData('hire_date', new Date(e.target.value))}
+                        value={data.hire_date || ''}
+                        onChange={(e) => setData('hire_date', e.target.value)}
                         className="text-muted-foreground mt-1"
                     />
                     <InputError message={errors.hire_date} className="mt-2" />
@@ -134,14 +134,14 @@ export default function EmployeeFrom({ employee, roles, departments }: EmployeeF
                     <Label htmlFor="role">Role</Label>
                     <Select value={data.role_id} onValueChange={(value) => setData('role_id', value)} disabled={isEdit}>
                         <SelectTrigger className="text-muted-foreground">
-                            <SelectValue placeholder="Pilih Department"></SelectValue>
+                            <SelectValue placeholder="Pilih Role"></SelectValue>
                         </SelectTrigger>
                         <SelectContent>
                             <SelectGroup>
                                 <SelectLabel>Roles</SelectLabel>
                                 {roles.map((role) => (
                                     <SelectItem key={role.id} value={String(role.id)}>
-                                        {role.name}
+                                        {role.title}
                                     </SelectItem>
                                 ))}
                             </SelectGroup>
@@ -151,7 +151,7 @@ export default function EmployeeFrom({ employee, roles, departments }: EmployeeF
                 </div>
 
                 <Button type="submit" className="w-full" disabled={processing}>
-                    {processing ? 'Saving...' : isEdit ? 'Update Department' : 'Create Department'}
+                    {processing ? 'Saving...' : isEdit ? 'Update Employee' : 'Add Employee'}
                 </Button>
             </form>
         </>

@@ -22,4 +22,11 @@ class EmployeeService
             'departments' => Department::all(),
         ];
     }
+
+    public function store(array $data): Employee
+    {
+        return DB::transaction(function () use ($data) {
+            return Employee::create($data);
+        });
+    }
 }
