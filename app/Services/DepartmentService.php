@@ -24,4 +24,15 @@ class DepartmentService
     {
         return Department::all();
     }
+
+    public function toggleStatus(Department $department): Department
+    {
+        $newStatus = $department->status === 'active' ? 'inactive' : 'active';
+
+        $department->update([
+            'status' => $newStatus
+        ]);
+
+        return $department;
+    }
 }

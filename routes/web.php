@@ -23,6 +23,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::post('store', [DepartmentController::class, 'store'])->name('department.store');
         Route::get('edit/{department}', [DepartmentController::class, 'edit'])->name('department.edit');
         Route::put('update/{department}', [DepartmentController::class, 'update'])->name('depeartment.update');
+        Route::patch('toggle-status/{department}', [DepartmentController::class, 'toggleStatus'])->name('');
     });
 });
 

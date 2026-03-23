@@ -56,4 +56,11 @@ class DepartmentController extends Controller
         return to_route('department.index')
             ->with('success', 'Department berhasil diupdate');
     }
+
+    public function toggleStatus(Department $department)
+    {
+        $department = $this->departmentService->toggleStatus($department);
+
+        return back()->with('success', 'Status berhasil diubah');
+    }
 }
