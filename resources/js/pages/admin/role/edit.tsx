@@ -1,12 +1,13 @@
 import AppLayout from '@/layouts/app-layout';
+import RoleForm from './role-form.';
 
 export default function RoleEdit({ role }: { role: any }) {
     return (
         <>
             <AppLayout>
-                <div className="mb-8">
+                <div className="p-8">
                     <h1>Edit Role</h1>
-                    <RoleEdit role={role} />
+                    <RoleForm role={role} />
                 </div>
             </AppLayout>
         </>
