@@ -23,8 +23,12 @@ class EmployeeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => "required|max:50",
-            "description" => "required",
+            "full_name" => "required|max:50",
+            "email" => "required|email",
+            "phone_number" => "required|min:8|max:12",
+            "hire_date" => "required|date",
+            "department_id" => "required|exists:departments,id",
+            "role_id" => "required|exists:roles,id",
         ];
     }
 }

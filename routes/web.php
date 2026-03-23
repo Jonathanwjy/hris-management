@@ -17,7 +17,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('employee', [EmployeeController::class, 'index'])->name('employee.index');
+
     Route::prefix('department')->group(function () {
         Route::get('/', [DepartmentController::class, 'index'])->name('department.index');
         Route::get('create', [DepartmentController::class, 'create'])->name('department.create');
@@ -33,6 +33,16 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::post('store', [RoleController::class, 'store'])->name('role.store');
         Route::get('edit/{role}', [RoleController::class, 'edit'])->name('role.edit');
         Route::put('update/{role}', [RoleController::class, 'update'])->name('role.update');
+    });
+
+    Route::prefix('employee')->group(function () {
+        Route::get('/', [EmployeeController::class, 'index'])->name('employee.index');
+        Route::get('create', [EmployeeController::class, 'create'])->name('employee.create');
+        Route::post('store', [EmployeeController::class, 'store'])->name('employee.store');
+        Route::get('edit/{employee}', [EmployeeController::class, 'edit'])->name('employee.edit');
+        Route::put('update/{employee}', [EmployeeController::class, 'update'])->name('employee.update');
+        Route::get('show/{employee}', [EmployeeController::class, 'show'])->name('employee.show');
+        Route::patch('toggle-status/{employee}', [EmployeeController::class, 'toggleStatus'])->name('');
     });
 });
 
