@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 import { EmployeeFormProps } from '@/types/employee';
 import { useForm } from '@inertiajs/react';
 
-export default function EmployeeFrom({ employee, roles, departments }: EmployeeFormProps) {
+export default function EmployeeForm({ employee, roles, departments }: EmployeeFormProps) {
     const isEdit = !!employee;
 
     const { data, setData, put, post, processing, errors } = useForm({
@@ -22,7 +22,7 @@ export default function EmployeeFrom({ employee, roles, departments }: EmployeeF
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
         if (isEdit) {
-            put(`/employee/edit/${employee.id}`);
+            put(`/employee/update/${employee.id}`);
         } else {
             post('/employee/store');
         }
@@ -84,7 +84,7 @@ export default function EmployeeFrom({ employee, roles, departments }: EmployeeF
 
                 <div className="mb-4">
                     <Label htmlFor="department">Department</Label>
-                    <Select value={data.department_id} onValueChange={(value) => setData('department_id', value)} disabled={isEdit}>
+                    <Select value={data.department_id} onValueChange={(value) => setData('department_id', value)}>
                         <SelectTrigger className="text-muted-foreground">
                             <SelectValue placeholder="Pilih Department"></SelectValue>
                         </SelectTrigger>
@@ -104,7 +104,7 @@ export default function EmployeeFrom({ employee, roles, departments }: EmployeeF
 
                 <div className="mb-4">
                     <Label htmlFor="role">Role</Label>
-                    <Select value={data.role_id} onValueChange={(value) => setData('role_id', value)} disabled={isEdit}>
+                    <Select value={data.role_id} onValueChange={(value) => setData('role_id', value)}>
                         <SelectTrigger className="text-muted-foreground">
                             <SelectValue placeholder="Pilih Role"></SelectValue>
                         </SelectTrigger>

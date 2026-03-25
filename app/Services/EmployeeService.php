@@ -29,4 +29,11 @@ class EmployeeService
             return Employee::create($data);
         });
     }
+
+    public function update(Employee $employee, array $data): Employee
+    {
+
+        $employee->update($data);
+        return $employee;
+    }
 }
