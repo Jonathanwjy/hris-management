@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
+import { Department } from '@/types/department';
 import { showConfirm } from '@/utils/alert';
 import { Head, Link, router } from '@inertiajs/react';
 
@@ -10,13 +11,6 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '/department',
     },
 ];
-
-interface Department {
-    id: number;
-    name: string;
-    description: string;
-    status: string;
-}
 
 export default function DepartmentIndex({ departments = [] }: { departments: Department[] }) {
     const handleToggleStatus = async (id: number, currentStatus: string) => {

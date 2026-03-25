@@ -1,7 +1,8 @@
 import AppLayout from '@/layouts/app-layout';
+import { Department } from '@/types/department';
 import DepartmentForm from './department-form';
 
-export default function DepartmentCreate({ department }: { department: any }) {
+export default function DepartmentEdit({ department }: { department?: Department }) {
     return (
         <>
             <AppLayout>

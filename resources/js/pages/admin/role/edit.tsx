@@ -1,7 +1,8 @@
 import AppLayout from '@/layouts/app-layout';
+import { Role } from '@/types/role';
 import RoleForm from './role-form.';
 
-export default function RoleEdit({ role }: { role: any }) {
+export default function RoleEdit({ role }: { role?: Role }) {
     return (
         <>
             <AppLayout>

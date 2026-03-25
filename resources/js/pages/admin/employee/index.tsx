@@ -39,31 +39,33 @@ export default function EmployeeIndex({ employees = [] }) {
                     <table className="border-primary w-full border text-left">
                         <thead>
                             <tr>
-                                <th className="border-b p-2">No</th>
-                                <th className="w-2/8 p-2">Nama</th>
-                                <th className="w-3/8 p-2">Description</th>
-                                <th className="w-2/8 p-2">Action Button</th>
+                                <th className="w-1/8 border-b p-2">No</th>
+                                <th className="w-2/8 p-2">Full Name</th>
+                                <th className="w-2/8 p-2">Phone Number</th>
+                                <th className="w-1/8 p-2">Department</th>
+                                <th className="w-1/8 p-2">Role</th>
+                                <th className="w-1/8 p-2">Action Button</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {employees.map((department, index) => (
-                                <tr key={department.id}>
+                            {employees.map((employee, index) => (
+                                <tr key={employee.id}>
                                     <td className="p-2">{index + 1}</td>
-                                    <td className="p-2">{department.name}</td>
-                                    <td className="p-2">{department.description}</td>
+                                    <td className="p-2">{employee.name}</td>
+                                    <td className="p-2">{employee.description}</td>
                                     <td className="p-2">
                                         <Button className="mr-5 cursor-pointer">
-                                            <Link href={`/department/edit/${department.id}`}>Edit</Link>
+                                            <Link href={`/employee/edit/${employee.id}`}>Edit</Link>
                                         </Button>
                                         <Button
-                                            onClick={() => handleToggleStatus(department.id, department.status)}
+                                            onClick={() => handleToggleStatus(employee.id, employee.status)}
                                             className={`cursor-pointer rounded-full px-3 py-1 text-xs font-semibold transition-colors ${
-                                                department.status === 'active'
+                                                employee.status === 'active'
                                                     ? 'bg-green-100 text-green-700 hover:bg-green-200'
                                                     : 'bg-red-100 text-red-700 hover:bg-red-200'
                                             }`}
                                         >
-                                            {department.status === 'active' ? 'Active' : 'Inactive'}
+                                            {employee.status === 'active' ? 'Active' : 'Inactive'}
                                         </Button>
                                     </td>
                                 </tr>
