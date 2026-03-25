@@ -3,36 +3,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { EmployeeFormProps } from '@/types/employee';
 import { useForm } from '@inertiajs/react';
-
-type EmployeeStatus = 'active' | 'inactive' | 'leave';
-
-interface Employee {
-    id: number;
-    full_name: string;
-    email: string;
-    phone_number: string;
-    hire_date: string;
-    department_id: number;
-    role_id: number;
-    status: EmployeeStatus;
-}
-
-interface Department {
-    id: number;
-    name: string;
-}
-
-interface Role {
-    id: number;
-    title: string;
-}
-
-interface EmployeeFormProps {
-    employee?: Employee;
-    roles: Role[];
-    departments: Department[];
-}
 
 export default function EmployeeFrom({ employee, roles, departments }: EmployeeFormProps) {
     const isEdit = !!employee;

@@ -18,7 +18,8 @@ class EmployeeController extends Controller
     }
     public function index()
     {
-        return Inertia::render('admin/employee/index');
+        $employees = $this->employeeService->getEmployee();
+        return Inertia::render('admin/employee/index', ['employees' => $employees]);
     }
 
     public function create()

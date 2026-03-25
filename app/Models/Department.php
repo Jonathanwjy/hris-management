@@ -14,4 +14,9 @@ class Department extends Model
         'description',
         'status',
     ];
+
+    public function employee()
+    {
+        return $this->hasMany(Employee::class);
+    }
 }

@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
+import { EmployeeWithRelation } from '@/types/employee';
 import { Head, Link } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -10,20 +11,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-type EmployeeStatus = 'active' | 'inactive' | 'leave';
-
-interface Employee {
-    id: number;
-    full_name: string;
-    phone_number: string;
-    email: string;
-    hire_date: string;
-    department_id: number;
-    role_id: number;
-    status: EmployeeStatus;
-}
-
-export default function EmployeeIndex({ employees = [] }) {
+export default function EmployeeIndex({ employees = [] }: { employees: EmployeeWithRelation[] }) {
     return (
         <>
             <AppLayout breadcrumbs={breadcrumbs}>
@@ -51,21 +39,13 @@ export default function EmployeeIndex({ employees = [] }) {
                             {employees.map((employee, index) => (
                                 <tr key={employee.id}>
                                     <td className="p-2">{index + 1}</td>
-                                    <td className="p-2">{employee.name}</td>
-                                    <td className="p-2">{employee.description}</td>
+                                    <td className="p-2">{employee.full_name}</td>
+                                    <td className="p-2">{employee.phone_number}</td>
+                                    <td className="p-2">{employee.department.name}</td>
+                                    <td className="p-2">{employee.role.title}</td>
                                     <td className="p-2">
                                         <Button className="mr-5 cursor-pointer">
                                             <Link href={`/employee/edit/${employee.id}`}>Edit</Link>
-                                        </Button>
-                                        <Button
-                                            onClick={() => handleToggleStatus(employee.id, employee.status)}
-                                            className={`cursor-pointer rounded-full px-3 py-1 text-xs font-semibold transition-colors ${
-                                                employee.status === 'active'
-                                                    ? 'bg-green-100 text-green-700 hover:bg-green-200'
-                                                    : 'bg-red-100 text-red-700 hover:bg-red-200'
-                                            }`}
-                                        >
-                                            {employee.status === 'active' ? 'Active' : 'Inactive'}
                                         </Button>
                                     </td>
                                 </tr>

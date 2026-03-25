@@ -11,4 +11,9 @@ class Role extends Model
         "description",
         "salary",
     ];
+
+    public function employee()
+    {
+        return $this->hasMany(Employee::class);
+    }
 }

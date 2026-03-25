@@ -12,7 +12,7 @@ class EmployeeService
 
     public function getEmployee()
     {
-        return Employee::all();
+        return Employee::with(['department', 'role'])->get();
     }
 
     public function create(): array

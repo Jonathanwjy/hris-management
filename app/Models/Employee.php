@@ -15,4 +15,14 @@ class Employee extends Model
         "role_id",
         "status",
     ];
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
 }
