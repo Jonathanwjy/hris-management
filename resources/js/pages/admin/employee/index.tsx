@@ -27,10 +27,10 @@ export default function EmployeeIndex({ employees = [] }: { employees: EmployeeW
                     <table className="border-primary w-full border text-left">
                         <thead>
                             <tr>
-                                <th className="w-1/8 border-b p-2">No</th>
+                                <th className="border-b p-2">No</th>
                                 <th className="w-2/8 p-2">Full Name</th>
                                 <th className="w-2/8 p-2">Phone Number</th>
-                                <th className="w-1/8 p-2">Department</th>
+                                <th className="w-2/8 p-2">Department</th>
                                 <th className="w-1/8 p-2">Role</th>
                                 <th className="w-1/8 p-2">Action Button</th>
                             </tr>

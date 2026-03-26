@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Role } from '@/types/role';
+import { formatRupiah } from '@/utils/format';
 import { Head, Link } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -40,7 +41,7 @@ export default function RoleIndex({ roles = [] }: { roles: Role[] }) {
                                     <td className="p-2">{index + 1}</td>
                                     <td className="p-2">{role.title}</td>
                                     <td className="p-2">{role.description}</td>
-                                    <td className="p-2">{role.salary}</td>
+                                    <td className="p-2">{formatRupiah(role.salary)}</td>
                                     <td className="p-2">
                                         <Button className="mr-5 cursor-pointer">
                                             <Link href={`/role/edit/${role.id}`}>Edit</Link>
