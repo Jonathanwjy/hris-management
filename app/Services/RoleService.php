@@ -13,6 +13,13 @@ class RoleService
         return Role::all();
     }
 
+    public function create(): array
+    {
+        return [
+            'departments' => Department::all(),
+        ];
+    }
+
     public function store(array $data): Role
     {
         return DB::transaction(function () use ($data) {

@@ -25,7 +25,8 @@ class RoleController extends Controller
 
     public function create()
     {
-        return Inertia::render("admin/role/create");
+        $data = $this->roleService->create();
+        return Inertia::render("admin/role/create", $data);
     }
 
     public function store(RoleRequest $request)

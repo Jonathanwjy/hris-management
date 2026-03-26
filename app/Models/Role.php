@@ -10,10 +10,16 @@ class Role extends Model
         "title",
         "description",
         "salary",
+        "department_id",
     ];
 
     public function employee()
     {
         return $this->hasMany(Employee::class);
+    }
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
     }
 }

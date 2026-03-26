@@ -26,6 +26,7 @@ class RoleRequest extends FormRequest
             "title" => "required|max:50",
             "description" => "required",
             "salary" => "required|numeric|min:1|max:20000000",
+            'department_id' => 'required|exists:departments,id',
         ];
     }
 }

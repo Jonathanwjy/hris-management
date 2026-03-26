@@ -1,14 +1,14 @@
 import AppLayout from '@/layouts/app-layout';
-import { Role } from '@/types/role';
+import { Department, Role } from '@/types/role';
 import RoleForm from './role-form.';
 
-export default function RoleEdit({ role }: { role?: Role }) {
+export default function RoleEdit({ role, departments }: { role?: Role; departments: Department[] }) {
     return (
         <>
             <AppLayout>
                 <div className="p-8">
                     <h1>Edit Role</h1>
-                    <RoleForm role={role} />
+                    <RoleForm role={role} departments={departments} />
                 </div>
             </AppLayout>
         </>

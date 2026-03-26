@@ -2,20 +2,18 @@ import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Role } from '@/types/role';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { RoleFormProps } from '@/types/role';
 import { useForm } from '@inertiajs/react';
 
-interface RoleFormProps {
-    role?: Role;
-}
-
-export default function RoleForm({ role }: RoleFormProps) {
+export default function RoleForm({ role, departments }: RoleFormProps) {
     const isEdit = !!role;
 
     const { data, setData, post, put, processing, errors } = useForm({
         title: role?.title ?? '',
         description: role?.description ?? '',
         salary: role?.salary ?? 0,
+        department_id: role?.department_id ? String(role.department_id) : '',
     });
 
     const submit = (e: React.FormEvent) => {
@@ -55,6 +53,26 @@ export default function RoleForm({ role }: RoleFormProps) {
                         className="text-muted-foreground mt-1"
                     />
                     <InputError message={errors.description} className="mt-2" />
+                </div>
+
+                <div className="mb-4">
+                    <Label htmlFor="department">Department</Label>
+                    <Select value={data.department_id} onValueChange={(value) => setData('department_id', value)}>
+                        <SelectTrigger className="text-muted-foreground">
+                            <SelectValue placeholder="Pilih Department"></SelectValue>
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                <SelectLabel>Departments</SelectLabel>
+                                {departments.map((department) => (
+                                    <SelectItem key={department.id} value={String(department.id)}>
+                                        {department.name}
+                                    </SelectItem>
+                                ))}
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
+                    <InputError message={errors.department_id} className="mt-2" />
                 </div>
 
                 <div className="mb-4">
