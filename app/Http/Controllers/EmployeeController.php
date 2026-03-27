@@ -52,4 +52,19 @@ class EmployeeController extends Controller
 
         return to_route('employee.index')->with('success', 'Employee berhasil diupdate');
     }
+
+    public function show(Employee $employee)
+    {
+        $employee = $this->employeeService->getDetail($employee);
+
+        return Inertia::render('admin/employee/show', [
+            'employee' => $employee
+        ]);
+    }
+
+    public function fireEmployee(Employee $employee)
+    {
+        $employee = $this->employeeService->fire($employee);
+        return back()->with('success', 'Berhasil diubah');
+    }
 }

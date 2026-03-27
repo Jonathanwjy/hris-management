@@ -25,7 +25,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('role', RoleController::class);
 
     Route::resource('employee', EmployeeController::class);
-    Route::patch('toggle-status/{employee}', [EmployeeController::class, 'toggleStatus'])->name('');
+    Route::patch('employee/toggle-status/{employee}', [EmployeeController::class, 'toggleStatus'])->name('');
+    Route::patch('employee/{employee}/fire', [EmployeeController::class, 'fireEmployee']);
 });
 
 

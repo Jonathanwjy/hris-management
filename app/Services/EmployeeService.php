@@ -36,4 +36,16 @@ class EmployeeService
         $employee->update($data);
         return $employee;
     }
+
+    public function getDetail(Employee $employee): Employee
+    {
+        return $employee->load(['department', 'role']);
+    }
+
+    public function fire(Employee $employee): Employee
+    {
+        $fired = $employee->status == 'active' ? 'inactive' : 'active';
+        $employee->update(['status' => $fired]);
+        return $employee;
+    }
 }
