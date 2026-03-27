@@ -18,6 +18,7 @@ export default function EmployeeForm({ employee, roles, departments }: EmployeeF
         role_id: employee?.role_id ? String(employee.role_id) : '',
         status: employee?.status ?? 'active',
     });
+    const filteredRoles = roles.filter((role) => String(role.department_id) === data.department_id);
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -84,7 +85,13 @@ export default function EmployeeForm({ employee, roles, departments }: EmployeeF
 
                 <div className="mb-4">
                     <Label htmlFor="department">Department</Label>
-                    <Select value={data.department_id} onValueChange={(value) => setData('department_id', value)}>
+                    <Select
+                        value={data.department_id}
+                        onValueChange={(value) => {
+                            setData('department_id', value);
+                            setData('role_id', '');
+                        }}
+                    >
                         <SelectTrigger className="text-muted-foreground">
                             <SelectValue placeholder="Pilih Department"></SelectValue>
                         </SelectTrigger>
@@ -104,14 +111,14 @@ export default function EmployeeForm({ employee, roles, departments }: EmployeeF
 
                 <div className="mb-4">
                     <Label htmlFor="role">Role</Label>
-                    <Select value={data.role_id} onValueChange={(value) => setData('role_id', value)}>
+                    <Select value={data.role_id} onValueChange={(value) => setData('role_id', value)} disabled={!data.department_id}>
                         <SelectTrigger className="text-muted-foreground">
                             <SelectValue placeholder="Pilih Role"></SelectValue>
                         </SelectTrigger>
                         <SelectContent>
                             <SelectGroup>
                                 <SelectLabel>Roles</SelectLabel>
-                                {roles.map((role) => (
+                                {filteredRoles.map((role) => (
                                     <SelectItem key={role.id} value={String(role.id)}>
                                         {role.title}
                                     </SelectItem>

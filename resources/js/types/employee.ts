@@ -19,6 +19,7 @@ export interface Department {
 export interface Role {
     id: number;
     title: string;
+    department_id: number;
 }
 
 export interface EmployeeFormProps {
