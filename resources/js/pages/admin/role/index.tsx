@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Role } from '@/types/role';
+import { RoleWithRelation } from '@/types/role';
 import { formatRupiah } from '@/utils/format';
 import { Head, Link } from '@inertiajs/react';
 
@@ -12,7 +12,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function RoleIndex({ roles = [] }: { roles: Role[] }) {
+export default function RoleIndex({ roles = [] }: { roles: RoleWithRelation[] }) {
     return (
         <>
             <Head title="Role"></Head>
@@ -30,9 +30,10 @@ export default function RoleIndex({ roles = [] }: { roles: Role[] }) {
                             <tr>
                                 <th className="border-b p-2">No</th>
                                 <th className="w-2/8 p-2">Nama</th>
+                                <th className="w-2/8 p-2">Department</th>
                                 <th className="w-3/8 p-2">Description</th>
-                                <th className="w-2/8 p-2">Salary</th>
-                                <th className="w-2/8 p-2">Action Button</th>
+                                <th className="w-1/8 p-2">Salary</th>
+                                <th className="w-1/8 p-2">Action Button</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -40,6 +41,7 @@ export default function RoleIndex({ roles = [] }: { roles: Role[] }) {
                                 <tr key={role.id}>
                                     <td className="p-2">{index + 1}</td>
                                     <td className="p-2">{role.title}</td>
+                                    <td className="p-2">{role.department.name}</td>
                                     <td className="p-2">{role.description}</td>
                                     <td className="p-2">{formatRupiah(role.salary)}</td>
                                     <td className="p-2">

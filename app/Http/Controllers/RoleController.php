@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RoleRequest;
-use Inertia\Inertia;
+use App\Models\Department;
 use App\Models\Role;
 use App\Services\RoleService;
+use Inertia\Inertia;
 
 class RoleController extends Controller
 {
@@ -37,8 +38,10 @@ class RoleController extends Controller
 
     public function edit(Role $role)
     {
+        $departments = Department::all();
         return Inertia::render("admin/role/edit", [
             "role" => $role,
+            "departments" => $departments
         ]);
     }
 

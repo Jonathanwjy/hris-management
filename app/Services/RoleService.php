@@ -10,7 +10,7 @@ class RoleService
 {
     public function getRole()
     {
-        return Role::all();
+        return Role::with(['department'])->get();
     }
 
     public function create(): array
@@ -26,6 +26,8 @@ class RoleService
             return Role::create($data);
         });
     }
+
+
 
     public function update(Role $role, array $data): Role
     {

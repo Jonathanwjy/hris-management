@@ -15,3 +15,7 @@ export interface RoleFormProps {
     role?: Role;
     departments: Department[];
 }
+
+export interface RoleWithRelation extends Role {
+    department: Department;
+}

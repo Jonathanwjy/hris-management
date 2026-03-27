@@ -34,7 +34,7 @@ class EmployeeController extends Controller
     public function store(EmployeeRequest $request)
     {
         $this->employeeService->store($request->validated());
-        return back()->with('success', 'Successfully add employee');
+        return to_route('employee.index')->with('success', 'Successfully add employee');
     }
 
     public function edit(Employee $employee)
