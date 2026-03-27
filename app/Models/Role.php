@@ -11,6 +11,7 @@ class Role extends Model
         "description",
         "salary",
         "department_id",
+        "status",
     ];
 
     public function employee()

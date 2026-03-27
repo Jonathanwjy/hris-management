@@ -1,9 +1,12 @@
+type RoleStatus = 'active' | 'inactive';
+
 export interface Role {
     id: number;
     title: string;
     description: string;
     department_id: number;
     salary: number;
+    status: RoleStatus;
 }
 
 export interface Department {

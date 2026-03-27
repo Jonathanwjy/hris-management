@@ -50,4 +50,10 @@ class RoleController extends Controller
         $this->roleService->update($role, $request->validated());
         return to_route("role.index")->with("success", "Role berhasil diupate");
     }
+
+    public function toggleStatus(Role $role)
+    {
+        $role = $this->roleService->toggleStatus($role);
+        return back()->with("success", "Berhasil ubah status");
+    }
 }

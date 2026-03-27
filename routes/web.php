@@ -18,11 +18,11 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth', 'admin'])->group(function () {
 
-
     Route::resource('department', DepartmentController::class);
     Route::patch('department/toggle-status/{department}', [DepartmentController::class, 'toggleStatus'])->name('');
 
     Route::resource('role', RoleController::class);
+    Route::patch('role/toggle-status/{role}', [RoleController::class, 'toggleStatus'])->name('');
 
     Route::resource('employee', EmployeeController::class);
     Route::patch('employee/toggle-status/{employee}', [EmployeeController::class, 'toggleStatus'])->name('');

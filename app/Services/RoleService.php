@@ -26,12 +26,20 @@ class RoleService
             return Role::create($data);
         });
     }
-
-
-
     public function update(Role $role, array $data): Role
     {
         $role->update($data);
+        return $role;
+    }
+
+    public function toggleStatus(Role $role): Role
+    {
+        $newStatus = $role->status === 'active' ? 'inactive' : 'active';
+
+        $role->update([
+            'status' => $newStatus
+        ]);
+
         return $role;
     }
 }
