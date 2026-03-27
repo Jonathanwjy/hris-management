@@ -9,6 +9,7 @@ export interface Employee {
     department_id: number;
     role_id: number;
     status: EmployeeStatus;
+    photo: string | null;
 }
 
 export interface Department {

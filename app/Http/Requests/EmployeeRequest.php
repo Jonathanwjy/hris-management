@@ -29,6 +29,7 @@ class EmployeeRequest extends FormRequest
             "hire_date" => "required|date",
             "department_id" => "required|exists:departments,id",
             "role_id" => "required|exists:roles,id",
+            "photo" => "nullable|image|mimes:jpg,jpeg,png|max:10000",
         ];
     }
 }

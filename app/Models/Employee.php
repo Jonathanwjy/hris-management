@@ -14,6 +14,7 @@ class Employee extends Model
         "department_id",
         "role_id",
         "status",
+        "photo",
     ];
 
     public function role()

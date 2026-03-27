@@ -40,19 +40,40 @@ export default function EmployeeShow({ employee }: { employee: EmployeeWithRelat
                             </Link>
                             <Button
                                 onClick={() => handleFired(employee.id, employee.status)}
-                                className={`cursor-pointer rounded-full px-3 py-1 text-xs font-semibold transition-colors ${
-                                    employee.status === 'active'
-                                        ? 'bg-green-100 text-green-700 hover:bg-green-200'
-                                        : 'bg-red-100 text-red-700 hover:bg-red-200'
-                                }`}
+                                className="cursor-pointer rounded-sm bg-red-500 px-3 py-1 text-xs font-semibold transition-colors"
                             >
-                                {employee.status === 'active' ? 'Active' : 'Inactive'}
+                                Fire
                             </Button>
                         </div>
                     </div>
 
-                    {/* Card */}
                     <div className="space-y-4 rounded-xl border p-6 shadow">
+                        <div className="mb-6 flex items-center gap-6">
+                            <div>
+                                <img
+                                    src={employee.photo ? `/storage/${employee.photo}` : `https://ui-avatars.com/api/?name=${employee.full_name}`}
+                                    alt={employee.full_name}
+                                    className="h-34 w-34 rounded-sm border object-cover"
+                                />
+                            </div>
+
+                            <div>
+                                <h2 className="text-xl font-semibold">{employee.full_name}</h2>
+                                <p className="text-sm text-gray-500">{employee.email}</p>
+
+                                <span
+                                    className={`mt-2 inline-block rounded px-3 py-1 text-xs font-medium ${
+                                        employee.status === 'active'
+                                            ? 'bg-green-100 text-green-700'
+                                            : employee.status === 'inactive'
+                                              ? 'bg-red-100 text-red-700'
+                                              : 'bg-yellow-100 text-yellow-700'
+                                    }`}
+                                >
+                                    {employee.status}
+                                </span>
+                            </div>
+                        </div>
                         <div>
                             <p className="text-sm text-gray-500">Full Name</p>
                             <p className="font-semibold">{employee.full_name}</p>
@@ -81,21 +102,6 @@ export default function EmployeeShow({ employee }: { employee: EmployeeWithRelat
                         <div>
                             <p className="text-sm text-gray-500">Role</p>
                             <p className="font-semibold">{employee.role?.title}</p>
-                        </div>
-
-                        <div>
-                            <p className="text-sm text-gray-500">Status</p>
-                            <span
-                                className={`inline-block rounded px-3 py-1 text-sm font-medium ${
-                                    employee.status === 'active'
-                                        ? 'bg-green-100 text-green-700'
-                                        : employee.status === 'inactive'
-                                          ? 'bg-red-100 text-red-700'
-                                          : 'bg-yellow-100 text-yellow-700'
-                                }`}
-                            >
-                                {employee.status}
-                            </span>
                         </div>
                     </div>
                 </div>

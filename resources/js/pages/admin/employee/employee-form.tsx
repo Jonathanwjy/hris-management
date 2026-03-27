@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { EmployeeFormProps } from '@/types/employee';
-import { useForm } from '@inertiajs/react';
+import { router, useForm } from '@inertiajs/react';
 
 export default function EmployeeForm({ employee, roles, departments }: EmployeeFormProps) {
     const isEdit = !!employee;
@@ -17,15 +17,29 @@ export default function EmployeeForm({ employee, roles, departments }: EmployeeF
         department_id: employee?.department_id ? String(employee.department_id) : '',
         role_id: employee?.role_id ? String(employee.role_id) : '',
         status: employee?.status ?? 'active',
+        photo: null as File | null,
     });
+
     const filteredRoles = roles.filter((role) => String(role.department_id) === data.department_id);
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
+
         if (isEdit) {
-            put(`/employee/${employee.id}`);
+            router.post(
+                `/employee/${employee.id}`,
+                {
+                    ...data,
+                    _method: 'put',
+                },
+                {
+                    forceFormData: true,
+                },
+            );
         } else {
-            post('/employee');
+            router.post('/employee', data, {
+                forceFormData: true,
+            });
         }
     };
 
@@ -69,6 +83,22 @@ export default function EmployeeForm({ employee, roles, departments }: EmployeeF
                         className="text-muted-foreground mt-1"
                     />
                     <InputError message={errors.phone_number} className="mt-2" />
+                </div>
+
+                <div className="mb-4">
+                    <Label htmlFor="photo">Photo</Label>
+                    <Input
+                        id="photo"
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => {
+                            if (e.target.files && e.target.files[0]) {
+                                setData('photo', e.target.files[0]);
+                            }
+                        }}
+                        className="mt-1"
+                    />
+                    <InputError message={errors.photo} className="mt-2" />
                 </div>
 
                 <div className="mb-4">
