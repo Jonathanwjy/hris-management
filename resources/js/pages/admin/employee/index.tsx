@@ -45,7 +45,7 @@ export default function EmployeeIndex({ employees = [] }: { employees: EmployeeW
                                     <td className="p-2">{employee.role.title}</td>
                                     <td className="p-2">
                                         <Button className="mr-5 cursor-pointer">
-                                            <Link href={`/employee/edit/${employee.id}`}>Edit</Link>
+                                            <Link href={`/employee/${employee.id}/edit`}>Edit</Link>
                                         </Button>
                                     </td>
                                 </tr>

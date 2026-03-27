@@ -46,7 +46,7 @@ export default function RoleIndex({ roles = [] }: { roles: RoleWithRelation[] })
                                     <td className="p-2">{formatRupiah(role.salary)}</td>
                                     <td className="p-2">
                                         <Button className="mr-5 cursor-pointer">
-                                            <Link href={`/role/edit/${role.id}`}>Edit</Link>
+                                            <Link href={`/role/${role.id}/edit`}>Edit</Link>
                                         </Button>
                                     </td>
                                 </tr>

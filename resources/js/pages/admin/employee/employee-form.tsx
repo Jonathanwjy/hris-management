@@ -23,9 +23,9 @@ export default function EmployeeForm({ employee, roles, departments }: EmployeeF
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
         if (isEdit) {
-            put(`/employee/update/${employee.id}`);
+            put(`/employee/${employee.id}`);
         } else {
-            post('/employee/store');
+            post('/employee');
         }
     };
 

@@ -58,7 +58,7 @@ export default function DepartmentIndex({ departments = [] }: { departments: Dep
                                     <td className="p-2">{department.description}</td>
                                     <td className="p-2">
                                         <Button className="mr-5 cursor-pointer">
-                                            <Link href={`/department/edit/${department.id}`}>Edit</Link>
+                                            <Link href={`/department/${department.id}/edit`}>Edit</Link>
                                         </Button>
                                         <Button
                                             onClick={() => handleToggleStatus(department.id, department.status)}

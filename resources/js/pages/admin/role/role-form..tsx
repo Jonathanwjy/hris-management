@@ -20,9 +20,9 @@ export default function RoleForm({ role, departments }: RoleFormProps) {
         e.preventDefault();
 
         if (isEdit) {
-            put(`/role/update/${role.id}`);
+            put(`/role/${role.id}`);
         } else {
-            post('/role/store');
+            post('/role');
         }
     };
 

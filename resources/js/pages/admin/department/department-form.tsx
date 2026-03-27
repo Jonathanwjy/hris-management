@@ -22,9 +22,9 @@ export default function DepartmentForm({ department }: DepartmentFormProps) {
         e.preventDefault();
 
         if (isEdit) {
-            put(`/department/update/${department.id}`);
+            put(`/department/${department.id}`);
         } else {
-            post('/department/store');
+            post('/department');
         }
     };
 
