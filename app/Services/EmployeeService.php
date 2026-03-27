@@ -2,11 +2,13 @@
 
 namespace App\Services;
 
+use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Role;
-use App\Models\Department;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
 
 class EmployeeService
 {
@@ -30,7 +32,17 @@ class EmployeeService
             if (isset($data['photo'])) {
                 $data['photo'] = $data['photo']->store('employees', 'public');
             }
-            return Employee::create($data);
+
+            $employee = Employee::create($data);
+
+            User::create([
+                'name' => $employee->full_name,
+                'email' => $employee->email,
+                'password' => Hash::make('password123'), // default
+                'employee_id' => $employee->id,
+            ]);
+
+            return $employee;
         });
     }
 
