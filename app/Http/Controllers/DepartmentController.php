@@ -61,6 +61,7 @@ class DepartmentController extends Controller
     {
         $department = $this->departmentService->toggleStatus($department);
 
+
         return back()->with('success', 'Status berhasil diubah');
     }
 }

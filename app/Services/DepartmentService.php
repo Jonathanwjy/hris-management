@@ -22,7 +22,7 @@ class DepartmentService
 
     public function getDepartment()
     {
-        return Department::all();
+        return Department::orderBy('status', 'asc')->get();
     }
 
     public function toggleStatus(Department $department): Department
@@ -30,6 +30,10 @@ class DepartmentService
         $newStatus = $department->status === 'active' ? 'inactive' : 'active';
 
         $department->update([
+            'status' => $newStatus
+        ]);
+
+        $department->role()->update([
             'status' => $newStatus
         ]);
 

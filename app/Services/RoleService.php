@@ -10,13 +10,13 @@ class RoleService
 {
     public function getRole()
     {
-        return Role::with(['department'])->get();
+        return Role::with(['department'])->orderBy('status', 'asc')->get();
     }
 
     public function create(): array
     {
         return [
-            'departments' => Department::all(),
+            'departments' => Department::where('status', 'active')->get(),
         ];
     }
 

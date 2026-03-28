@@ -38,7 +38,7 @@ class RoleController extends Controller
 
     public function edit(Role $role)
     {
-        $departments = Department::all();
+        $departments = Department::where('status', 'active')->get();
         return Inertia::render("admin/role/edit", [
             "role" => $role,
             "departments" => $departments

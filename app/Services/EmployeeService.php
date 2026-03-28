@@ -21,8 +21,8 @@ class EmployeeService
     public function create(): array
     {
         return [
-            'roles' => Role::all(),
-            'departments' => Department::all(),
+            'roles' => Role::where('status', 'active')->get(),
+            'departments' => Department::where('status', 'active')->get(),
         ];
     }
 
