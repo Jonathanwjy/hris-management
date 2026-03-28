@@ -8,9 +8,14 @@ use App\Models\Role;
 
 class RoleService
 {
-    public function getRole()
+    public function getRoles($departmentId = null)
     {
-        return Role::with(['department'])->orderBy('status', 'asc')->get();
+        return Role::with('department')
+            ->when($departmentId, function ($query) use ($departmentId) {
+                $query->where('department_id', $departmentId);
+            })
+            ->orderBy('status', 'asc')
+            ->get();
     }
 
     public function create(): array

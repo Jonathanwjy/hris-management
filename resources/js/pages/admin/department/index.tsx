@@ -1,4 +1,6 @@
 import { Button } from '@/components/ui/button';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Department } from '@/types/department';
@@ -19,62 +21,68 @@ export default function DepartmentIndex({ departments = [] }: { departments: Dep
         const isConfirmed = await showConfirm('Ubah Status Department?', `Apakah Anda yakin ingin ${actionText} department ini?`, 'Ya, Ubah Status!');
 
         if (isConfirmed) {
-            router.patch(
-                `/department/toggle-status/${id}`,
-                {},
-                {
-                    preserveScroll: true,
-                },
-            );
+            router.patch(`/department/toggle-status/${id}`, {}, { preserveScroll: true });
         }
     };
 
     return (
         <>
-            <Head title="Department"></Head>
+            <Head title="Department" />
             <AppLayout breadcrumbs={breadcrumbs}>
-                <div className="flex w-full justify-between p-8">
-                    <h1 className="text-2xl">Department List</h1>
-                    <Button className="cursor-pointer">
-                        <Link href="department/create">Add Department</Link>
-                    </Button>
-                </div>
+                <div className="space-y-6 p-8">
+                    {/* HEADER */}
+                    <div className="flex items-center justify-between">
+                        <h1 className="text-2xl font-semibold">Department</h1>
 
-                <div className="w-full px-8">
-                    <table className="border-primary w-full border text-left">
-                        <thead>
-                            <tr>
-                                <th className="border-b p-2">No</th>
-                                <th className="w-2/8 p-2">Nama</th>
-                                <th className="w-3/8 p-2">Description</th>
-                                <th className="w-2/8 p-2">Action Button</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {departments.map((department, index) => (
-                                <tr key={department.id}>
-                                    <td className="p-2">{index + 1}</td>
-                                    <td className="p-2">{department.name}</td>
-                                    <td className="p-2">{department.description}</td>
-                                    <td className="p-2">
-                                        <Button className="mr-5 cursor-pointer">
-                                            <Link href={`/department/${department.id}/edit`}>Edit</Link>
-                                        </Button>
-                                        <Button
-                                            onClick={() => handleToggleStatus(department.id, department.status)}
-                                            className={`cursor-pointer rounded-full px-3 py-1 text-xs font-semibold transition-colors ${
-                                                department.status === 'active'
-                                                    ? 'bg-green-100 text-green-700 hover:bg-green-200'
-                                                    : 'bg-red-100 text-red-700 hover:bg-red-200'
-                                            }`}
-                                        >
-                                            {department.status === 'active' ? 'Active' : 'Inactive'}
-                                        </Button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                        <Button asChild>
+                            <Link href="/department/create">Add Department</Link>
+                        </Button>
+                    </div>
+
+                    {/* TABLE */}
+                    <div className="rounded-xl border">
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>No</TableHead>
+                                    <TableHead>Nama</TableHead>
+                                    <TableHead>Description</TableHead>
+                                    <TableHead>Action</TableHead>
+                                </TableRow>
+                            </TableHeader>
+
+                            <TableBody>
+                                {departments.length > 0 ? (
+                                    departments.map((department, index) => (
+                                        <TableRow key={department.id}>
+                                            <TableCell>{index + 1}</TableCell>
+                                            <TableCell>{department.name}</TableCell>
+                                            <TableCell>{department.description}</TableCell>
+                                            <TableCell className="flex gap-2">
+                                                <Button size="sm" asChild>
+                                                    <Link href={`/department/${department.id}/edit`}>Edit</Link>
+                                                </Button>
+
+                                                <Button
+                                                    size="sm"
+                                                    variant={department.status === 'active' ? 'ghost' : 'destructive'}
+                                                    onClick={() => handleToggleStatus(department.id, department.status)}
+                                                >
+                                                    {department.status === 'active' ? 'Active' : 'Inactive'}
+                                                </Button>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))
+                                ) : (
+                                    <TableRow>
+                                        <TableCell colSpan={4} className="text-center">
+                                            Tidak ada data
+                                        </TableCell>
+                                    </TableRow>
+                                )}
+                            </TableBody>
+                        </Table>
+                    </div>
                 </div>
             </AppLayout>
         </>

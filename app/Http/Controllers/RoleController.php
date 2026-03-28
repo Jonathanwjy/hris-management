@@ -7,6 +7,7 @@ use App\Models\Department;
 use App\Models\Role;
 use App\Services\RoleService;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
 
 class RoleController extends Controller
 {
@@ -16,11 +17,20 @@ class RoleController extends Controller
     {
         $this->roleService = $roleService;
     }
-    public function index()
+    public function index(Request $request)
     {
-        $roles = $this->roleService->getRole();
-        return Inertia::render("admin/role/index", [
-            "roles" => $roles,
+        $departmentId = $request->input('department_id');
+
+        $roles = $this->roleService->getRoles($departmentId);
+
+        $departments = Department::all();
+
+        return Inertia::render('admin/role/index', [
+            'roles' => $roles,
+            'departments' => $departments,
+            'filters' => [
+                'department_id' => $departmentId
+            ]
         ]);
     }
 
