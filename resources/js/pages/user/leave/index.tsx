@@ -15,8 +15,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 export default function LeaveIndex({ leaveRequests = [] }: LeaveIndexProps) {
     return (
         <>
-            <Head title="Leave" />
-
+            <Head title="Leave Request" />
             <AppLayout breadcrumbs={breadcrumbs}>
                 <div className="space-y-6 p-8">
                     <div className="flex items-center justify-between">
@@ -51,9 +50,9 @@ export default function LeaveIndex({ leaveRequests = [] }: LeaveIndexProps) {
                                             <TableCell>
                                                 <span
                                                     className={`rounded px-2 py-1 text-xs ${
-                                                        leave.status === 'approved'
+                                                        leave.status === 'accepted'
                                                             ? 'bg-green-100 text-green-700'
-                                                            : leave.status === 'rejected'
+                                                            : leave.status === 'declined'
                                                               ? 'bg-red-100 text-red-700'
                                                               : 'bg-yellow-100 text-yellow-700'
                                                     }`}

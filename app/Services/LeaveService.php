@@ -25,10 +25,6 @@ class LeaveService
     {
         return DB::transaction(function () use ($data) {
 
-            dd([
-                'auth_id' => Auth::id(),
-                'employee' => Auth::user()->employee,
-            ]);
 
             $user = Auth::user();
             $employee = $user->employee;

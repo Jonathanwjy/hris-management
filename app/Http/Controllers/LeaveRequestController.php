@@ -27,7 +27,7 @@ class LeaveRequestController extends Controller
         $leaveRequests = $this->leaveService->getLeaveRequest();
 
         return Inertia::render('user/leave/index', [
-            'leave_requests' => $leaveRequests
+            'leaveRequests' => $leaveRequests
         ]);
     }
 
