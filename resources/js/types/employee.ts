@@ -33,3 +33,13 @@ export interface EmployeeWithRelation extends Employee {
     department: Department;
     role: Role;
 }
+
+export type EmployeeProps = {
+    employees: EmployeeWithRelation[];
+    departments: Department[];
+    roles: Role[];
+    filters: {
+        department_id?: string;
+        role_id?: string;
+    };
+};

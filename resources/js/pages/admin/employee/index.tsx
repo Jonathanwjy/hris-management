@@ -1,10 +1,11 @@
 import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { EmployeeWithRelation } from '@/types/employee';
-import { Head, Link } from '@inertiajs/react';
+import { EmployeeProps } from '@/types/employee';
+import { Head, Link, router } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -13,7 +14,21 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function EmployeeIndex({ employees = [] }: { employees: EmployeeWithRelation[] }) {
+const handleFilterChange = (value: string) => {
+    router.get(
+        '/employee',
+        {
+            department_id: value === 'all' ? null : value,
+            role_id: value === 'all' ? null : value,
+        },
+        {
+            preserveState: true,
+            replace: true,
+        },
+    );
+};
+
+export default function EmployeeIndex({ employees = [], departments = [], roles = [], filters }: EmployeeProps) {
     return (
         <>
             <AppLayout breadcrumbs={breadcrumbs}>
@@ -23,10 +38,39 @@ export default function EmployeeIndex({ employees = [] }: { employees: EmployeeW
                     {/* HEADER */}
                     <div className="flex items-center justify-between">
                         <h1 className="text-2xl font-semibold">Employee</h1>
+                        <div className="flex items-center gap-4">
+                            <Select value={filters.department_id || ''} onValueChange={handleFilterChange}>
+                                <SelectTrigger className="w-[200px]">
+                                    <SelectValue placeholder="Filter Department" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="all">Semua Department</SelectItem>
+                                    {departments.map((dept) => (
+                                        <SelectItem key={dept.id} value={String(dept.id)}>
+                                            {dept.name}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
 
-                        <Button asChild>
-                            <Link href="/employee/create">Add Employee</Link>
-                        </Button>
+                            <Select value={filters.role_id || ''} onValueChange={handleFilterChange}>
+                                <SelectTrigger className="w-[200px]">
+                                    <SelectValue placeholder="Filter Department" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="all">Semua Role</SelectItem>
+                                    {roles.map((role) => (
+                                        <SelectItem key={role.id} value={String(role.id)}>
+                                            {role.title}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+
+                            <Button asChild>
+                                <Link href="/employee/create">Add Employee</Link>
+                            </Button>
+                        </div>
                     </div>
 
                     {/* TABLE */}

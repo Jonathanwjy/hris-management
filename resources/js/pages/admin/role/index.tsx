@@ -52,12 +52,10 @@ export default function RoleIndex({ roles = [], departments = [], filters }: Pro
             <Head title="Role" />
             <AppLayout breadcrumbs={breadcrumbs}>
                 <div className="space-y-6 p-8">
-                    {/* HEADER */}
                     <div className="flex items-center justify-between">
                         <h1 className="text-2xl font-semibold">Role</h1>
 
                         <div className="flex items-center gap-4">
-                            {/* FILTER */}
                             <Select value={filters.department_id || ''} onValueChange={handleFilterChange}>
                                 <SelectTrigger className="w-[200px]">
                                     <SelectValue placeholder="Filter Department" />
@@ -72,14 +70,12 @@ export default function RoleIndex({ roles = [], departments = [], filters }: Pro
                                 </SelectContent>
                             </Select>
 
-                            {/* BUTTON */}
                             <Button asChild>
                                 <Link href="/role/create">Add Role</Link>
                             </Button>
                         </div>
                     </div>
 
-                    {/* TABLE */}
                     <div className="rounded-xl border">
                         <Table>
                             <TableHeader>

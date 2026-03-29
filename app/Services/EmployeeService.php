@@ -13,9 +13,17 @@ use Illuminate\Support\Facades\Hash;
 class EmployeeService
 {
 
-    public function getEmployee()
+    public function getEmployee($departmentId = null, $roleId = null)
     {
-        return Employee::with(['department', 'role'])->get();
+        return Employee::with(['department', 'role'])
+            ->when($departmentId, function ($query) use ($departmentId) {
+                $query->where('department_id', $departmentId);
+            })
+            ->when($roleId, function ($query) use ($roleId) {
+                $query->where('role_id', $roleId);
+            })
+            ->orderBy('status', 'asc')
+            ->get();
     }
 
     public function create(): array

@@ -19,10 +19,20 @@ class EmployeeController extends Controller
     {
         $this->employeeService = $employeeService;
     }
-    public function index()
+    public function index(Request $request)
     {
-        $employees = $this->employeeService->getEmployee();
-        return Inertia::render('admin/employee/index', ['employees' => $employees]);
+        $departmentId = $request->input('department_id');
+        $roleId = $request->input('role_id');
+
+        $employees = $this->employeeService->getEmployee($departmentId, $roleId);
+
+        return Inertia::render('admin/employee/index', [
+            'employees' => $employees,
+            'filters' => [
+                'department_id' => $departmentId,
+                'role_id' => $roleId,
+            ]
+        ]);
     }
 
     public function create()
