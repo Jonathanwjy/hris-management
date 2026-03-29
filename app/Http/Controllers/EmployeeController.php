@@ -26,7 +26,12 @@ class EmployeeController extends Controller
 
         $employees = $this->employeeService->getEmployee($departmentId, $roleId);
 
+        $departments = Department::all();
+        $roles = Role::all();
+
         return Inertia::render('admin/employee/index', [
+            'departments' => $departments,
+            'roles' => $roles,
             'employees' => $employees,
             'filters' => [
                 'department_id' => $departmentId,

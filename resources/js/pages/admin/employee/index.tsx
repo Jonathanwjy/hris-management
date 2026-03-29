@@ -14,21 +14,35 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-const handleFilterChange = (value: string) => {
-    router.get(
-        '/employee',
-        {
-            department_id: value === 'all' ? null : value,
-            role_id: value === 'all' ? null : value,
-        },
-        {
-            preserveState: true,
-            replace: true,
-        },
-    );
-};
-
 export default function EmployeeIndex({ employees = [], departments = [], roles = [], filters }: EmployeeProps) {
+    const handleDepartmentChange = (value: string) => {
+        router.get(
+            '/employee',
+            {
+                department_id: value === 'all' ? null : value,
+                role_id: filters.role_id ?? null,
+            },
+            {
+                preserveState: true,
+                replace: true,
+            },
+        );
+    };
+
+    const handleRoleChange = (value: string) => {
+        router.get(
+            '/employee',
+            {
+                department_id: filters.department_id ?? null,
+                role_id: value === 'all' ? null : value,
+            },
+            {
+                preserveState: true,
+                replace: true,
+            },
+        );
+    };
+
     return (
         <>
             <AppLayout breadcrumbs={breadcrumbs}>
@@ -39,7 +53,7 @@ export default function EmployeeIndex({ employees = [], departments = [], roles 
                     <div className="flex items-center justify-between">
                         <h1 className="text-2xl font-semibold">Employee</h1>
                         <div className="flex items-center gap-4">
-                            <Select value={filters.department_id || ''} onValueChange={handleFilterChange}>
+                            <Select value={filters.department_id || ''} onValueChange={handleDepartmentChange}>
                                 <SelectTrigger className="w-[200px]">
                                     <SelectValue placeholder="Filter Department" />
                                 </SelectTrigger>
@@ -53,7 +67,7 @@ export default function EmployeeIndex({ employees = [], departments = [], roles 
                                 </SelectContent>
                             </Select>
 
-                            <Select value={filters.role_id || ''} onValueChange={handleFilterChange}>
+                            <Select value={filters.role_id || ''} onValueChange={handleRoleChange}>
                                 <SelectTrigger className="w-[200px]">
                                     <SelectValue placeholder="Filter Department" />
                                 </SelectTrigger>
