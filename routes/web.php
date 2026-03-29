@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\LeaveRequestController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\RoleController;
+
 
 Route::get('/', function () {
     return Inertia::render('welcome');
@@ -18,15 +20,24 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth', 'admin'])->group(function () {
 
-    Route::resource('department', DepartmentController::class);
+    Route::resource('department', DepartmentController::class)->except('delete');
     Route::patch('department/toggle-status/{department}', [DepartmentController::class, 'toggleStatus'])->name('');
 
-    Route::resource('role', RoleController::class);
+    Route::resource('role', RoleController::class)->except('delete');
     Route::patch('role/toggle-status/{role}', [RoleController::class, 'toggleStatus'])->name('');
 
-    Route::resource('employee', EmployeeController::class);
+    Route::resource('employee', EmployeeController::class)->except('delete');
     Route::patch('employee/toggle-status/{employee}', [EmployeeController::class, 'toggleStatus'])->name('');
     Route::patch('employee/{employee}/fire', [EmployeeController::class, 'fireEmployee']);
+
+    Route::prefix('admin')->group(function () {
+        Route::get('leave', [LeaveRequestController::class, 'adminIndex'])->name('leave.admin.index');
+        Route::get('leave/{leave}', [LeaveRequestController::class, 'adminShow'])->name('leave.admin.show');
+    });
+});
+
+Route::middleware(['auth', 'user'])->group(function () {
+    Route::resource('leave', LeaveRequestController::class)->except('delete');
 });
 
 

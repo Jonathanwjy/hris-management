@@ -13,3 +13,7 @@ export interface Employee {
     id: number;
     full_name: string;
 }
+
+export interface LeaveWithEmployee extends Leave {
+    employee: Employee;
+}
