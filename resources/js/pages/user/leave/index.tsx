@@ -23,7 +23,7 @@ export default function LeaveIndex({ leaveRequests = [] }: LeaveIndexProps) {
                         <h1 className="text-2xl font-semibold">Leave Request</h1>
 
                         <Button asChild>
-                            <Link href="/leave/create">Request Leave</Link>
+                            <Link href="leave/create">Request Leave</Link>
                         </Button>
                     </div>
 

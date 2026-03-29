@@ -1,5 +1,4 @@
 import InputError from '@/components/input-error';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { LeaveFormProps } from '@/types/leave';
@@ -64,7 +63,7 @@ export default function LeaveForm({ leave }: LeaveFormProps) {
                     <InputError message={errors.end_date} className="mt-2" />
                 </div>
 
-                <Button type="submit">{processing ? 'Saving...' : isEdit ? 'Update Role' : 'Create Role'}</Button>
+                <button type="submit">{processing ? 'Saving...' : isEdit ? 'Update Leave' : 'Create Leave'}</button>
             </form>
         </>
     );

@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Http\Requests\LeaveRequestRequest;
 use App\Models\LeaveRequest;
 use App\Services\LeaveService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class LeaveRequestController extends Controller
@@ -33,15 +36,17 @@ class LeaveRequestController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('user/leave/create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(LeaveRequestRequest $request)
     {
-        //
+
+        $this->leaveService->store($request->validated());
+        return to_route('leave.index')->with('success', 'Leave Request Berhasil dibuat');
     }
 
     /**
