@@ -4,20 +4,19 @@
 namespace App\Services;
 
 use App\Models\LeaveRequest;
+use Illuminate\Support\Facades\Auth;
 
 
 class LeaveService
 {
-    public function getLeaveRequest($employeeId = null, $status = null)
+    public function getLeaveRequest()
     {
-        return LeaveRequest::with('employee')
-            ->when($employeeId, function ($query) use ($employeeId) {
-                $query->where('employee_id', $employeeId);
-            })
-            ->when($status, function ($query) use ($status) {
-                $query->where('status', $status);
-            })
-            ->orderBy('created_at', 'desc')
+        $leaveRequests = Auth::user()
+            ->employee
+            ->leaveRequest()
+            ->latest()
             ->get();
+
+        return $leaveRequests;
     }
 }

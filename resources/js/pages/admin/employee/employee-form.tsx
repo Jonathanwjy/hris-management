@@ -9,7 +9,7 @@ import { router, useForm } from '@inertiajs/react';
 export default function EmployeeForm({ employee, roles, departments }: EmployeeFormProps) {
     const isEdit = !!employee;
 
-    const { data, setData, put, post, processing, errors } = useForm({
+    const { data, setData, processing, errors } = useForm({
         full_name: employee?.full_name ?? '',
         email: employee?.email ?? '',
         phone_number: employee?.phone_number ?? '',

@@ -17,3 +17,11 @@ export interface Employee {
 export interface LeaveWithEmployee extends Leave {
     employee: Employee;
 }
+
+export interface LeaveFormProps {
+    leave?: Leave;
+}
+
+export type LeaveIndexProps = {
+    leaveRequests: Leave[];
+};

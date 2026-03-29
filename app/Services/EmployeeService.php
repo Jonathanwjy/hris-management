@@ -41,14 +41,17 @@ class EmployeeService
                 $data['photo'] = $data['photo']->store('employees', 'public');
             }
 
-            $employee = Employee::create($data);
-
-            User::create([
-                'name' => $employee->full_name,
-                'email' => $employee->email,
-                'password' => Hash::make('password123'), // default
-                'employee_id' => $employee->id,
+            // buat user dulu
+            $user = User::create([
+                'name' => $data['full_name'],
+                'email' => $data['email'],
+                'password' => Hash::make('password123'),
             ]);
+
+            // baru employee
+            $data['user_id'] = $user->id;
+
+            $employee = Employee::create($data);
 
             return $employee;
         });

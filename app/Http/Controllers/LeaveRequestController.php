@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\LeaveRequest;
+use App\Services\LeaveService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -11,7 +12,21 @@ class LeaveRequestController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index() {}
+
+    protected $leaveService;
+
+    public function __construct(LeaveService $leaveService)
+    {
+        $this->leaveService = $leaveService;
+    }
+    public function index()
+    {
+        $leaveRequests = $this->leaveService->getLeaveRequest();
+
+        return Inertia::render('user/leave/index', [
+            'leave_requests' => $leaveRequests
+        ]);
+    }
 
     /**
      * Show the form for creating a new resource.

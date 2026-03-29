@@ -15,6 +15,7 @@ class Employee extends Model
         "role_id",
         "status",
         "photo",
+        "user_id",
     ];
 
     public function role()
@@ -29,7 +30,7 @@ class Employee extends Model
 
     public function user()
     {
-        return $this->hasOne(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function leaveRequest()
