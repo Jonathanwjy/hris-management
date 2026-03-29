@@ -20,7 +20,7 @@ export default function LeaveForm({ leave }: LeaveFormProps) {
         if (isEdit) {
             put(`/leave/${leave.id}`);
         } else {
-            post('/leave');
+            post('/user/leave');
         }
     };
 
@@ -32,7 +32,7 @@ export default function LeaveForm({ leave }: LeaveFormProps) {
                     <Input
                         id="reason"
                         type="text"
-                        placeholder="role reason"
+                        placeholder="Reason"
                         value={data.reason}
                         onChange={(e) => setData('reason', e.target.value)}
                         className="text-muted-foreground mt-1"

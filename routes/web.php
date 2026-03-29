@@ -37,7 +37,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
 });
 
 Route::middleware(['auth', 'user'])->group(function () {
-    Route::resource('leave', LeaveRequestController::class)->except('delete', 'edit');
+    Route::prefix('user')->group(function () {
+        Route::resource('leave', LeaveRequestController::class)->except('delete', 'edit');
+    });
 });
 
 
