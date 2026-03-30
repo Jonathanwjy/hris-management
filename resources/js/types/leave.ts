@@ -26,3 +26,8 @@ export type LeaveIndexProps = {
     leaveRequests: LeaveWithEmployee[];
     isAdmin: boolean;
 };
+
+export interface LeaveShowProps {
+    leave: LeaveWithEmployee;
+    isAdmin: boolean;
+}

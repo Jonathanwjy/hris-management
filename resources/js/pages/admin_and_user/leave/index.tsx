@@ -65,7 +65,7 @@ export default function LeaveIndex({ leaveRequests = [], isAdmin }: LeaveIndexPr
                                             </TableCell>
                                             <TableCell className="flex gap-2">
                                                 <Button size="sm" asChild>
-                                                    <Link href={`/leave/${leave.id}`}>Detail</Link>
+                                                    <Link href={route(isAdmin ? 'leave.admin.show' : 'leave.show', { leave: leave.id })}>Detail</Link>
                                                 </Button>
 
                                                 {isAdmin && leave.status === 'pending' && (

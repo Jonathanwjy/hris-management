@@ -32,7 +32,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::prefix('admin')->group(function () {
         Route::get('leave', [LeaveRequestController::class, 'adminIndex'])->name('leave.admin.index');
-        Route::get('leave/{leave}', [LeaveRequestController::class, 'adminShow'])->name('leave.admin.show');
+        Route::get('leave/{leave}', [LeaveRequestController::class, 'show'])->name('leave.admin.show');
     });
 });
 

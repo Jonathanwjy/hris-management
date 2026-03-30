@@ -62,11 +62,12 @@ class LeaveRequestController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(LeaveRequest $leaveRequest)
+    public function show(LeaveRequest $leave)
     {
-        $this->leaveService->show($leaveRequest);
+        $this->leaveService->show($leave);
         return Inertia::render('admin_and_user/leave/show', [
-            'leaveRequest' => $leaveRequest,
+            'leave' => $leave,
+            'isAdmin' => Auth::user()->isAdmin,
         ]);
     }
 
