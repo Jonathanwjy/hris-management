@@ -12,7 +12,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function LeaveIndex({ leaveRequests = [] }: LeaveIndexProps) {
+export default function LeaveIndex({ leaveRequests = [], isAdmin }: LeaveIndexProps) {
     return (
         <>
             <Head title="Leave Request" />
@@ -20,10 +20,11 @@ export default function LeaveIndex({ leaveRequests = [] }: LeaveIndexProps) {
                 <div className="space-y-6 p-8">
                     <div className="flex items-center justify-between">
                         <h1 className="text-2xl font-semibold">Leave Request</h1>
-
-                        <Button asChild>
-                            <Link href="leave/create">Request Leave</Link>
-                        </Button>
+                        {!isAdmin && (
+                            <Button asChild>
+                                <Link href="leave/create">Request Leave</Link>
+                            </Button>
+                        )}
                     </div>
 
                     <div className="rounded-xl border">
@@ -33,7 +34,8 @@ export default function LeaveIndex({ leaveRequests = [] }: LeaveIndexProps) {
                                     <TableHead>No</TableHead>
                                     <TableHead>Tanggal Mulai</TableHead>
                                     <TableHead>Tanggal Selesai</TableHead>
-                                    <TableHead>Alasan</TableHead>
+                                    {isAdmin && <TableHead>Requested By</TableHead>}
+                                    <TableHead>Reason</TableHead>
                                     <TableHead>Status</TableHead>
                                     <TableHead>Action</TableHead>
                                 </TableRow>
@@ -46,6 +48,7 @@ export default function LeaveIndex({ leaveRequests = [] }: LeaveIndexProps) {
                                             <TableCell>{index + 1}</TableCell>
                                             <TableCell>{leave.start_date}</TableCell>
                                             <TableCell>{leave.end_date}</TableCell>
+                                            {isAdmin && <TableCell>{leave.employee.full_name}</TableCell>}
                                             <TableCell>{leave.reason}</TableCell>
                                             <TableCell>
                                                 <span
@@ -65,9 +68,15 @@ export default function LeaveIndex({ leaveRequests = [] }: LeaveIndexProps) {
                                                     <Link href={`/leave/${leave.id}`}>Detail</Link>
                                                 </Button>
 
-                                                {leave.status === 'pending' && (
+                                                {isAdmin && leave.status === 'pending' && (
                                                     <Button size="sm" variant="destructive">
-                                                        Cancel
+                                                        Decline
+                                                    </Button>
+                                                )}
+
+                                                {isAdmin && leave.status === 'pending' && (
+                                                    <Button size="sm" variant="secondary">
+                                                        Accept
                                                     </Button>
                                                 )}
                                             </TableCell>
@@ -76,7 +85,7 @@ export default function LeaveIndex({ leaveRequests = [] }: LeaveIndexProps) {
                                 ) : (
                                     <TableRow>
                                         <TableCell colSpan={6} className="text-center">
-                                            Tidak ada data leave
+                                            Belum ada request leave
                                         </TableCell>
                                     </TableRow>
                                 )}

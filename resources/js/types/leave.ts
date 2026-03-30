@@ -23,5 +23,6 @@ export interface LeaveFormProps {
 }
 
 export type LeaveIndexProps = {
-    leaveRequests: Leave[];
+    leaveRequests: LeaveWithEmployee[];
+    isAdmin: boolean;
 };

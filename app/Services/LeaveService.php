@@ -6,7 +6,7 @@ namespace App\Services;
 use App\Models\LeaveRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-
+use PDO;
 
 class LeaveService
 {
@@ -15,10 +15,16 @@ class LeaveService
         $leaveRequests = Auth::user()
             ->employee
             ->leaveRequest()
+            ->with("employee")
             ->latest()
             ->get();
 
         return $leaveRequests;
+    }
+
+    public function getLeaveRequestAdmin()
+    {
+        return LeaveRequest::with('employee')->latest()->get();
     }
 
     public function store(array $data): LeaveRequest
@@ -41,5 +47,10 @@ class LeaveService
                 'status'      => 'pending',
             ]);
         });
+    }
+
+    public function show(LeaveRequest $leaveRequest): LeaveRequest
+    {
+        return $leaveRequest->load('employee');
     }
 }

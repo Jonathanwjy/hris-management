@@ -26,11 +26,21 @@ class LeaveRequestController extends Controller
     {
         $leaveRequests = $this->leaveService->getLeaveRequest();
 
-        return Inertia::render('user/leave/index', [
-            'leaveRequests' => $leaveRequests
+        return Inertia::render('admin_and_user/leave/index', [
+            'leaveRequests' => $leaveRequests,
+            'isAdmin' => false,
         ]);
     }
 
+    public function adminIndex()
+    {
+        $leaveRequests = $this->leaveService->getLeaveRequestAdmin();
+
+        return Inertia::render('admin_and_user/leave/index', [
+            'leaveRequests' => $leaveRequests,
+            'isAdmin' => true,
+        ]);
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -54,7 +64,10 @@ class LeaveRequestController extends Controller
      */
     public function show(LeaveRequest $leaveRequest)
     {
-        //
+        $this->leaveService->show($leaveRequest);
+        return Inertia::render('admin_and_user/leave/show', [
+            'leaveRequest' => $leaveRequest,
+        ]);
     }
 
     /**
@@ -79,13 +92,5 @@ class LeaveRequestController extends Controller
     public function destroy(LeaveRequest $leaveRequest)
     {
         //
-    }
-
-    public function adminIndex()
-    {
-        $leaveRequest = LeaveRequest::all();
-        return Inertia::render("admin/leave/index", [
-            "leave_requests" => $leaveRequest
-        ]);
     }
 }
