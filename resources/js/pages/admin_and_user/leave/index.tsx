@@ -3,7 +3,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { LeaveIndexProps } from '@/types/leave';
-import { Head, Link } from '@inertiajs/react';
+import { showConfirm } from '@/utils/alert';
+import { Head, Link, router } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -13,6 +14,25 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function LeaveIndex({ leaveRequests = [], isAdmin }: LeaveIndexProps) {
+    const handleAccept = async (id: number, currentStatus: string) => {
+        const actionText = currentStatus === 'active' ? 'menonaktifkan' : 'mengaktifkan';
+
+        const isConfirmed = await showConfirm('Ubah Status Department?', `Apakah Anda yakin ingin ${actionText} department ini?`, 'Ya, Ubah Status!');
+
+        if (isConfirmed) {
+            router.patch(`/admin/leave/${id}/accept-request`, {}, { preserveScroll: true });
+        }
+    };
+
+    const handleDecline = async (id: number, currentStatus: string) => {
+        const actionText = currentStatus === 'active' ? 'menonaktifkan' : 'mengaktifkan';
+
+        const isConfirmed = await showConfirm('Ubah Status Department?', `Apakah Anda yakin ingin ${actionText} department ini?`, 'Ya, Ubah Status!');
+
+        if (isConfirmed) {
+            router.patch(`/admin/leave/${id}/decline-request`, {}, { preserveScroll: true });
+        }
+    };
     return (
         <>
             <Head title="Leave Request" />
@@ -71,13 +91,13 @@ export default function LeaveIndex({ leaveRequests = [], isAdmin }: LeaveIndexPr
                                                 </Button>
 
                                                 {isAdmin && leave.status === 'pending' && (
-                                                    <Button size="sm" variant="destructive">
+                                                    <Button size="sm" variant="destructive" onClick={() => handleDecline(leave.id, leave.status)}>
                                                         Decline
                                                     </Button>
                                                 )}
 
                                                 {isAdmin && leave.status === 'pending' && (
-                                                    <Button size="sm" variant="secondary">
+                                                    <Button size="sm" variant="secondary" onClick={() => handleAccept(leave.id, leave.status)}>
                                                         Accept
                                                     </Button>
                                                 )}

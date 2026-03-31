@@ -7,7 +7,6 @@ use App\Models\LeaveRequest;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use PDO;
 
 class LeaveService
 {
@@ -59,5 +58,40 @@ class LeaveService
     public function show(LeaveRequest $leaveRequest): LeaveRequest
     {
         return $leaveRequest->load('employee');
+    }
+
+    public function accpetRequest(LeaveRequest $leaveRequest): LeaveRequest
+    {
+        if ($leaveRequest->status !== 'pending') {
+            throw new \Exception('Status pengajuan ini sudah diproses dan tidak dapat diubah lagi.');
+        }
+
+        $leaveRequest->update(['status' => 'accepted']);
+
+        return $leaveRequest;
+    }
+
+    public function declineRequest(LeaveRequest $leaveRequest): LeaveRequest
+    {
+
+
+        if ($leaveRequest->status !== 'pending') {
+            throw new \Exception('Status pengajuan ini sudah diproses dan tidak dapat diubah lagi.');
+        }
+
+        $leaveRequest->update(['status' => 'declined']);
+
+        return $leaveRequest;
+    }
+
+    public function cancelRequest(LeaveRequest $leaveRequest): LeaveRequest
+    {
+        if ($leaveRequest->status !== 'pending') {
+            throw new \Exception('Status pengajuan ini sudah diproses dan tidak dapat dibatalkan.');
+        }
+
+        $leaveRequest->update(['status' => 'cancelled']);
+
+        return $leaveRequest;
     }
 }

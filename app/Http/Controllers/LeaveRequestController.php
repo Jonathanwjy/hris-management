@@ -94,4 +94,16 @@ class LeaveRequestController extends Controller
     {
         //
     }
+
+    public function acceptRequest(LeaveRequest $leaveRequest)
+    {
+        $this->leaveService->accpetRequest($leaveRequest);
+        return back()->with('success', 'Leave Request berhasil diterima');
+    }
+
+    public function declineRequest(LeaveRequest $leaveRequest)
+    {
+        $this->leaveService->declineRequest($leaveRequest);
+        return back()->with('success', 'Leave Request berhasil ditolak');
+    }
 }
