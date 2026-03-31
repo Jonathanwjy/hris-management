@@ -6,6 +6,7 @@ export interface Leave {
     reason: string;
     start_date: string;
     end_date: string;
+    duration: number;
     status: LeaveStatus;
 }
 
@@ -29,5 +30,4 @@ export type LeaveIndexProps = {
 
 export interface LeaveShowProps {
     leave: LeaveWithEmployee;
-    isAdmin: boolean;
 }

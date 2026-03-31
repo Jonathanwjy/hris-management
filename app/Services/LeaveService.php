@@ -4,6 +4,7 @@
 namespace App\Services;
 
 use App\Models\LeaveRequest;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use PDO;
@@ -39,10 +40,16 @@ class LeaveService
                 throw new \Exception('Employee tidak ditemukan');
             }
 
+            $start = Carbon::parse($data['start_date']);
+            $end = Carbon::parse($data['end_date']);
+
+            $duration = $start->diffInDays($end) + 1;
+
             return LeaveRequest::create([
                 'employee_id' => $employee->id,
                 'start_date'  => $data['start_date'],
                 'end_date'    => $data['end_date'],
+                'duration'    => $duration,
                 'reason'      => $data['reason'],
                 'status'      => 'pending',
             ]);

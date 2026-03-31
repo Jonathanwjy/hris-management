@@ -34,6 +34,7 @@ export default function LeaveIndex({ leaveRequests = [], isAdmin }: LeaveIndexPr
                                     <TableHead>No</TableHead>
                                     <TableHead>Tanggal Mulai</TableHead>
                                     <TableHead>Tanggal Selesai</TableHead>
+                                    <TableHead>Durasi (Hari)</TableHead>
                                     {isAdmin && <TableHead>Requested By</TableHead>}
                                     <TableHead>Reason</TableHead>
                                     <TableHead>Status</TableHead>
@@ -48,6 +49,7 @@ export default function LeaveIndex({ leaveRequests = [], isAdmin }: LeaveIndexPr
                                             <TableCell>{index + 1}</TableCell>
                                             <TableCell>{leave.start_date}</TableCell>
                                             <TableCell>{leave.end_date}</TableCell>
+                                            <TableCell>{leave.duration}</TableCell>
                                             {isAdmin && <TableCell>{leave.employee.full_name}</TableCell>}
                                             <TableCell>{leave.reason}</TableCell>
                                             <TableCell>

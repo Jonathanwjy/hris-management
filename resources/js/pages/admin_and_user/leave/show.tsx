@@ -1,16 +1,21 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { useAuth } from '@/hooks/use-auth'; // Import hook buatanmu
 import AppLayout from '@/layouts/app-layout';
 import { LeaveShowProps } from '@/types/leave';
-import { Head, useForm } from '@inertiajs/react';
-import { CalendarIcon, FileTextIcon, UserIcon } from 'lucide-react';
+import { Head, Link, useForm } from '@inertiajs/react';
+import { ArrowLeft, CalendarIcon, FileTextIcon, UserIcon } from 'lucide-react';
 
-export default function LeaveShow({ leave, isAdmin }: LeaveShowProps) {
+export default function LeaveShow({ leave }: LeaveShowProps) {
+    const { isAdmin } = useAuth();
     const { patch, processing } = useForm();
 
     const updateStatus = (status: 'accepted' | 'declined') => {
         if (confirm(`Apakah Anda yakin ingin ${status === 'accepted' ? 'menyetujui' : 'menolak'} pengajuan ini?`)) {
-            patch(route('admin.leave.updateStatus', { leave: leave.id, status }));
+            // Gunakan status sebagai data agar diterima Controller melalui $request->status
+            patch(route('admin.leave.updateStatus', { leave: leave.id }), {
+                data: { status },
+            });
         }
     };
 
@@ -30,6 +35,12 @@ export default function LeaveShow({ leave, isAdmin }: LeaveShowProps) {
             <Head title="Detail Leave Request" />
 
             <div className="mx-auto max-w-4xl p-8">
+                <Button variant="ghost" asChild className="mb-4">
+                    <Link href={isAdmin ? route('leave.admin.index') : route('leave.index')}>
+                        <ArrowLeft className="mr-2 h-4 w-4" /> Kembali
+                    </Link>
+                </Button>
+
                 <Card>
                     <CardHeader className="border-b">
                         <div className="flex items-start justify-between">
@@ -43,7 +54,6 @@ export default function LeaveShow({ leave, isAdmin }: LeaveShowProps) {
                     </CardHeader>
 
                     <CardContent className="grid gap-6 pt-6">
-                        {/* Info Karyawan (Hanya jika Admin atau butuh konfirmasi nama) */}
                         <div className="bg-muted/50 flex items-center gap-4 rounded-lg p-4">
                             <div className="rounded-full bg-white p-2 shadow-sm">
                                 <UserIcon className="text-primary h-5 w-5" />
@@ -54,18 +64,22 @@ export default function LeaveShow({ leave, isAdmin }: LeaveShowProps) {
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
                             <div className="space-y-1">
                                 <div className="text-muted-foreground flex items-center text-sm">
-                                    <CalendarIcon className="mr-2 h-4 w-4" /> Tanggal Mulai
+                                    <CalendarIcon className="mr-2 h-4 w-4" /> Mulai
                                 </div>
                                 <p className="text-base font-medium">{leave.start_date}</p>
                             </div>
                             <div className="space-y-1">
                                 <div className="text-muted-foreground flex items-center text-sm">
-                                    <CalendarIcon className="mr-2 h-4 w-4" /> Tanggal Selesai
+                                    <CalendarIcon className="mr-2 h-4 w-4" /> Selesai
                                 </div>
                                 <p className="text-base font-medium">{leave.end_date}</p>
+                            </div>
+                            <div className="space-y-1">
+                                <p className="text-muted-foreground text-sm font-medium tracking-wider uppercase">Durasi</p>
+                                <p className="text-primary text-xl font-bold">{leave.duration} Hari</p>
                             </div>
                         </div>
 
@@ -78,7 +92,6 @@ export default function LeaveShow({ leave, isAdmin }: LeaveShowProps) {
                     </CardContent>
 
                     <CardFooter className="bg-muted/10 flex justify-end gap-3 border-t pt-6">
-                        {/* Tombol Khusus Admin jika status masih PENDING */}
                         {isAdmin && leave.status === 'pending' && (
                             <>
                                 <Button variant="destructive" onClick={() => updateStatus('declined')} disabled={processing}>
@@ -90,7 +103,6 @@ export default function LeaveShow({ leave, isAdmin }: LeaveShowProps) {
                             </>
                         )}
 
-                        {/* Tombol Khusus User jika ingin cancel (opsional) */}
                         {!isAdmin && leave.status === 'pending' && (
                             <Button variant="outline" className="border-red-200 text-red-600 hover:bg-red-50">
                                 Batalkan Pengajuan
