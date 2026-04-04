@@ -59,7 +59,7 @@ export default function LeaveShow({ leave }: LeaveShowProps) {
                             <div>
                                 <CardTitle className="text-2xl">Detail Pengajuan Cuti</CardTitle>
                             </div>
-                            <span className={`rounded-full border px-3 py-1 text-sm font-medium ${statusColors[leave.status]}`}>
+                            <span className={`ml-2 rounded-full border px-3 py-1 text-sm font-medium ${statusColors[leave.status]}`}>
                                 {leave.status.toUpperCase()}
                             </span>
                         </div>
@@ -117,12 +117,6 @@ export default function LeaveShow({ leave }: LeaveShowProps) {
                                     Setujui Cuti
                                 </Button>
                             </>
-                        )}
-
-                        {!isAdmin && leave.status === 'pending' && (
-                            <Button variant="outline" className="border-red-200 text-red-600 hover:bg-red-50">
-                                Batalkan Pengajuan
-                            </Button>
                         )}
                     </CardFooter>
                 </Card>
