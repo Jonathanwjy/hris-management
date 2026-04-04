@@ -69,7 +69,7 @@ export default function LeaveIndex({ leaveRequests = [], isAdmin }: LeaveIndexPr
                                             <TableCell>{index + 1}</TableCell>
                                             <TableCell>{leave.start_date}</TableCell>
                                             <TableCell>{leave.end_date}</TableCell>
-                                            <TableCell>{leave.duration}</TableCell>
+                                            <TableCell>{leave.duration} hari</TableCell>
                                             {isAdmin && <TableCell>{leave.employee.full_name}</TableCell>}
                                             <TableCell>{leave.reason}</TableCell>
                                             <TableCell>
