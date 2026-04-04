@@ -37,4 +37,9 @@ class Employee extends Model
     {
         return $this->hasMany(LeaveRequest::class);
     }
+
+    public function presence()
+    {
+        return $this->hasMany(Presence::class);
+    }
 }
