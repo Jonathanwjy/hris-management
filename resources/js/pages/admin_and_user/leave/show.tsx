@@ -3,19 +3,31 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { useAuth } from '@/hooks/use-auth'; // Import hook buatanmu
 import AppLayout from '@/layouts/app-layout';
 import { LeaveShowProps } from '@/types/leave';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { showConfirm } from '@/utils/alert';
+import { Head, Link, router, useForm } from '@inertiajs/react';
 import { ArrowLeft, CalendarIcon, FileTextIcon, UserIcon } from 'lucide-react';
 
 export default function LeaveShow({ leave }: LeaveShowProps) {
     const { isAdmin } = useAuth();
-    const { patch, processing } = useForm();
+    const { processing } = useForm();
 
-    const updateStatus = (status: 'accepted' | 'declined') => {
-        if (confirm(`Apakah Anda yakin ingin ${status === 'accepted' ? 'menyetujui' : 'menolak'} pengajuan ini?`)) {
-            // Gunakan status sebagai data agar diterima Controller melalui $request->status
-            patch(route('admin.leave.updateStatus', { leave: leave.id }), {
-                data: { status },
-            });
+    const handleAccept = async (id: number, currentStatus: string) => {
+        const actionText = currentStatus === 'active' ? 'menonaktifkan' : 'mengaktifkan';
+
+        const isConfirmed = await showConfirm('Ubah Status Department?', `Apakah Anda yakin ingin ${actionText} department ini?`, 'Ya, Ubah Status!');
+
+        if (isConfirmed) {
+            router.patch(`/admin/leave/${id}/accept-request`, {}, { preserveScroll: true });
+        }
+    };
+
+    const handleDecline = async (id: number, currentStatus: string) => {
+        const actionText = currentStatus === 'active' ? 'menonaktifkan' : 'mengaktifkan';
+
+        const isConfirmed = await showConfirm('Ubah Status Department?', `Apakah Anda yakin ingin ${actionText} department ini?`, 'Ya, Ubah Status!');
+
+        if (isConfirmed) {
+            router.patch(`/admin/leave/${id}/decline-request`, {}, { preserveScroll: true });
         }
     };
 
@@ -94,10 +106,14 @@ export default function LeaveShow({ leave }: LeaveShowProps) {
                     <CardFooter className="bg-muted/10 flex justify-end gap-3 border-t pt-6">
                         {isAdmin && leave.status === 'pending' && (
                             <>
-                                <Button variant="destructive" onClick={() => updateStatus('declined')} disabled={processing}>
+                                <Button variant="destructive" onClick={() => handleDecline(leave.id, leave.status)} disabled={processing}>
                                     Tolak Pengajuan
                                 </Button>
-                                <Button className="bg-green-600 hover:bg-green-700" onClick={() => updateStatus('accepted')} disabled={processing}>
+                                <Button
+                                    className="bg-green-600 hover:bg-green-700"
+                                    onClick={() => handleAccept(leave.id, leave.status)}
+                                    disabled={processing}
+                                >
                                     Setujui Cuti
                                 </Button>
                             </>

@@ -24,7 +24,7 @@ class LeaveService
 
     public function getLeaveRequestAdmin()
     {
-        return LeaveRequest::with('employee')->latest()->get();
+        return LeaveRequest::with('employee')->orderBy('status', 'asc')->get();
     }
 
     public function store(array $data): LeaveRequest
