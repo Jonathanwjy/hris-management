@@ -6,6 +6,7 @@ use App\Http\Controllers\LeaveRequestController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\PresenceController;
 
 
 Route::get('/', function () {
@@ -41,6 +42,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 Route::middleware(['auth', 'user'])->group(function () {
     Route::prefix('user')->group(function () {
         Route::resource('leave', LeaveRequestController::class)->except('delete', 'edit');
+        Route::resource('presence', PresenceController::class)->except('delete', 'edit');
     });
 });
 
