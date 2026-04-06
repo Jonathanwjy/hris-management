@@ -5,52 +5,75 @@ import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import { PresenceFormProps } from '@/types/presence';
 import { router, useForm } from '@inertiajs/react';
+import React from 'react';
 
 export default function CreatePresence({ presence }: PresenceFormProps) {
+    // Fungsi untuk mendapatkan tanggal hari ini dengan format YYYY-MM-DD
     const getTodayDate = () => {
         const today = new Date();
         const year = today.getFullYear();
-        const month = String(today.getMonth() + 1).padStart(2, '0'); // Ditambah 1 karena bulan dimulai dari 0
+        const month = String(today.getMonth() + 1).padStart(2, '0');
         const day = String(today.getDate()).padStart(2, '0');
-
         return `${year}-${month}-${day}`;
     };
 
+    // Inisialisasi state form
     const { data, setData, processing, errors } = useForm({
         employee_id: presence?.employee_id ? String(presence.employee_id) : '',
-        date: getTodayDate(),
-       
+        date: getTodayDate(), // Tanggal otomatis terisi
         status: presence?.status ?? 'pending',
         check_in_time: presence?.check_in_time ?? null,
         clock_in_latitude: presence?.clock_in_latitude ?? null,
         clock_in_longitude: presence?.clock_in_longitude ?? null,
     });
 
+    // Fungsi untuk mengambil lokasi GPS
+    const getLocation = () => {
+        if (!navigator.geolocation) {
+            alert('Browser Anda tidak mendukung fitur lokasi.');
+            return;
+        }
+
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                setData((prevData) => ({
+                    ...prevData,
+                    clock_in_latitude: position.coords.latitude,
+                    clock_in_longitude: position.coords.longitude,
+                }));
+            },
+            (error) => {
+                console.error('Error mengambil lokasi: ', error);
+                alert('Gagal mendapatkan lokasi. Pastikan GPS menyala dan izin lokasi di browser telah diaktifkan.');
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 0,
+            },
+        );
+    };
+
+    // Fungsi submit form
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-
         router.post('/presence', data);
     };
 
     return (
         <AppLayout>
-            <div className="p-4">
-                <h1 className="mb-4 text-2xl font-bold">Create Presence</h1>
-            </div>
-            <div className="p-4">
-                <form onSubmit={submit} className="h-auto max-w-xl">
+            <div className="mx-auto max-w-2xl p-4">
+                <h1 className="mb-6 text-2xl font-bold">Create Presence</h1>
+
+                <form onSubmit={submit} className="h-auto rounded-lg border bg-white p-6 shadow-sm">
+                    {/* Input Tanggal */}
                     <div className="mb-4">
                         <Label htmlFor="date">Date</Label>
-                        <Input
-                            id="date"
-                            type="date"
-                            value={data.date}
-                            onChange={(e) => setData('date', e.target.value)}
-                            className="text-muted-foreground mt-1"
-                        />
+                        <Input id="date" type="date" value={data.date} onChange={(e) => setData('date', e.target.value)} className="mt-1" />
                         <InputError message={errors.date} className="mt-2" />
                     </div>
 
+                    {/* Input Jam */}
                     <div className="mb-4">
                         <Label htmlFor="check_in_time">Check In Time</Label>
                         <Input
@@ -59,47 +82,61 @@ export default function CreatePresence({ presence }: PresenceFormProps) {
                             placeholder="09:00"
                             value={data.check_in_time ?? ''}
                             onChange={(e) => setData('check_in_time', e.target.value)}
-                            className="text-muted-foreground mt-1"
+                            className="mt-1"
                         />
                         <InputError message={errors.check_in_time} className="mt-2" />
                     </div>
 
-                    <div className="mb-4">
-                        <Label htmlFor="clock_in_latitude">Clock In Latitude</Label>
-                        <Input
-                            id="clock_in_latitude"
-                            type="number"
-                            step="any"
-                            placeholder="-2.9..."
-                            value={data.clock_in_latitude ?? ''}
-                            onChange={(e) => {
-                                const val = e.target.value;
-                                setData('clock_in_latitude', val === '' ? null : parseFloat(val));
-                            }}
-                            className="text-muted-foreground mt-1"
-                        />
-                        <InputError message={errors.clock_in_latitude} className="mt-2" />
+                    {/* Section Lokasi */}
+                    <div className="mb-6 rounded-lg border bg-slate-50 p-4">
+                        <div className="mb-4 flex items-center justify-between">
+                            <div>
+                                <h3 className="text-sm font-medium">Lokasi Absensi</h3>
+                                <p className="text-muted-foreground text-xs">Izinkan akses lokasi untuk mengisi koordinat otomatis.</p>
+                            </div>
+                            <Button type="button" variant="outline" size="sm" onClick={getLocation}>
+                                📍 Ambil Lokasi Saat Ini
+                            </Button>
+                        </div>
+
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                            <div>
+                                <Label htmlFor="clock_in_latitude" className="text-xs">
+                                    Clock In Latitude
+                                </Label>
+                                <Input
+                                    id="clock_in_latitude"
+                                    type="number"
+                                    step="any"
+                                    readOnly // Dibuat readOnly agar tidak bisa dimanipulasi ketik manual
+                                    placeholder="Klik tombol lokasi..."
+                                    value={data.clock_in_latitude ?? ''}
+                                    className="mt-1 bg-slate-100"
+                                />
+                                <InputError message={errors.clock_in_latitude} className="mt-2" />
+                            </div>
+
+                            <div>
+                                <Label htmlFor="clock_in_longitude" className="text-xs">
+                                    Clock In Longitude
+                                </Label>
+                                <Input
+                                    id="clock_in_longitude"
+                                    type="number"
+                                    step="any"
+                                    readOnly // Dibuat readOnly agar tidak bisa dimanipulasi ketik manual
+                                    placeholder="Klik tombol lokasi..."
+                                    value={data.clock_in_longitude ?? ''}
+                                    className="mt-1 bg-slate-100"
+                                />
+                                <InputError message={errors.clock_in_longitude} className="mt-2" />
+                            </div>
+                        </div>
                     </div>
 
-                    <div className="mb-4">
-                        <Label htmlFor="clock_in_longitude">Clock In Longitude</Label>
-                        <Input
-                            id="clock_in_longitude"
-                            type="number"
-                            step="any"
-                            placeholder="106.8..."
-                            value={data.clock_in_longitude ?? ''}
-                            onChange={(e) => {
-                                const val = e.target.value;
-                                setData('clock_in_longitude', val === '' ? null : parseFloat(val));
-                            }}
-                            className="text-muted-foreground mt-1"
-                        />
-                        <InputError message={errors.clock_in_longitude} className="mt-2" />
-                    </div>
-
-                    <Button type="submit" className="w-full" disabled={processing}>
-                        {processing ? 'Saving...' : 'Add Employee'}
+                    {/* Tombol Submit */}
+                    <Button type="submit" className="w-full cursor-pointer" disabled={processing}>
+                        {processing ? 'Menyimpan...' : 'Simpan Absensi'}
                     </Button>
                 </form>
             </div>
