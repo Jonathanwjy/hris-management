@@ -4,11 +4,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import { PresenceFormProps } from '@/types/presence';
-import { router, useForm } from '@inertiajs/react';
+import { useForm } from '@inertiajs/react';
 import React from 'react';
 
 export default function CreatePresence({ presence }: PresenceFormProps) {
-    // Fungsi untuk mendapatkan tanggal hari ini dengan format YYYY-MM-DD
     const getTodayDate = () => {
         const today = new Date();
         const year = today.getFullYear();
@@ -17,17 +16,15 @@ export default function CreatePresence({ presence }: PresenceFormProps) {
         return `${year}-${month}-${day}`;
     };
 
-    // Inisialisasi state form
-    const { data, setData, processing, errors } = useForm({
+    const { data, setData, post, processing, errors } = useForm({
         employee_id: presence?.employee_id ? String(presence.employee_id) : '',
-        date: getTodayDate(), // Tanggal otomatis terisi
+        date: getTodayDate(),
         status: presence?.status ?? 'pending',
         check_in_time: presence?.check_in_time ?? null,
         clock_in_latitude: presence?.clock_in_latitude ?? null,
         clock_in_longitude: presence?.clock_in_longitude ?? null,
     });
 
-    // Fungsi untuk mengambil lokasi GPS
     const getLocation = () => {
         if (!navigator.geolocation) {
             alert('Browser Anda tidak mendukung fitur lokasi.');
@@ -36,11 +33,14 @@ export default function CreatePresence({ presence }: PresenceFormProps) {
 
         navigator.geolocation.getCurrentPosition(
             (position) => {
+                // Langsung simpan ke state form
                 setData((prevData) => ({
                     ...prevData,
                     clock_in_latitude: position.coords.latitude,
                     clock_in_longitude: position.coords.longitude,
                 }));
+                // Opsional: Beri tahu user bahwa lokasi berhasil didapat
+                alert('Lokasi berhasil didapatkan. Silakan klik Simpan Absensi.');
             },
             (error) => {
                 console.error('Error mengambil lokasi: ', error);
@@ -54,10 +54,9 @@ export default function CreatePresence({ presence }: PresenceFormProps) {
         );
     };
 
-    // Fungsi submit form
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        router.post('/presence', data);
+        post('/user/presence');
     };
 
     return (
@@ -108,11 +107,12 @@ export default function CreatePresence({ presence }: PresenceFormProps) {
                                     id="clock_in_latitude"
                                     type="number"
                                     step="any"
-                                    readOnly // Dibuat readOnly agar tidak bisa dimanipulasi ketik manual
+                                    readOnly
                                     placeholder="Klik tombol lokasi..."
                                     value={data.clock_in_latitude ?? ''}
                                     className="mt-1 bg-slate-100"
                                 />
+                                {/* Error dari ValidationException Backend akan muncul di sini */}
                                 <InputError message={errors.clock_in_latitude} className="mt-2" />
                             </div>
 
@@ -124,7 +124,7 @@ export default function CreatePresence({ presence }: PresenceFormProps) {
                                     id="clock_in_longitude"
                                     type="number"
                                     step="any"
-                                    readOnly // Dibuat readOnly agar tidak bisa dimanipulasi ketik manual
+                                    readOnly
                                     placeholder="Klik tombol lokasi..."
                                     value={data.clock_in_longitude ?? ''}
                                     className="mt-1 bg-slate-100"
@@ -134,8 +134,7 @@ export default function CreatePresence({ presence }: PresenceFormProps) {
                         </div>
                     </div>
 
-                    {/* Tombol Submit */}
-                    <Button type="submit" className="w-full cursor-pointer" disabled={processing}>
+                    <Button type="submit" className="w-full cursor-pointer" disabled={processing || !data.clock_in_latitude}>
                         {processing ? 'Menyimpan...' : 'Simpan Absensi'}
                     </Button>
                 </form>

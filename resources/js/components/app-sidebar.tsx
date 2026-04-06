@@ -42,7 +42,7 @@ export function AppSidebar() {
         },
         {
             title: 'Presences',
-            url: '/precense',
+            url: isAdmin ? '/admin/presence' : '/user/presence',
             icon: Calendar1Icon,
         },
         {
