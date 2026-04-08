@@ -43,6 +43,8 @@ Route::middleware(['auth', 'user'])->group(function () {
     Route::prefix('user')->group(function () {
         Route::resource('leave', LeaveRequestController::class)->except('delete', 'edit');
         Route::resource('presence', PresenceController::class)->except('delete', 'edit');
+        Route::get('presence/{presence}/out', [PresenceController::class, 'PresenceOut'])->name('presence.out');
+        Route::put('presence/{presence}', [PresenceController::class, 'StorePresenceOut'])->name('presence.out');
     });
 });
 

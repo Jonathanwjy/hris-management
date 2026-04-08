@@ -68,7 +68,7 @@ class PresenceService
         });
     }
 
-    public function presenceOut(array $data, Presence $presence): Presence
+    public function presenceOut(Presence $presence, array $data): Presence
     {
 
         if (!empty($data['clock_out_latitude']) && !empty($data['clock_out_longitude'])) {
@@ -85,12 +85,18 @@ class PresenceService
                     'clock_out_latitude' => "Gagal absen keluar! Anda berada di luar area kantor (Jarak: {$distance} meter). Maksimal radius adalah " . self::MAX_RADIUS . " meter."
                 ]);
             }
+
+            $formattedTime = null;
+            if (!empty($data['clock_out_time'])) {
+                // Karena dari React hanya jam ("12:00"), kita gabungkan dengan tanggal absensi saat ini
+                $formattedTime = $presence->date . ' ' . $data['clock_out_time'] . ':00';
+            }
         }
         $presence->update([
-            'check_out_time' => $data['check_out_time'],
+            'clock_out_time' => $formattedTime,
             'clock_out_latitude' => $data['clock_out_latitude'],
             'clock_out_longitude' => $data['clock_out_longitude'],
-            'status' => 'present',
+            'status' => 'hadir',
         ]);
 
         return $presence;
