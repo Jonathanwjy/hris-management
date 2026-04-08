@@ -93,11 +93,25 @@ class PresenceService
                 $formattedTime = $presence->date . ' ' . $data['clock_out_time'] . ':00';
             }
         }
+
+        $status = 'hadir';
+
+        if ($presence->check_in_time) {
+            // Ambil format jam masuknya saja (contoh: "09:15:00" atau "10:05:00")
+            $waktuMasuk = date('H:i:s', strtotime($presence->check_in_time));
+
+            // Jika lebih besar dari jam 10:00:00, maka status berubah jadi telat
+            if ($waktuMasuk > '10:00:00') {
+                $status = 'telat';
+            }
+        }
+
+
         $presence->update([
             'clock_out_time' => $formattedTime,
             'clock_out_latitude' => $data['clock_out_latitude'],
             'clock_out_longitude' => $data['clock_out_longitude'],
-            'status' => 'hadir',
+            'status' => $status,
         ]);
 
         return $presence;
