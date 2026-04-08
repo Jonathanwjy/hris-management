@@ -2,8 +2,9 @@ import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
-import { PresenceFormProps } from '@/types/presence';
+import { PresenceFormProps, PresenceStatus } from '@/types/presence';
 import { useForm } from '@inertiajs/react';
 import React from 'react';
 
@@ -65,14 +66,12 @@ export default function CreatePresence({ presence }: PresenceFormProps) {
                 <h1 className="mb-6 text-2xl font-bold">Create Presence</h1>
 
                 <form onSubmit={submit} className="h-auto rounded-lg border bg-white p-6 shadow-sm">
-                    {/* Input Tanggal */}
                     <div className="mb-4">
                         <Label htmlFor="date">Date</Label>
                         <Input id="date" type="date" value={data.date} onChange={(e) => setData('date', e.target.value)} className="mt-1" />
                         <InputError message={errors.date} className="mt-2" />
                     </div>
 
-                    {/* Input Jam */}
                     <div className="mb-4">
                         <Label htmlFor="check_in_time">Check In Time</Label>
                         <Input
@@ -86,7 +85,6 @@ export default function CreatePresence({ presence }: PresenceFormProps) {
                         <InputError message={errors.check_in_time} className="mt-2" />
                     </div>
 
-                    {/* Section Lokasi */}
                     <div className="mb-6 rounded-lg border bg-slate-50 p-4">
                         <div className="mb-4 flex items-center justify-between">
                             <div>
@@ -112,7 +110,7 @@ export default function CreatePresence({ presence }: PresenceFormProps) {
                                     value={data.clock_in_latitude ?? ''}
                                     className="mt-1 bg-slate-100"
                                 />
-                                {/* Error dari ValidationException Backend akan muncul di sini */}
+
                                 <InputError message={errors.clock_in_latitude} className="mt-2" />
                             </div>
 
@@ -132,6 +130,23 @@ export default function CreatePresence({ presence }: PresenceFormProps) {
                                 <InputError message={errors.clock_in_longitude} className="mt-2" />
                             </div>
                         </div>
+                    </div>
+
+                    <div className="mb-4">
+                        <Label htmlFor="Izin">Izin</Label>
+                        <Select value={data.status} onValueChange={(value) => setData('status', value as PresenceStatus)}>
+                            <SelectTrigger className="text-muted-foreground">
+                                <SelectValue placeholder="Pilih Izin"></SelectValue>
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectGroup>
+                                    <SelectLabel>Izin</SelectLabel>
+                                    <SelectItem value="sakit">Sakit</SelectItem>
+                                    <SelectItem value="alpa">Izin</SelectItem>
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
+                        <InputError message={errors.status} className="mt-2" />
                     </div>
 
                     <Button type="submit" className="w-full cursor-pointer" disabled={processing || !data.clock_in_latitude}>

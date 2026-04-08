@@ -84,11 +84,15 @@ export default function PresenceIndex({ presences = [], isAdmin }: PresenceProps
                                                 </span>
                                             </TableCell>
                                             <TableCell className="flex gap-2">
-                                                <Button size="sm" asChild>
-                                                    <Link href={route(isAdmin ? 'presence.admin.show' : 'presence.out', { presence: presence.id })}>
-                                                        Absen Keluar
-                                                    </Link>
-                                                </Button>
+                                                {presence.status === 'pending' && (
+                                                    <Button size="sm" asChild>
+                                                        <Link
+                                                            href={route(isAdmin ? 'presence.admin.show' : 'presence.out', { presence: presence.id })}
+                                                        >
+                                                            Absen Keluar
+                                                        </Link>
+                                                    </Button>
+                                                )}
 
                                                 {isAdmin && presence.status === 'pending' && (
                                                     <Button
