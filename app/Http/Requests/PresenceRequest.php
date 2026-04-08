@@ -24,11 +24,8 @@ class PresenceRequest extends FormRequest
     {
         return [
             "date" => "required|date",
-
             "clock_in_latitude" => "required|numeric",
             "clock_in_longitude" => "required|numeric",
-
-
             "check_in_time" => "required",
 
         ];

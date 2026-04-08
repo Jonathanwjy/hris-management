@@ -37,4 +37,5 @@ export type PresenceProps = {
         employee_id?: string;
         date?: string;
     };
+    isAdmin: boolean;
 };

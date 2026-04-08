@@ -57,8 +57,6 @@ class PresenceService
         }
 
         if (!empty($data['check_in_time']) && !empty($data['date'])) {
-            // Gabungkan "2026-04-06" dan "12:12" lalu tambah detik ":00"
-            // Hasilnya menjadi format timestamp valid: "2026-04-06 12:12:00"
             $data['check_in_time'] = $data['date'] . ' ' . $data['check_in_time'] . ':00';
         }
 
