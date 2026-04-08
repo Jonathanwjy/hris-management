@@ -10,7 +10,7 @@ class Presence extends Model
         "employee_id",
         "date",
         "check_in_time",
-        "check_out_time",
+        "clock_out_time",
         "status",
         "clock_in_latitude",
         "clock_in_longitude",

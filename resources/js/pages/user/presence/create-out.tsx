@@ -37,7 +37,7 @@ export default function PresenceOut({ presence }: PresenceFormProps) {
             },
             {
                 enableHighAccuracy: true,
-                timeout: 10000,
+                timeout: 1000,
                 maximumAge: 0,
             },
         );

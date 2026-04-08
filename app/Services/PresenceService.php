@@ -10,9 +10,10 @@ use Illuminate\Support\Facades\Auth;
 class PresenceService
 {
 
-    const OFFICE_LAT = -2.9215;
+    // Koordinat Kantor Terbaru (Hasil Konversi)
+    const OFFICE_LAT = -2.921528;
     const OFFICE_LONG = 104.784917;
-    const MAX_RADIUS = 100;
+    const MAX_RADIUS = 100; // Radius 100 meter
 
     private function calculateDistance($lat1, $lon1, $lat2, $lon2)
     {
