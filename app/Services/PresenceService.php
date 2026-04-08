@@ -67,4 +67,44 @@ class PresenceService
             return Presence::create($data);
         });
     }
+
+    public function presenceOut(array $data, Presence $presence): Presence
+    {
+
+        if (!empty($data['clock_out_latitude']) && !empty($data['clock_out_longitude'])) {
+            $distance = $this->calculateDistance(
+                self::OFFICE_LAT,
+                self::OFFICE_LONG,
+                $data['clock_out_latitude'],
+                $data['clock_out_longitude']
+            );
+
+            if ($distance > self::MAX_RADIUS) {
+                // Lempar pesan error yang akan otomatis ditangkap oleh Inertia/React
+                throw ValidationException::withMessages([
+                    'clock_out_latitude' => "Gagal absen keluar! Anda berada di luar area kantor (Jarak: {$distance} meter). Maksimal radius adalah " . self::MAX_RADIUS . " meter."
+                ]);
+            }
+        }
+        $presence->update([
+            'check_out_time' => $data['check_out_time'],
+            'clock_out_latitude' => $data['clock_out_latitude'],
+            'clock_out_longitude' => $data['clock_out_longitude'],
+            'status' => 'present',
+        ]);
+
+        return $presence;
+    }
+
+    public function getPresences()
+    {
+        $presences = Auth::user()
+            ->employee
+            ->presence()
+            ->with("employee")
+            ->latest()
+            ->get();
+
+        return $presences;
+    }
 }

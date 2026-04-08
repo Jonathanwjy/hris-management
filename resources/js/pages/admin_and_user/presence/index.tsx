@@ -52,10 +52,9 @@ export default function PresenceIndex({ presences = [], isAdmin }: PresenceProps
                             <TableHeader>
                                 <TableRow>
                                     <TableHead>No</TableHead>
-                                    <TableHead>Tanggal</TableHead>
-                                    <TableHead>Jam Check in</TableHead>
-                                    <TableHead>Status</TableHead>
+                                    <TableHead>Tanggal dan Jam</TableHead>
                                     <TableHead>Jam Check Out</TableHead>
+                                    <TableHead>Status</TableHead>
                                 </TableRow>
                             </TableHeader>
 
@@ -64,10 +63,9 @@ export default function PresenceIndex({ presences = [], isAdmin }: PresenceProps
                                     presences.map((presence, index) => (
                                         <TableRow key={presence.id}>
                                             <TableCell>{index + 1}</TableCell>
-                                            <TableCell>{presence.date}</TableCell>
                                             <TableCell>{presence.check_in_time}</TableCell>
-                                            <TableCell>{presence.status}</TableCell>
-                                            <TableCell>{presence.clock_out_time}</TableCell>
+
+                                            <TableCell>{presence.clock_out_time ?? '-'}</TableCell>
                                             <TableCell>
                                                 <span
                                                     className={`rounded px-2 py-1 text-xs ${
@@ -88,7 +86,7 @@ export default function PresenceIndex({ presences = [], isAdmin }: PresenceProps
                                             <TableCell className="flex gap-2">
                                                 <Button size="sm" asChild>
                                                     <Link href={route(isAdmin ? 'presence.admin.show' : 'presence.show', { presence: presence.id })}>
-                                                        Detail
+                                                        Absen Keluar
                                                     </Link>
                                                 </Button>
 
