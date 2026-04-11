@@ -31,6 +31,11 @@ class PresenceController extends Controller
         return Inertia::render("user/presence/create");
     }
 
+    public function createAbsence()
+    {
+        return Inertia::render("user/presence/create-absence");
+    }
+
     public function store(PresenceRequest $request)
     {
         $this->presenceService->store($request->validated());

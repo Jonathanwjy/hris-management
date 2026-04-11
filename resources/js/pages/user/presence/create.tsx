@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
 import { PresenceFormProps, PresenceStatus } from '@/types/presence';
-import { useForm } from '@inertiajs/react';
+import { Link, useForm } from '@inertiajs/react';
 import React from 'react';
 
 export default function CreatePresence({ presence }: PresenceFormProps) {
@@ -64,6 +64,10 @@ export default function CreatePresence({ presence }: PresenceFormProps) {
         <AppLayout>
             <div className="mx-auto max-w-2xl p-4">
                 <h1 className="mb-6 text-2xl font-bold">Create Presence</h1>
+
+                <Button>
+                    <Link href={route('presence.absence')}>Buat Absensi</Link>
+                </Button>
 
                 <form onSubmit={submit} className="h-auto rounded-lg border bg-white p-6 shadow-sm">
                     <div className="mb-4">
