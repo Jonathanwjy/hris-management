@@ -19,7 +19,7 @@ export default function CreateAbsence({ presence }: PresenceFormProps) {
     const { data, setData, post, processing, errors } = useForm({
         employee_id: presence?.employee_id ? String(presence.employee_id) : '',
         date: getTodayDate(),
-        status: presence?.status ?? 'pending',
+        status: presence?.status ?? '',
         check_in_time: presence?.check_in_time ?? null,
         desc: presence?.desc ?? null,
     });

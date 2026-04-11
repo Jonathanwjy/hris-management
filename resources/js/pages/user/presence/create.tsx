@@ -2,9 +2,9 @@ import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
+
 import AppLayout from '@/layouts/app-layout';
-import { PresenceFormProps, PresenceStatus } from '@/types/presence';
+import { PresenceFormProps } from '@/types/presence';
 import { Link, useForm } from '@inertiajs/react';
 import React from 'react';
 
@@ -20,7 +20,7 @@ export default function CreatePresence({ presence }: PresenceFormProps) {
     const { data, setData, post, processing, errors } = useForm({
         employee_id: presence?.employee_id ? String(presence.employee_id) : '',
         date: getTodayDate(),
-        status: presence?.status ?? 'pending',
+
         check_in_time: presence?.check_in_time ?? null,
         clock_in_latitude: presence?.clock_in_latitude ?? null,
         clock_in_longitude: presence?.clock_in_longitude ?? null,
@@ -134,23 +134,6 @@ export default function CreatePresence({ presence }: PresenceFormProps) {
                                 <InputError message={errors.clock_in_longitude} className="mt-2" />
                             </div>
                         </div>
-                    </div>
-
-                    <div className="mb-4">
-                        <Label htmlFor="Izin">Izin</Label>
-                        <Select value={data.status} onValueChange={(value) => setData('status', value as PresenceStatus)}>
-                            <SelectTrigger className="text-muted-foreground">
-                                <SelectValue placeholder="Pilih Izin"></SelectValue>
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectGroup>
-                                    <SelectLabel>Izin</SelectLabel>
-                                    <SelectItem value="sakit">Sakit</SelectItem>
-                                    <SelectItem value="alpa">Izin</SelectItem>
-                                </SelectGroup>
-                            </SelectContent>
-                        </Select>
-                        <InputError message={errors.status} className="mt-2" />
                     </div>
 
                     <Button type="submit" className="w-full cursor-pointer" disabled={processing || !data.clock_in_latitude}>

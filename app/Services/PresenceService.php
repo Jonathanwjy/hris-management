@@ -10,16 +10,14 @@ use Illuminate\Support\Facades\Auth;
 class PresenceService
 {
 
-    // Koordinat Kantor Terbaru (Hasil Konversi)
     const OFFICE_LAT = -2.921528;
     const OFFICE_LONG = 104.784917;
-    const MAX_RADIUS = 100; // Radius 100 meter
+    const MAX_RADIUS = 100;
 
     private function calculateDistance($lat1, $lon1, $lat2, $lon2)
     {
-        $earthRadius = 6371000; // Radius bumi dalam meter
+        $earthRadius = 6371000;
 
-        // Konversi derajat ke radian
         $lat1 = deg2rad((float) $lat1);
         $lon1 = deg2rad((float) $lon1);
         $lat2 = deg2rad((float) $lat2);
@@ -50,7 +48,7 @@ class PresenceService
             );
 
             if ($distance > self::MAX_RADIUS) {
-                // Lempar pesan error yang akan otomatis ditangkap oleh Inertia/React
+
                 throw ValidationException::withMessages([
                     'clock_in_latitude' => "Gagal absen! Anda berada di luar area kantor (Jarak: {$distance} meter). Maksimal radius adalah " . self::MAX_RADIUS . " meter."
                 ]);
@@ -63,7 +61,6 @@ class PresenceService
 
         $data['employee_id'] = $employee->id;
 
-        // 2. Jika validasi aman, baru simpan datanya
         return DB::transaction(function () use ($data) {
             return Presence::create($data);
         });
