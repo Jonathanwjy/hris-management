@@ -117,10 +117,12 @@ class PresenceService
     public function getPresences()
     {
         $presences = Auth::user()
+
             ->employee
             ->presence()
+            ->orderByDesc('date')
             ->with("employee")
-            ->latest()
+
             ->get();
 
         return $presences;

@@ -64,7 +64,7 @@ export default function CreateAbsence({ presence }: PresenceFormProps) {
                                 <SelectGroup>
                                     <SelectLabel>Izin</SelectLabel>
                                     <SelectItem value="sakit">Sakit</SelectItem>
-                                    <SelectItem value="alpa">Izin</SelectItem>
+                                    <SelectItem value="izin">Izin</SelectItem>
                                 </SelectGroup>
                             </SelectContent>
                         </Select>

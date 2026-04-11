@@ -35,7 +35,7 @@ class PresenceRequest extends FormRequest
             ],
             "clock_in_latitude" => "numeric",
             "clock_in_longitude" => "numeric",
-            "status" => "in:sakit,alpa",
+            "status" => "in:sakit,izin,alpa",
             "check_in_time" => "required",
 
         ];
