@@ -5,14 +5,12 @@ export interface Presence {
     employee_id: number;
     date: string;
     status: PresenceStatus;
-
+    desc: string | null;
     clock_in_latitude: number | null;
     clock_in_longitude: number | null;
     clock_out_latitude: number | null;
     clock_out_longitude: number | null;
-
     check_in_time: string | null;
-
     clock_out_time: string | null;
 }
 
