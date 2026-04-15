@@ -11,8 +11,6 @@ import {
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-// Anda mungkin perlu memperbarui PresenceProps di file types Anda
-// untuk mendefinisikan { data: any[], links: any[] }
 import { PresenceProps } from '@/types/presence';
 import { showConfirm } from '@/utils/alert';
 import { Head, Link, router } from '@inertiajs/react';
@@ -66,6 +64,7 @@ export default function PresenceIndex({ presences, isAdmin }: PresenceProps) {
                                 <TableHeader>
                                     <TableRow>
                                         <TableHead>No</TableHead>
+                                        {isAdmin && <TableHead>Nama Karyawan</TableHead>}
                                         <TableHead>Tanggal dan Jam</TableHead>
                                         <TableHead>Jam Check Out</TableHead>
                                         <TableHead>Status</TableHead>
@@ -78,6 +77,7 @@ export default function PresenceIndex({ presences, isAdmin }: PresenceProps) {
                                         presenceData.map((presence, index) => (
                                             <TableRow key={presence.id}>
                                                 <TableCell>{(presences?.from || 1) + index}</TableCell>
+                                                {isAdmin && <TableCell>{presence.employee?.full_name ?? '-'}</TableCell>}
                                                 <TableCell>{presence.check_in_time}</TableCell>
                                                 <TableCell>{presence.clock_out_time ?? '-'}</TableCell>
                                                 <TableCell>
@@ -105,28 +105,8 @@ export default function PresenceIndex({ presences, isAdmin }: PresenceProps) {
                                                                     presence: presence.id,
                                                                 })}
                                                             >
-                                                                Absen Keluar
+                                                                {isAdmin ? 'View' : 'Absen Keluar'}
                                                             </Link>
-                                                        </Button>
-                                                    )}
-
-                                                    {isAdmin && presence.status === 'pending' && (
-                                                        <Button
-                                                            size="sm"
-                                                            variant="destructive"
-                                                            onClick={() => handleDecline(presence.id, presence.status)}
-                                                        >
-                                                            Decline
-                                                        </Button>
-                                                    )}
-
-                                                    {isAdmin && presence.status === 'pending' && (
-                                                        <Button
-                                                            size="sm"
-                                                            variant="secondary"
-                                                            onClick={() => handleAccept(presence.id, presence.status)}
-                                                        >
-                                                            Accept
                                                         </Button>
                                                     )}
                                                 </TableCell>

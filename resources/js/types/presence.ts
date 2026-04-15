@@ -28,20 +28,18 @@ export interface PresenceFormProps {
     employees: Employee[];
 }
 
-// Tambahkan tipe ini untuk struktur Link Pagination bawaan Laravel
 export interface PaginationLink {
     url: string | null;
     label: string;
     active: boolean;
 }
 
-// Tambahkan tipe generic untuk response Pagination dari Laravel
 export interface PaginatedData<T> {
     data: T[];
     links: PaginationLink[];
     current_page: number;
     first_page_url: string;
-    from: number | null; // Bisa null jika tidak ada data
+    from: number | null;
     last_page: number;
     last_page_url: string;
     next_page_url: string | null;
@@ -52,9 +50,7 @@ export interface PaginatedData<T> {
     total: number;
 }
 
-// Update file prop Anda
 export type PresenceProps = {
-    // Bungkus tipe lama dengan tipe PaginatedData
     presences: PaginatedData<PresenceWithRelation>;
     employees: Employee[];
     filters: {

@@ -26,6 +26,15 @@ class PresenceController extends Controller
             "isAdmin" => false,
         ]);
     }
+
+    public function adminIndex()
+    {
+        $presences = $this->presenceService->getPresencesAdmin();
+        return Inertia::render("admin_and_user/presence/index", [
+            "presences" => $presences,
+            "isAdmin" => true,
+        ]);
+    }
     public function create()
     {
         return Inertia::render("user/presence/create");

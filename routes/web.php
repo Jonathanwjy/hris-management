@@ -36,6 +36,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::get('leave/{leave}', [LeaveRequestController::class, 'show'])->name('leave.admin.show');
         Route::patch('leave/{leaveRequest}/accept-request', [LeaveRequestController::class, 'acceptRequest'])->name('leave.admin.acceptRequest');
         Route::patch('leave/{leaveRequest}/decline-request', [LeaveRequestController::class, 'declineRequest'])->name('leave.admin.declineRequest');
+        Route::get('presence/{presence}', [PresenceController::class, 'show'])->name('presence.admin.show');
+        Route::get('presence', [PresenceController::class, 'adminIndex'])->name('presence.admin.index');
     });
 });
 

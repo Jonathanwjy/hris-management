@@ -122,4 +122,9 @@ class PresenceService
 
         return $presences;
     }
+
+    public function getPresencesAdmin()
+    {
+        return Presence::with('employee')->orderByDesc('date')->paginate(10);
+    }
 }
