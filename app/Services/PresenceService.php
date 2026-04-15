@@ -86,7 +86,7 @@ class PresenceService
 
             $formattedTime = null;
             if (!empty($data['clock_out_time'])) {
-                // Karena dari React hanya jam ("12:00"), kita gabungkan dengan tanggal absensi saat ini
+
                 $formattedTime = $presence->date . ' ' . $data['clock_out_time'] . ':00';
             }
         }
@@ -94,10 +94,7 @@ class PresenceService
         $status = 'hadir';
 
         if ($presence->check_in_time) {
-            // Ambil format jam masuknya saja (contoh: "09:15:00" atau "10:05:00")
             $waktuMasuk = date('H:i:s', strtotime($presence->check_in_time));
-
-            // Jika lebih besar dari jam 10:00:00, maka status berubah jadi telat
             if ($waktuMasuk > '10:00:00') {
                 $status = 'telat';
             }
@@ -117,13 +114,11 @@ class PresenceService
     public function getPresences()
     {
         $presences = Auth::user()
-
             ->employee
             ->presence()
             ->orderByDesc('date')
             ->with("employee")
-
-            ->get();
+            ->paginate(10);
 
         return $presences;
     }

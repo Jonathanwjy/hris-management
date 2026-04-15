@@ -34,13 +34,12 @@ export default function CreatePresence({ presence }: PresenceFormProps) {
 
         navigator.geolocation.getCurrentPosition(
             (position) => {
-                // Langsung simpan ke state form
                 setData((prevData) => ({
                     ...prevData,
                     clock_in_latitude: position.coords.latitude,
                     clock_in_longitude: position.coords.longitude,
                 }));
-                // Opsional: Beri tahu user bahwa lokasi berhasil didapat
+
                 alert('Lokasi berhasil didapatkan. Silakan klik Simpan Absensi.');
             },
             (error) => {
@@ -65,7 +64,7 @@ export default function CreatePresence({ presence }: PresenceFormProps) {
             <div className="mx-auto max-w-2xl p-4">
                 <h1 className="mb-6 text-2xl font-bold">Create Presence</h1>
 
-                <Button>
+                <Button className="mb-4 cursor-pointer">
                     <Link href={route('presence.absence')}>Buat Absensi</Link>
                 </Button>
 
