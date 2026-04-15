@@ -1,9 +1,18 @@
 import { Button } from '@/components/ui/button';
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from '@/components/ui/pagination';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { RoleWithRelation } from '@/types/role';
+import { RoleProps } from '@/types/role';
 import { showConfirm } from '@/utils/alert';
 import { formatRupiah } from '@/utils/format';
 import { Head, Link, router } from '@inertiajs/react';
@@ -15,15 +24,10 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-type Props = {
-    roles: RoleWithRelation[];
-    departments: any[];
-    filters: {
-        department_id?: string;
-    };
-};
+export default function RoleIndex({ roles, departments = [], filters }: RoleProps) {
+    const rolesData = roles?.data || [];
+    const rolesLinks = roles?.links || [];
 
-export default function RoleIndex({ roles = [], departments = [], filters }: Props) {
     const handleToggleStatus = async (id: number, currentStatus: string) => {
         const actionText = currentStatus === 'active' ? 'menonaktifkan' : 'mengaktifkan';
 
@@ -90,8 +94,8 @@ export default function RoleIndex({ roles = [], departments = [], filters }: Pro
                             </TableHeader>
 
                             <TableBody>
-                                {roles.length > 0 ? (
-                                    roles.map((role, index) => (
+                                {rolesData.length > 0 ? (
+                                    rolesData.map((role, index) => (
                                         <TableRow key={role.id}>
                                             <TableCell>{index + 1}</TableCell>
                                             <TableCell>{role.title}</TableCell>
@@ -124,6 +128,55 @@ export default function RoleIndex({ roles = [], departments = [], filters }: Pro
                             </TableBody>
                         </Table>
                     </div>
+
+                    {rolesLinks.length > 3 && (
+                        <Pagination className="justify-end">
+                            <PaginationContent>
+                                {rolesLinks.map((link, index) => {
+                                    const isFirst = index === 0;
+                                    const isLast = index === rolesLinks.length - 1;
+
+                                    if (isFirst) {
+                                        return (
+                                            <PaginationItem key={index}>
+                                                <PaginationPrevious
+                                                    href={link.url || '#'}
+                                                    className={!link.url ? 'pointer-events-none opacity-50' : ''}
+                                                />
+                                            </PaginationItem>
+                                        );
+                                    }
+
+                                    if (isLast) {
+                                        return (
+                                            <PaginationItem key={index}>
+                                                <PaginationNext
+                                                    href={link.url || '#'}
+                                                    className={!link.url ? 'pointer-events-none opacity-50' : ''}
+                                                />
+                                            </PaginationItem>
+                                        );
+                                    }
+
+                                    if (link.label === '...') {
+                                        return (
+                                            <PaginationItem key={index}>
+                                                <PaginationEllipsis />
+                                            </PaginationItem>
+                                        );
+                                    }
+
+                                    return (
+                                        <PaginationItem key={index}>
+                                            <PaginationLink href={link.url || '#'} isActive={link.active}>
+                                                {link.label}
+                                            </PaginationLink>
+                                        </PaginationItem>
+                                    );
+                                })}
+                            </PaginationContent>
+                        </Pagination>
+                    )}
                 </div>
             </AppLayout>
         </>

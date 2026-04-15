@@ -1,3 +1,5 @@
+import { PaginatedData } from './pagination';
+
 type RoleStatus = 'active' | 'inactive';
 
 export interface Role {
@@ -21,4 +23,12 @@ export interface RoleFormProps {
 
 export interface RoleWithRelation extends Role {
     department: Department;
+}
+
+export interface RoleProps {
+    roles: PaginatedData<RoleWithRelation>;
+    departments: Department[];
+    filters: {
+        department_id?: string;
+    };
 }

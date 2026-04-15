@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { PresenceDetailProps } from '@/types/presence';
@@ -41,8 +41,7 @@ export default function PresenceShow({ presence }: PresenceDetailProps) {
 
                     <Card>
                         <CardHeader>
-                            <CardTitle>Informasi Karyawan</CardTitle>
-                            <CardDescription>Rincian absensi pada tanggal {presence.date}</CardDescription>
+                            <CardTitle>Absensi tanggal {presence.date}</CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-6">
                             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">

@@ -36,7 +36,7 @@ export interface EmployeeWithRelation extends Employee {
     role: Role;
 }
 
-export type EmployeeProps = {
+export interface EmployeeProps {
     employees: PaginatedData<EmployeeWithRelation>;
     departments: Department[];
     roles: Role[];
@@ -44,4 +44,4 @@ export type EmployeeProps = {
         department_id?: string;
         role_id?: string;
     };
-};
+}

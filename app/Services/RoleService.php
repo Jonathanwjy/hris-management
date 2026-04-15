@@ -15,7 +15,7 @@ class RoleService
                 $query->where('department_id', $departmentId);
             })
             ->orderBy('status', 'asc')
-            ->get();
+            ->paginate(10);
     }
 
     public function create(): array
