@@ -1,3 +1,5 @@
+import { PaginatedData } from './pagination';
+
 type LeaveStatus = 'pending' | 'accepted' | 'declined';
 
 export interface Leave {
@@ -24,7 +26,7 @@ export interface LeaveFormProps {
 }
 
 export type LeaveIndexProps = {
-    leaveRequests: LeaveWithEmployee[];
+    leaveRequests: PaginatedData<LeaveWithEmployee>;
     isAdmin: boolean;
 };
 

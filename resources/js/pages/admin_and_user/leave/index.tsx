@@ -1,4 +1,13 @@
 import { Button } from '@/components/ui/button';
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from '@/components/ui/pagination';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
@@ -13,7 +22,10 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function LeaveIndex({ leaveRequests = [], isAdmin }: LeaveIndexProps) {
+export default function LeaveIndex({ leaveRequests, isAdmin }: LeaveIndexProps) {
+    const leaveRequestData = leaveRequests?.data || [];
+    const leaveRequestLinks = leaveRequests?.links || [];
+
     const handleAccept = async (id: number, currentStatus: string) => {
         const actionText = currentStatus === 'active' ? 'menonaktifkan' : 'mengaktifkan';
 
@@ -63,8 +75,8 @@ export default function LeaveIndex({ leaveRequests = [], isAdmin }: LeaveIndexPr
                             </TableHeader>
 
                             <TableBody>
-                                {leaveRequests.length > 0 ? (
-                                    leaveRequests.map((leave, index) => (
+                                {leaveRequestData.length > 0 ? (
+                                    leaveRequestData.map((leave, index) => (
                                         <TableRow key={leave.id}>
                                             <TableCell>{index + 1}</TableCell>
                                             <TableCell>{leave.start_date}</TableCell>
@@ -114,6 +126,55 @@ export default function LeaveIndex({ leaveRequests = [], isAdmin }: LeaveIndexPr
                             </TableBody>
                         </Table>
                     </div>
+
+                    {leaveRequestLinks.length > 3 && (
+                        <Pagination className="justify-end">
+                            <PaginationContent>
+                                {leaveRequestLinks.map((link, index) => {
+                                    const isFirst = index === 0;
+                                    const isLast = index === leaveRequestLinks.length - 1;
+
+                                    if (isFirst) {
+                                        return (
+                                            <PaginationItem key={index}>
+                                                <PaginationPrevious
+                                                    href={link.url || '#'}
+                                                    className={!link.url ? 'pointer-events-none opacity-50' : ''}
+                                                />
+                                            </PaginationItem>
+                                        );
+                                    }
+
+                                    if (isLast) {
+                                        return (
+                                            <PaginationItem key={index}>
+                                                <PaginationNext
+                                                    href={link.url || '#'}
+                                                    className={!link.url ? 'pointer-events-none opacity-50' : ''}
+                                                />
+                                            </PaginationItem>
+                                        );
+                                    }
+
+                                    if (link.label === '...') {
+                                        return (
+                                            <PaginationItem key={index}>
+                                                <PaginationEllipsis />
+                                            </PaginationItem>
+                                        );
+                                    }
+
+                                    return (
+                                        <PaginationItem key={index}>
+                                            <PaginationLink href={link.url || '#'} isActive={link.active}>
+                                                {link.label}
+                                            </PaginationLink>
+                                        </PaginationItem>
+                                    );
+                                })}
+                            </PaginationContent>
+                        </Pagination>
+                    )}
                 </div>
             </AppLayout>
         </>

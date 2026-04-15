@@ -23,7 +23,6 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-// Pastikan props filters diekstrak dari parameter komponen
 export default function PresenceIndex({ presences, isAdmin, filters }: PresenceProps) {
     const presenceData = presences?.data || [];
     const presenceLinks = presences?.links || [];
@@ -57,7 +56,7 @@ export default function PresenceIndex({ presences, isAdmin, filters }: PresenceP
                     </div>
 
                     <div className="flex flex-col gap-4">
-                        {/* --- BAGIAN FILTER TANGGAL --- */}
+
                         <div className="flex items-center justify-end gap-2">
                             <span className="text-sm text-gray-500">Filter Tanggal:</span>
                             <Input type="date" className="w-auto" value={filters?.date || ''} onChange={handleDateChange} />
@@ -67,7 +66,7 @@ export default function PresenceIndex({ presences, isAdmin, filters }: PresenceP
                                 </Button>
                             )}
                         </div>
-                        {/* ----------------------------- */}
+
 
                         <div className="rounded-xl border">
                             <Table>

@@ -17,14 +17,14 @@ class LeaveService
             ->leaveRequest()
             ->with("employee")
             ->latest()
-            ->get();
+            ->paginate(10);
 
         return $leaveRequests;
     }
 
     public function getLeaveRequestAdmin()
     {
-        return LeaveRequest::with('employee')->orderBy('status', 'asc')->get();
+        return LeaveRequest::with('employee')->orderBy('status', 'asc')->paginate(10);
     }
 
     public function store(array $data): LeaveRequest
