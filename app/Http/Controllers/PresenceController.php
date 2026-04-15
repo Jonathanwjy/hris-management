@@ -65,4 +65,12 @@ class PresenceController extends Controller
         $this->presenceService->presenceOut($presence, $request->validated());
         return to_route('presence.index')->with('success', 'Successfully update presence');
     }
+
+    public function show(Presence $presence)
+    {
+        $presence = $this->presenceService->getDetail($presence);
+        return Inertia::render("admin/presence/show", [
+            "presence" => $presence
+        ]);
+    }
 }

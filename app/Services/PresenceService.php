@@ -128,12 +128,15 @@ class PresenceService
     {
         $query = Presence::with('employee')->orderByDesc('date');
 
-        // Gunakan method filled() untuk mengecek apakah input ada dan tidak kosong
         if ($request->filled('date')) {
-            // Gunakan method input() untuk mengambil nilainya
             $query->whereDate('date', $request->input('date'));
         }
 
         return $query->paginate(10)->withQueryString();
+    }
+
+    public function getDetail(Presence $presence): Presence
+    {
+        return $presence->load('employee');
     }
 }

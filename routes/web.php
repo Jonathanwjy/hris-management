@@ -32,10 +32,14 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::patch('employee/{employee}/fire', [EmployeeController::class, 'fireEmployee']);
 
     Route::prefix('admin')->group(function () {
+
+        //leave request
         Route::get('leave', [LeaveRequestController::class, 'adminIndex'])->name('leave.admin.index');
         Route::get('leave/{leave}', [LeaveRequestController::class, 'show'])->name('leave.admin.show');
         Route::patch('leave/{leaveRequest}/accept-request', [LeaveRequestController::class, 'acceptRequest'])->name('leave.admin.acceptRequest');
         Route::patch('leave/{leaveRequest}/decline-request', [LeaveRequestController::class, 'declineRequest'])->name('leave.admin.declineRequest');
+
+        //presence
         Route::get('presence/{presence}', [PresenceController::class, 'show'])->name('presence.admin.show');
         Route::get('presence', [PresenceController::class, 'adminIndex'])->name('presence.admin.index');
     });
