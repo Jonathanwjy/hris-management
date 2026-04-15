@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Presence;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class PresenceService
 {
@@ -123,8 +124,16 @@ class PresenceService
         return $presences;
     }
 
-    public function getPresencesAdmin()
+    public function getPresencesAdmin(Request $request)
     {
-        return Presence::with('employee')->orderByDesc('date')->paginate(10);
+        $query = Presence::with('employee')->orderByDesc('date');
+
+        // Gunakan method filled() untuk mengecek apakah input ada dan tidak kosong
+        if ($request->filled('date')) {
+            // Gunakan method input() untuk mengambil nilainya
+            $query->whereDate('date', $request->input('date'));
+        }
+
+        return $query->paginate(10)->withQueryString();
     }
 }

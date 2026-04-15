@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PresenceOutRequest;
 use App\Http\Requests\PresenceRequest;
 use App\Models\Presence;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Services\PresenceService;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request as HttpRequest;
 
 class PresenceController extends Controller
 {
@@ -27,11 +28,12 @@ class PresenceController extends Controller
         ]);
     }
 
-    public function adminIndex()
+    public function adminIndex(HttpRequest $request)
     {
-        $presences = $this->presenceService->getPresencesAdmin();
+        $presences = $this->presenceService->getPresencesAdmin($request);
         return Inertia::render("admin_and_user/presence/index", [
             "presences" => $presences,
+            "filters" => $request->only('date'),
             "isAdmin" => true,
         ]);
     }

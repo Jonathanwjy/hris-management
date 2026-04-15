@@ -1,4 +1,6 @@
 import { Button } from '@/components/ui/button';
+// Tambahkan import Input dari shadcn
+import { Input } from '@/components/ui/input';
 import {
     Pagination,
     PaginationContent,
@@ -12,7 +14,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { PresenceProps } from '@/types/presence';
-import { showConfirm } from '@/utils/alert';
 import { Head, Link, router } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -22,26 +23,23 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function PresenceIndex({ presences, isAdmin }: PresenceProps) {
+// Pastikan props filters diekstrak dari parameter komponen
+export default function PresenceIndex({ presences, isAdmin, filters }: PresenceProps) {
     const presenceData = presences?.data || [];
     const presenceLinks = presences?.links || [];
 
-    const handleAccept = async (id: number, currentStatus: string) => {
-        const actionText = currentStatus === 'active' ? 'menonaktifkan' : 'mengaktifkan';
-        const isConfirmed = await showConfirm('Ubah Status Department?', `Apakah Anda yakin ingin ${actionText} department ini?`, 'Ya, Ubah Status!');
+    // Fungsi untuk menangani perubahan tanggal
+    const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const selectedDate = e.target.value;
 
-        if (isConfirmed) {
-            router.patch(`/admin/leave/${id}/accept-request`, {}, { preserveScroll: true });
-        }
+        // Mengirimkan request ke halaman saat ini dengan parameter date
+        // preserveState & preserveScroll agar UI tidak berkedip saat memuat data
+        router.get(window.location.pathname, { date: selectedDate }, { preserveState: true, preserveScroll: true, replace: true });
     };
 
-    const handleDecline = async (id: number, currentStatus: string) => {
-        const actionText = currentStatus === 'active' ? 'menonaktifkan' : 'mengaktifkan';
-        const isConfirmed = await showConfirm('Ubah Status Department?', `Apakah Anda yakin ingin ${actionText} department ini?`, 'Ya, Ubah Status!');
-
-        if (isConfirmed) {
-            router.patch(`/admin/leave/${id}/decline-request`, {}, { preserveScroll: true });
-        }
+    // Fungsi untuk mereset filter
+    const resetFilter = () => {
+        router.get(window.location.pathname, {}, { preserveState: true, preserveScroll: true, replace: true });
     };
 
     return (
@@ -59,6 +57,18 @@ export default function PresenceIndex({ presences, isAdmin }: PresenceProps) {
                     </div>
 
                     <div className="flex flex-col gap-4">
+                        {/* --- BAGIAN FILTER TANGGAL --- */}
+                        <div className="flex items-center justify-end gap-2">
+                            <span className="text-sm text-gray-500">Filter Tanggal:</span>
+                            <Input type="date" className="w-auto" value={filters?.date || ''} onChange={handleDateChange} />
+                            {filters?.date && (
+                                <Button variant="outline" size="sm" onClick={resetFilter}>
+                                    Reset
+                                </Button>
+                            )}
+                        </div>
+                        {/* ----------------------------- */}
+
                         <div className="rounded-xl border">
                             <Table>
                                 <TableHeader>
@@ -114,7 +124,7 @@ export default function PresenceIndex({ presences, isAdmin }: PresenceProps) {
                                         ))
                                     ) : (
                                         <TableRow>
-                                            <TableCell colSpan={5} className="text-center">
+                                            <TableCell colSpan={isAdmin ? 6 : 5} className="text-center">
                                                 Belum ada request presence
                                             </TableCell>
                                         </TableRow>
@@ -123,6 +133,7 @@ export default function PresenceIndex({ presences, isAdmin }: PresenceProps) {
                             </Table>
                         </div>
 
+                        {/* Pagination Section Tetap Sama */}
                         {presenceLinks.length > 3 && (
                             <Pagination className="justify-end">
                                 <PaginationContent>
