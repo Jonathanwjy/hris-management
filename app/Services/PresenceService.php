@@ -79,7 +79,7 @@ class PresenceService
             );
 
             if ($distance > self::MAX_RADIUS) {
-                // Lempar pesan error yang akan otomatis ditangkap oleh Inertia/React
+
                 throw ValidationException::withMessages([
                     'clock_out_latitude' => "Gagal absen keluar! Anda berada di luar area kantor (Jarak: {$distance} meter). Maksimal radius adalah " . self::MAX_RADIUS . " meter."
                 ]);

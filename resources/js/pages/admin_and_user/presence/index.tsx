@@ -108,14 +108,26 @@ export default function PresenceIndex({ presences, isAdmin, filters }: PresenceP
                                                     </span>
                                                 </TableCell>
                                                 <TableCell className="flex gap-2">
-                                                    {presence.status === 'pending' && (
+                                                    {presence.status === 'pending' && !isAdmin && (
                                                         <Button size="sm" asChild>
                                                             <Link
-                                                                href={route(isAdmin ? 'presence.admin.show' : 'presence.out', {
+                                                                href={route('presence.out', {
                                                                     presence: presence.id,
                                                                 })}
                                                             >
-                                                                {isAdmin ? 'View' : 'Absen Keluar'}
+                                                                Absen Keluar
+                                                            </Link>
+                                                        </Button>
+                                                    )}
+
+                                                    {isAdmin && (
+                                                        <Button size="sm" asChild>
+                                                            <Link
+                                                                href={route('presence.admin.show', {
+                                                                    presence: presence.id,
+                                                                })}
+                                                            >
+                                                                View
                                                             </Link>
                                                         </Button>
                                                     )}

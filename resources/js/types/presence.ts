@@ -59,3 +59,7 @@ export type PresenceProps = {
     };
     isAdmin: boolean;
 };
+
+export type PresenceDetailProps = {
+    presence: PresenceWithRelation;
+};
