@@ -22,7 +22,7 @@ class DepartmentService
 
     public function getDepartment()
     {
-        return Department::orderBy('status', 'asc')->get();
+        return Department::orderBy('status', 'asc')->paginate(10);
     }
 
     public function toggleStatus(Department $department): Department

@@ -1,9 +1,18 @@
 import { Button } from '@/components/ui/button';
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from '@/components/ui/pagination';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Department } from '@/types/department';
+import { DepartmentProps } from '@/types/department';
 import { showConfirm } from '@/utils/alert';
 import { Head, Link, router } from '@inertiajs/react';
 
@@ -14,7 +23,10 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function DepartmentIndex({ departments = [] }: { departments: Department[] }) {
+export default function DepartmentIndex({ departments }: DepartmentProps) {
+    const departmentsData = departments?.data || [];
+    const departmentsLinks = departments?.links || [];
+
     const handleToggleStatus = async (id: number, currentStatus: string) => {
         const actionText = currentStatus === 'active' ? 'menonaktifkan' : 'mengaktifkan';
 
@@ -52,8 +64,8 @@ export default function DepartmentIndex({ departments = [] }: { departments: Dep
                             </TableHeader>
 
                             <TableBody>
-                                {departments.length > 0 ? (
-                                    departments.map((department, index) => (
+                                {departmentsData.length > 0 ? (
+                                    departmentsData.map((department, index) => (
                                         <TableRow key={department.id}>
                                             <TableCell>{index + 1}</TableCell>
                                             <TableCell>{department.name}</TableCell>
@@ -83,6 +95,55 @@ export default function DepartmentIndex({ departments = [] }: { departments: Dep
                             </TableBody>
                         </Table>
                     </div>
+
+                    {departmentsLinks.length > 3 && (
+                        <Pagination className="justify-end">
+                            <PaginationContent>
+                                {departmentsLinks.map((link, index) => {
+                                    const isFirst = index === 0;
+                                    const isLast = index === departmentsLinks.length - 1;
+
+                                    if (isFirst) {
+                                        return (
+                                            <PaginationItem key={index}>
+                                                <PaginationPrevious
+                                                    href={link.url || '#'}
+                                                    className={!link.url ? 'pointer-events-none opacity-50' : ''}
+                                                />
+                                            </PaginationItem>
+                                        );
+                                    }
+
+                                    if (isLast) {
+                                        return (
+                                            <PaginationItem key={index}>
+                                                <PaginationNext
+                                                    href={link.url || '#'}
+                                                    className={!link.url ? 'pointer-events-none opacity-50' : ''}
+                                                />
+                                            </PaginationItem>
+                                        );
+                                    }
+
+                                    if (link.label === '...') {
+                                        return (
+                                            <PaginationItem key={index}>
+                                                <PaginationEllipsis />
+                                            </PaginationItem>
+                                        );
+                                    }
+
+                                    return (
+                                        <PaginationItem key={index}>
+                                            <PaginationLink href={link.url || '#'} isActive={link.active}>
+                                                {link.label}
+                                            </PaginationLink>
+                                        </PaginationItem>
+                                    );
+                                })}
+                            </PaginationContent>
+                        </Pagination>
+                    )}
                 </div>
             </AppLayout>
         </>
