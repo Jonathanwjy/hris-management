@@ -24,10 +24,11 @@ class LeaveRequestController extends Controller
     }
     public function index()
     {
-        $leaveRequests = $this->leaveService->getLeaveRequest();
+        $data = $this->leaveService->getLeaveRequest();
 
         return Inertia::render('admin_and_user/leave/index', [
-            'leaveRequests' => $leaveRequests,
+            'leaveRequests' => $data['leaveRequests'],
+            'remainingLeave' => $data['remainingLeave'],
             'isAdmin' => false,
         ]);
     }

@@ -22,7 +22,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function LeaveIndex({ leaveRequests, isAdmin }: LeaveIndexProps) {
+export default function LeaveIndex({ leaveRequests, isAdmin, remainingLeave }: LeaveIndexProps) {
     const leaveRequestData = leaveRequests?.data || [];
     const leaveRequestLinks = leaveRequests?.links || [];
 
@@ -52,6 +52,7 @@ export default function LeaveIndex({ leaveRequests, isAdmin }: LeaveIndexProps) 
                 <div className="space-y-6 p-8">
                     <div className="flex items-center justify-between">
                         <h1 className="text-2xl font-semibold">Leave Request</h1>
+                        {!isAdmin && <p className="text-sm text-red-600">Sisa Hari Cuti yang bisa diambil: {remainingLeave} hari</p>}
                         {!isAdmin && (
                             <Button asChild>
                                 <Link href="leave/create">Request Leave</Link>
