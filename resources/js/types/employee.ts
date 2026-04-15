@@ -1,3 +1,5 @@
+import { PaginatedData } from './pagination';
+
 export type EmployeeStatus = 'active' | 'inactive' | 'leave';
 
 export interface Employee {
@@ -35,7 +37,7 @@ export interface EmployeeWithRelation extends Employee {
 }
 
 export type EmployeeProps = {
-    employees: EmployeeWithRelation[];
+    employees: PaginatedData<EmployeeWithRelation>;
     departments: Department[];
     roles: Role[];
     filters: {

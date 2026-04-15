@@ -23,7 +23,7 @@ class EmployeeService
                 $query->where('role_id', $roleId);
             })
             ->orderBy('status', 'asc')
-            ->get();
+            ->paginate(10);
     }
 
     public function create(): array
