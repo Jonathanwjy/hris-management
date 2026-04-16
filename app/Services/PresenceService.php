@@ -114,6 +114,7 @@ class PresenceService
 
     public function getPresences()
     {
+
         $presences = Auth::user()
             ->employee
             ->presence()
@@ -121,7 +122,18 @@ class PresenceService
             ->with("employee")
             ->paginate(10);
 
-        return $presences;
+        $hadir = $presences->where('status', 'hadir')->count();
+        $telat = $presences->where('status', 'telat')->count();
+        $izin = $presences->where('status', 'izin')->count();
+        $sakit = $presences->where('status', 'sakit')->count();
+
+        return [
+            'presences' => $presences,
+            'hadir' => $hadir,
+            'telat' => $telat,
+            'izin' => $izin,
+            'sakit' => $sakit,
+        ];
     }
 
     public function getPresencesAdmin(Request $request)

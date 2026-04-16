@@ -19,11 +19,16 @@ class PresenceController extends Controller
         $this->presenceService = $presenceService;
     }
 
-    public function index()
+    public function index(HttpRequest $request)
     {
-        $presences = $this->presenceService->getPresences();
+        $data = $this->presenceService->getPresences();
         return Inertia::render("admin_and_user/presence/index", [
-            "presences" => $presences,
+            "presences" => $data['presences'],
+            "filters" => $request->only('date'),
+            "hadir" => $data['hadir'],
+            "telat" => $data['telat'],
+            "izin" => $data['izin'],
+            "sakit" => $data['sakit'],
             "isAdmin" => false,
         ]);
     }

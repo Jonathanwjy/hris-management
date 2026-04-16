@@ -23,20 +23,16 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function PresenceIndex({ presences, isAdmin, filters }: PresenceProps) {
+export default function PresenceIndex({ presences, isAdmin, filters, hadir, telat, izin, sakit }: PresenceProps) {
     const presenceData = presences?.data || [];
     const presenceLinks = presences?.links || [];
 
-    // Fungsi untuk menangani perubahan tanggal
     const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedDate = e.target.value;
 
-        // Mengirimkan request ke halaman saat ini dengan parameter date
-        // preserveState & preserveScroll agar UI tidak berkedip saat memuat data
         router.get(window.location.pathname, { date: selectedDate }, { preserveState: true, preserveScroll: true, replace: true });
     };
 
-    // Fungsi untuk mereset filter
     const resetFilter = () => {
         router.get(window.location.pathname, {}, { preserveState: true, preserveScroll: true, replace: true });
     };
@@ -49,6 +45,26 @@ export default function PresenceIndex({ presences, isAdmin, filters }: PresenceP
                     <div className="flex items-center justify-between">
                         <h1 className="text-2xl font-semibold">Presence</h1>
                         {!isAdmin && (
+                            <div className="flex items-center gap-4 rounded-lg border bg-gray-100 px-4 py-2">
+                                <div className="flex flex-col">
+                                    <span className="text-sm text-gray-500">Hadir</span>
+                                    <span className="text-2xl font-bold">{hadir}</span>
+                                </div>
+                                <div className="flex flex-col">
+                                    <span className="text-sm text-gray-500">Telat</span>
+                                    <span className="text-2xl font-bold">{telat}</span>
+                                </div>
+                                <div className="flex flex-col">
+                                    <span className="text-sm text-gray-500">Izin</span>
+                                    <span className="text-2xl font-bold">{izin}</span>
+                                </div>
+                                <div className="flex flex-col">
+                                    <span className="text-sm text-gray-500">Sakit</span>
+                                    <span className="text-2xl font-bold">{sakit}</span>
+                                </div>
+                            </div>
+                        )}
+                        {!isAdmin && (
                             <Button asChild>
                                 <Link href="presence/create">Add Presence</Link>
                             </Button>
@@ -56,17 +72,17 @@ export default function PresenceIndex({ presences, isAdmin, filters }: PresenceP
                     </div>
 
                     <div className="flex flex-col gap-4">
-
-                        <div className="flex items-center justify-end gap-2">
-                            <span className="text-sm text-gray-500">Filter Tanggal:</span>
-                            <Input type="date" className="w-auto" value={filters?.date || ''} onChange={handleDateChange} />
-                            {filters?.date && (
-                                <Button variant="outline" size="sm" onClick={resetFilter}>
-                                    Reset
-                                </Button>
-                            )}
-                        </div>
-
+                        {isAdmin && (
+                            <div className="flex items-center justify-end gap-2">
+                                <span className="text-sm text-gray-500">Filter Tanggal:</span>
+                                <Input type="date" className="w-auto" value={filters?.date || ''} onChange={handleDateChange} />
+                                {filters?.date && (
+                                    <Button variant="outline" size="sm" onClick={resetFilter}>
+                                        Reset
+                                    </Button>
+                                )}
+                            </div>
+                        )}
 
                         <div className="rounded-xl border">
                             <Table>
