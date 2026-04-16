@@ -37,6 +37,10 @@ export type PresenceProps = {
         employee_id?: string;
         date?: string;
     };
+    hadir: number;
+    telat: number;
+    izin: number;
+    sakit: number;
     isAdmin: boolean;
 };
 

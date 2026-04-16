@@ -3,6 +3,7 @@
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\LeaveRequestController;
+use App\Http\Controllers\PayrollController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\RoleController;
@@ -42,6 +43,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
         //presence
         Route::get('presence/{presence}', [PresenceController::class, 'show'])->name('presence.admin.show');
         Route::get('presence', [PresenceController::class, 'adminIndex'])->name('presence.admin.index');
+
+        Route::resource('payroll', PayrollController::class)->except('delete');
     });
 });
 

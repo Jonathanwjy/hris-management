@@ -47,7 +47,7 @@ export function AppSidebar() {
         },
         {
             title: 'Payrolls',
-            url: '/payroll',
+            url: isAdmin ? '/admin/payroll' : '/user/payroll',
             icon: DollarSign,
         },
         {

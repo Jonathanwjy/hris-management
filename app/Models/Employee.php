@@ -42,4 +42,9 @@ class Employee extends Model
     {
         return $this->hasMany(Presence::class);
     }
+
+    public function payroll()
+    {
+        return $this->hasMany(Payroll::class);
+    }
 }
