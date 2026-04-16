@@ -1,3 +1,5 @@
+import { PaginatedData } from './pagination';
+
 export interface Payroll {
     id: number;
     employee_id: number;
@@ -28,4 +30,14 @@ export interface PayrollWithRelation extends Payroll {
 export interface PayrollFormProps {
     payroll?: PayrollWithRelation;
     employees: Employee[];
+}
+
+export interface PayrollProps {
+    payrolls: PaginatedData<PayrollWithRelation>;
+    employees: Employee[];
+    filters: {
+        employee_id?: string;
+        date?: string;
+    };
+    isAdmin: boolean;
 }
