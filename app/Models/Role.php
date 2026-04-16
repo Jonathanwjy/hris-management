@@ -23,4 +23,9 @@ class Role extends Model
     {
         return $this->belongsTo(Department::class);
     }
+
+    public function payroll()
+    {
+        return $this->hasOne(Payroll::class);
+    }
 }

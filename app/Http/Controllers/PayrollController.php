@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Employee;
 use App\Services\PayrollService;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class PayrollController extends Controller
@@ -20,6 +21,15 @@ class PayrollController extends Controller
         $payrolls = $this->payrollService->getPayrollsAdmin();
         return Inertia::render('admin_and_user/payroll/index', [
             'payrolls' => $payrolls,
+        ]);
+    }
+
+    public function create()
+    {
+        $employees = Employee::select('id', 'full_name')->get();
+
+        return Inertia::render('admin/payroll/create', [
+            'employees' => $employees,
         ]);
     }
 }

@@ -20,4 +20,9 @@ class Payroll extends Model
     {
         return $this->belongsTo(Employee::class);
     }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
 }

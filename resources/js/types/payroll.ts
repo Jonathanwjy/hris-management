@@ -17,9 +17,15 @@ export interface Employee {
 export interface Role {
     id: number;
     title: string;
+    salary: number;
 }
 
 export interface PayrollWithRelation extends Payroll {
     employee: Employee;
     role: Role;
+}
+
+export interface PayrollFormProps {
+    payroll?: PayrollWithRelation;
+    employees: Employee[];
 }
