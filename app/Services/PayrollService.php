@@ -12,7 +12,7 @@ class PayrollService
     {
         $query = Payroll::with('employee')->orderBy('pay_date', 'desc');
 
-        // Jika ada filter bulan dan tahun (misal: "2026-06")
+
         if ($monthYear) {
             $parts = explode('-', $monthYear);
             if (count($parts) === 2) {
@@ -21,7 +21,6 @@ class PayrollService
             }
         }
 
-        // Asumsi kamu menggunakan pagination (sesuaikan jika kamu menggunakan get())
         return $query->paginate(10)->withQueryString();
     }
 

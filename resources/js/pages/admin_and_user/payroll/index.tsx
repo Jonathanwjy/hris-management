@@ -15,17 +15,14 @@ import { type BreadcrumbItem } from '@/types';
 import { PayrollProps } from '@/types/payroll';
 import { Head, Link, router } from '@inertiajs/react';
 
-// Definisi type untuk Dropdown Option
-// Definisi type untuk Dropdown Option
 interface MonthOption {
     value: string;
     label: string;
 }
 
-// Gunakan Omit untuk membuang 'filters' bawaan, lalu kita definisikan ulang
 interface ExtendedPayrollProps extends Omit<PayrollProps, 'filters'> {
     filters: {
-        month_year?: string; // Tambahkan tanda '?' agar opsional
+        month_year?: string;
     };
     availableMonths: MonthOption[];
 }
@@ -35,7 +32,6 @@ export default function PayrollIndex({ payrolls, isAdmin, filters, availableMont
     const payrollData = payrolls?.data || [];
     const payrollLinks = payrolls?.links || [];
 
-    // Fungsi helper untuk memformat angka menjadi format Rupiah (Rp)
     const formatRupiah = (angka: number) => {
         return new Intl.NumberFormat('id-ID', {
             style: 'currency',
@@ -44,11 +40,10 @@ export default function PayrollIndex({ payrolls, isAdmin, filters, availableMont
         }).format(angka);
     };
 
-    // Fungsi untuk menangani perubahan saat user memilih bulan di Dropdown
     const handleFilterChange = (value: string) => {
         router.get(
             window.location.pathname,
-            { month_year: value === 'all' ? undefined : value }, // Jika 'all', hapus query parameter
+            { month_year: value === 'all' ? undefined : value },
             { preserveState: true, preserveScroll: true, replace: true },
         );
     };
@@ -58,7 +53,6 @@ export default function PayrollIndex({ payrolls, isAdmin, filters, availableMont
             <Head title="Payroll" />
             <AppLayout breadcrumbs={breadcrumbs}>
                 <div className="space-y-6 p-8">
-                    {/* Bagian Header & Tombol Create */}
                     <div className="flex items-center justify-between">
                         <h1 className="text-2xl font-semibold">Payroll</h1>
 
@@ -70,9 +64,6 @@ export default function PayrollIndex({ payrolls, isAdmin, filters, availableMont
                     </div>
 
                     <div className="flex flex-col gap-4">
-                        {/* ================================== */}
-                        {/* BAGIAN FILTER BULAN (DROPDOWN)     */}
-                        {/* ================================== */}
                         <div className="flex items-center justify-end gap-2">
                             <span className="text-sm text-gray-500">Filter Bulan:</span>
                             <Select value={filters?.month_year || 'all'} onValueChange={handleFilterChange}>
@@ -89,7 +80,6 @@ export default function PayrollIndex({ payrolls, isAdmin, filters, availableMont
                                 </SelectContent>
                             </Select>
 
-                            {/* Tombol Reset (Muncul hanya jika filter sedang aktif/bukan all) */}
                             {filters?.month_year && filters.month_year !== 'all' && (
                                 <Button variant="outline" size="sm" onClick={() => handleFilterChange('all')}>
                                     Reset
@@ -97,9 +87,6 @@ export default function PayrollIndex({ payrolls, isAdmin, filters, availableMont
                             )}
                         </div>
 
-                        {/* ================================== */}
-                        {/* BAGIAN TABEL DATA PAYROLL          */}
-                        {/* ================================== */}
                         <div className="rounded-xl border bg-white">
                             <Table>
                                 <TableHeader>
@@ -130,6 +117,11 @@ export default function PayrollIndex({ payrolls, isAdmin, filters, availableMont
                                                     <Button size="sm" variant="outline" asChild>
                                                         <Link href={`/admin/payroll/${payroll.id}`}>View</Link>
                                                     </Button>
+                                                    {isAdmin && (
+                                                        <Button size="sm" variant="default" asChild>
+                                                            <Link href={`/admin/payroll/${payroll.id}/edit`}>Edit</Link>
+                                                        </Button>
+                                                    )}
                                                 </TableCell>
                                             </TableRow>
                                         ))
@@ -144,9 +136,6 @@ export default function PayrollIndex({ payrolls, isAdmin, filters, availableMont
                             </Table>
                         </div>
 
-                        {/* ================================== */}
-                        {/* BAGIAN PAGINATION                  */}
-                        {/* ================================== */}
                         {payrollLinks.length > 3 && (
                             <Pagination className="justify-end">
                                 <PaginationContent>
@@ -187,7 +176,6 @@ export default function PayrollIndex({ payrolls, isAdmin, filters, availableMont
                                         return (
                                             <PaginationItem key={index}>
                                                 <PaginationLink href={link.url || '#'} isActive={link.active}>
-                                                    {/* Mengakali tag <span> &laquo; yang dirender dari backend Laravel */}
                                                     <span dangerouslySetInnerHTML={{ __html: link.label }}></span>
                                                 </PaginationLink>
                                             </PaginationItem>

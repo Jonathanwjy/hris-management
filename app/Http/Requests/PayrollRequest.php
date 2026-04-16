@@ -34,14 +34,12 @@ class PayrollRequest extends FormRequest
                 "required",
                 "date",
                 function ($attribute, $value, $fail) {
-                    // Ambil employee_id dari request saat ini
-                    $employeeId = $this->input('employee_id');
 
+                    $employeeId = $this->input('employee_id');
 
                     if (!$employeeId) return;
 
                     $date = Carbon::parse($value);
-
 
                     $exists = Payroll::where('employee_id', $employeeId)
                         ->whereYear('pay_date', $date->year)
