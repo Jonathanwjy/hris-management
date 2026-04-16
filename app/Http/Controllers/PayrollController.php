@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PayrollRequest;
 use App\Models\Employee;
 use App\Services\PayrollService;
 use Illuminate\Http\Request;
@@ -26,10 +27,16 @@ class PayrollController extends Controller
 
     public function create()
     {
-        $employees = Employee::select('id', 'full_name')->get();
+        $employees = Employee::with('role:id,salary')->get(['id', 'full_name', 'role_id']);
 
         return Inertia::render('admin/payroll/create', [
             'employees' => $employees,
         ]);
+    }
+
+    public function store(PayrollRequest $request)
+    {
+        $this->payrollService->store($request->all());
+        return to_route('admin.payroll.index')->with('success', 'Payroll created successfully.');
     }
 }

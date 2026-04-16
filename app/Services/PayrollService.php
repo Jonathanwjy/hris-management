@@ -13,7 +13,7 @@ class PayrollService
         return Payroll::with('employee')->orderBy('created_at', 'desc')->get();
     }
 
-    public function storePayroll(array $data): Payroll
+    public function store(array $data): Payroll
     {
         // 1. Ambil data employee beserta relasi role-nya
         $employee = Employee::with('role')->findOrFail($data['employee_id']);

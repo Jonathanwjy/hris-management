@@ -13,6 +13,9 @@ export default function PayrollForm({ payroll, employees }: PayrollFormProps) {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
+    // State tambahan untuk menyimpan gaji pokok dari karyawan yang dipilih
+    const [baseSalary, setBaseSalary] = useState(payroll?.salary ?? 0);
+
     const { data, setData, post, put, processing, errors } = useForm({
         employee_id: payroll?.employee_id ? String(payroll.employee_id) : '',
         role_id: payroll?.role_id ? String(payroll.role_id) : '',
@@ -23,6 +26,7 @@ export default function PayrollForm({ payroll, employees }: PayrollFormProps) {
         pay_date: payroll?.pay_date ?? '',
     });
 
+    // Handle klik di luar dropdown
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -32,6 +36,32 @@ export default function PayrollForm({ payroll, employees }: PayrollFormProps) {
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
+
+    useEffect(() => {
+        if (data.employee_id) {
+            const selectedEmp = employees.find((emp) => String(emp.id) === data.employee_id);
+            // Paksa menjadi Number di sini untuk mencegah data dari backend berupa String
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const salary = Number((selectedEmp as any)?.role?.salary) || 0;
+            setBaseSalary(salary);
+        } else {
+            setBaseSalary(0);
+        }
+    }, [data.employee_id, employees]);
+
+    // Effect 2: Hitung net_salary secara real-time saat baseSalary, bonus, atau deduction berubah
+    useEffect(() => {
+        // Paksa semuanya menjadi Number mutlak
+        const base = Number(baseSalary) || 0;
+        const bonusAmount = Number(data.bonuses) || 0;
+        const deductionAmount = Number(data.deduction) || 0;
+
+        // Sekarang perhitungan matematikanya akan aman
+        const calculatedNetSalary = base + bonusAmount - deductionAmount;
+
+        setData('net_salary', calculatedNetSalary);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [baseSalary, data.bonuses, data.deduction]);
 
     const filteredEmployees = employees.filter((emp) => emp.full_name.toLowerCase().includes(searchQuery.toLowerCase()));
 
@@ -58,7 +88,6 @@ export default function PayrollForm({ payroll, employees }: PayrollFormProps) {
                     onChange={(e) => {
                         setSearchQuery(e.target.value);
                         setIsDropdownOpen(true);
-                        // Reset employee_id jika teks berubah agar user dipaksa memilih dari list
                         if (data.employee_id) setData('employee_id', '');
                     }}
                     onFocus={() => setIsDropdownOpen(true)}
@@ -116,17 +145,15 @@ export default function PayrollForm({ payroll, employees }: PayrollFormProps) {
                 <InputError message={errors.deduction} className="mt-2" />
             </div>
 
-            {/* Catatan: Untuk input Net Salary, karena perhitungannya mutlak dari backend,
-                opsionalnya bisa di-set readOnly agar user tahu ini dihitung otomatis. */}
             <div className="mb-4">
                 <Label htmlFor="net_salary">Estimasi Gaji Bersih (Dihitung Otomatis)</Label>
                 <Input
                     id="net_salary"
                     type="number"
                     readOnly
-                    placeholder="Akan dihitung saat disimpan"
+                    placeholder="Akan dihitung otomatis"
                     value={data.net_salary}
-                    className="text-muted-foreground mt-1 bg-gray-50"
+                    className="text-muted-foreground mt-1 cursor-not-allowed bg-gray-100"
                 />
             </div>
 
@@ -142,7 +169,9 @@ export default function PayrollForm({ payroll, employees }: PayrollFormProps) {
                 <InputError message={errors.pay_date} className="mt-2" />
             </div>
 
-            <Button type="submit">{processing ? 'Saving...' : isEdit ? 'Update Payroll' : 'Create Payroll'}</Button>
+            <Button type="submit" disabled={processing} className="cursor-pointer">
+                {processing ? 'Saving...' : isEdit ? 'Update Payroll' : 'Create Payroll'}
+            </Button>
         </form>
     );
 }
