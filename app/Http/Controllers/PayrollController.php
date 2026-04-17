@@ -87,4 +87,10 @@ class PayrollController extends Controller
             'employees' => $employees,
         ]);
     }
+
+    public function update(PayrollRequest $request, Payroll $payroll)
+    {
+        $this->payrollService->update($payroll, $request->validated());
+        return to_route('payroll.index')->with('success', 'Payroll updated successfully.');
+    }
 }

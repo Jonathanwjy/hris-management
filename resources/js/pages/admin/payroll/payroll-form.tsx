@@ -13,7 +13,6 @@ export default function PayrollForm({ payroll, employees }: PayrollFormProps) {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
-    // State tambahan untuk menyimpan gaji pokok dari karyawan yang dipilih
     const [baseSalary, setBaseSalary] = useState(payroll?.salary ?? 0);
 
     const { data, setData, post, put, processing, errors } = useForm({
@@ -26,7 +25,6 @@ export default function PayrollForm({ payroll, employees }: PayrollFormProps) {
         pay_date: payroll?.pay_date ?? '',
     });
 
-    // Handle klik di luar dropdown
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -49,14 +47,11 @@ export default function PayrollForm({ payroll, employees }: PayrollFormProps) {
         }
     }, [data.employee_id, employees]);
 
-    // Effect 2: Hitung net_salary secara real-time saat baseSalary, bonus, atau deduction berubah
     useEffect(() => {
-        // Paksa semuanya menjadi Number mutlak
         const base = Number(baseSalary) || 0;
         const bonusAmount = Number(data.bonuses) || 0;
         const deductionAmount = Number(data.deduction) || 0;
 
-        // Sekarang perhitungan matematikanya akan aman
         const calculatedNetSalary = base + bonusAmount - deductionAmount;
 
         setData('net_salary', calculatedNetSalary);

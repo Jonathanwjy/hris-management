@@ -51,4 +51,32 @@ class PayrollService
     {
         return $payroll->load('employee.role');
     }
+
+    public function update(Payroll $payroll, array $data): Payroll
+    {
+        $employee = Employee::with('role')->findOrFail($data['employee_id']);
+
+        // 2. Ambil gaji pokok dari role
+        $baseSalary = $employee->role->salary;
+
+        // 3. Pastikan bonus dan potongan tidak null
+        $bonuses = $data['bonuses'] ?? 0;
+        $deduction = $data['deduction'] ?? 0;
+
+        // 4. Hitung ulang Gaji Bersih secara otoritatif di backend
+        $netSalary = $baseSalary + $bonuses - $deduction;
+
+        // 5. Lakukan update
+        $payroll->update([
+            'employee_id' => $employee->id,
+            'role_id'     => $employee->role_id,
+            'salary'      => $baseSalary,
+            'bonuses'     => $bonuses,
+            'deduction'   => $deduction,
+            'net_salary'  => $netSalary,
+            'pay_date'    => $data['pay_date'],
+        ]);
+
+        return $payroll;
+    }
 }

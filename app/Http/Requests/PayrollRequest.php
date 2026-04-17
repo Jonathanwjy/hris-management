@@ -34,25 +34,33 @@ class PayrollRequest extends FormRequest
                 "required",
                 "date",
                 function ($attribute, $value, $fail) {
-
                     $employeeId = $this->input('employee_id');
-
                     if (!$employeeId) return;
-
+                    // Cek: kalau ini update, skip validasi duplikat
+                    if ($this->isMethod('PUT') || $this->isMethod('PATCH')) {
+                        return;
+                    }
                     $date = Carbon::parse($value);
-
-                    $exists = Payroll::where('employee_id', $employeeId)
+                    $routeParam = $this->route('payroll');
+                    $idToIgnore = null;
+                    if (is_object($routeParam)) {
+                        $idToIgnore = $routeParam->id;
+                    } elseif (is_array($routeParam) && isset($routeParam['id'])) {
+                        $idToIgnore = $routeParam['id'];
+                    } else {
+                        $idToIgnore = $routeParam;
+                    }
+                    $query = Payroll::where('employee_id', $employeeId)
                         ->whereYear('pay_date', $date->year)
-                        ->whereMonth('pay_date', $date->month)
-                        ->exists();
-
-                    if ($exists) {
-
+                        ->whereMonth('pay_date', $date->month);
+                    if ($idToIgnore) {
+                        $query->where('id', '!=', $idToIgnore);
+                    }
+                    if ($query->exists()) {
                         $fail('Gaji untuk karyawan ini pada bulan ' . $date->translatedFormat('F Y') . ' sudah dibuat.');
                     }
                 },
             ],
-
         ];
     }
 }

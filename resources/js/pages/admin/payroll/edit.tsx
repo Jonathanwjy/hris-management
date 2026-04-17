@@ -11,9 +11,9 @@ export default function PayrollEdit({ payroll, employees }: PayrollFormProps) {
                 <div className="p-8">
                     <div className="flex gap-96">
                         {' '}
-                        <h1>Edit Employee</h1>
+                        <h1>Edit Payroll</h1>
                         <Link
-                            href="/employee"
+                            href="/admin/payroll"
                             className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-600 shadow-sm transition hover:bg-slate-50"
                         >
                             <ArrowLeftIcon className="h-4 w-4" />
