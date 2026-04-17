@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { PayrollDetailProps } from '@/types/payroll';
-import { Head, Link } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
 
 export default function PayrollShow({ payroll }: PayrollDetailProps) {
     const breadcrumbs: BreadcrumbItem[] = [
@@ -39,17 +39,16 @@ export default function PayrollShow({ payroll }: PayrollDetailProps) {
                     <div className="flex items-center justify-between print:hidden">
                         <h1 className="text-2xl font-semibold">Detail Payroll</h1>
                         <div className="flex gap-4">
-                            <Button variant="outline" asChild>
-                                <Link href="/admin/payroll">Kembali</Link>
+                            <Button onClick={handlePrint} className="cursor-pointer">
+                                Cetak{' '}
                             </Button>
-                            <Button onClick={handlePrint}>Cetak Slip Gaji</Button>
                         </div>
                     </div>
 
                     <div className="mx-auto max-w-3xl rounded-xl border bg-white p-8 shadow-sm">
                         <div className="mb-8 border-b pb-6 text-center">
                             <h2 className="text-2xl font-bold tracking-wider text-gray-800 uppercase">Slip Gaji Karyawan</h2>
-                            <p className="text-gray-500">Periode: {formatDate(payroll.pay_date)}</p>
+                            <p className="text-gray-500">Tanggal: {formatDate(payroll.pay_date)}</p>
                         </div>
 
                         <div className="mb-8 grid grid-cols-2 gap-4 text-sm">

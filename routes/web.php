@@ -51,10 +51,14 @@ Route::middleware(['auth', 'admin'])->group(function () {
 Route::middleware(['auth', 'user'])->group(function () {
     Route::prefix('user')->group(function () {
         Route::resource('leave', LeaveRequestController::class)->except('delete', 'edit');
+
         Route::get('presence/create-absence', [PresenceController::class, 'createAbsence'])->name('presence.absence');
         Route::resource('presence', PresenceController::class)->except('delete', 'edit');
         Route::get('presence/{presence}/out', [PresenceController::class, 'PresenceOut'])->name('presence.out');
         Route::put('presence/{presence}', [PresenceController::class, 'StorePresenceOut'])->name('presence.out');
+
+        Route::get('payroll', [PayrollController::class, 'UserIndex'])->name('payroll.index');
+        Route::get('payroll/{payroll}', [PayrollController::class, 'show'])->name('payroll.show');
     });
 });
 

@@ -4,9 +4,23 @@ namespace App\Services;
 
 use App\Models\Employee;
 use App\Models\Payroll;
+use Illuminate\Support\Facades\Auth;
 
 class PayrollService
 {
+
+
+    public function getPayroll()
+    {
+        $payrolls = Auth::user()
+            ->employee
+            ->payroll()
+            ->with('employee')
+            ->orderBy('pay_date', 'desc')
+            ->paginate(10);
+
+        return $payrolls;
+    }
 
     public function getPayrollsAdmin($monthYear = null)
     {

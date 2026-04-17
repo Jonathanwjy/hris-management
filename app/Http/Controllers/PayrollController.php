@@ -93,4 +93,14 @@ class PayrollController extends Controller
         $this->payrollService->update($payroll, $request->validated());
         return to_route('payroll.index')->with('success', 'Payroll updated successfully.');
     }
+
+    public function UserIndex()
+    {
+        $payrolls = $this->payrollService->getPayroll();
+
+        return Inertia::render('admin_and_user/payroll/index', [
+            'payrolls' => $payrolls,
+            'isAdmin' => false,
+        ]);
+    }
 }

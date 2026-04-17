@@ -26,7 +26,13 @@ interface ExtendedPayrollProps extends Omit<PayrollProps, 'filters'> {
     };
     availableMonths: MonthOption[];
 }
-const breadcrumbs: BreadcrumbItem[] = [{ title: 'Payroll', href: '/payroll' }];
+
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: 'Payroll',
+        href: '/payroll',
+    },
+];
 
 export default function PayrollIndex({ payrolls, isAdmin, filters, availableMonths = [] }: ExtendedPayrollProps) {
     const payrollData = payrolls?.data || [];
@@ -48,6 +54,10 @@ export default function PayrollIndex({ payrolls, isAdmin, filters, availableMont
         );
     };
 
+    const resetFilter = () => {
+        router.get(window.location.pathname, {}, { preserveState: true, preserveScroll: true, replace: true });
+    };
+
     return (
         <>
             <Head title="Payroll" />
@@ -64,30 +74,32 @@ export default function PayrollIndex({ payrolls, isAdmin, filters, availableMont
                     </div>
 
                     <div className="flex flex-col gap-4">
-                        <div className="flex items-center justify-end gap-2">
-                            <span className="text-sm text-gray-500">Filter Bulan:</span>
-                            <Select value={filters?.month_year || 'all'} onValueChange={handleFilterChange}>
-                                <SelectTrigger className="w-[200px] bg-white">
-                                    <SelectValue placeholder="Pilih Bulan" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="all">Semua Bulan</SelectItem>
-                                    {availableMonths.map((month) => (
-                                        <SelectItem key={month.value} value={month.value}>
-                                            {month.label}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
+                        {isAdmin && (
+                            <div className="flex items-center justify-end gap-2">
+                                <span className="text-sm text-gray-500">Filter Bulan:</span>
+                                <Select value={filters?.month_year || 'all'} onValueChange={handleFilterChange}>
+                                    <SelectTrigger className="w-[200px]">
+                                        <SelectValue placeholder="Pilih Bulan" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="all">Semua Bulan</SelectItem>
+                                        {availableMonths.map((month) => (
+                                            <SelectItem key={month.value} value={month.value}>
+                                                {month.label}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
 
-                            {filters?.month_year && filters.month_year !== 'all' && (
-                                <Button variant="outline" size="sm" onClick={() => handleFilterChange('all')}>
-                                    Reset
-                                </Button>
-                            )}
-                        </div>
+                                {filters?.month_year && filters.month_year !== 'all' && (
+                                    <Button variant="outline" size="sm" onClick={resetFilter}>
+                                        Reset
+                                    </Button>
+                                )}
+                            </div>
+                        )}
 
-                        <div className="rounded-xl border bg-white">
+                        <div className="rounded-xl border">
                             <Table>
                                 <TableHeader>
                                     <TableRow>
@@ -115,10 +127,12 @@ export default function PayrollIndex({ payrolls, isAdmin, filters, availableMont
                                                 <TableCell>{payroll.pay_date}</TableCell>
                                                 <TableCell className="flex gap-2">
                                                     <Button size="sm" variant="outline" asChild>
-                                                        <Link href={`/admin/payroll/${payroll.id}`}>View</Link>
+                                                        <Link href={isAdmin ? `/admin/payroll/${payroll.id}` : `/user/payroll/${payroll.id}`}>
+                                                            View
+                                                        </Link>
                                                     </Button>
                                                     {isAdmin && (
-                                                        <Button size="sm" variant="default" asChild>
+                                                        <Button size="sm" asChild>
                                                             <Link href={`/admin/payroll/${payroll.id}/edit`}>Edit</Link>
                                                         </Button>
                                                     )}
