@@ -76,4 +76,15 @@ class PayrollController extends Controller
             'payroll' => $payroll,
         ]);
     }
+
+    public function edit(Payroll $payroll)
+    {
+        $payroll = $this->payrollService->getDetail($payroll);
+        $employees = Employee::with('role:id,salary')->get(['id', 'full_name', 'role_id']);
+
+        return Inertia::render('admin/payroll/edit', [
+            'payroll' => $payroll,
+            'employees' => $employees,
+        ]);
+    }
 }
