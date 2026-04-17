@@ -68,4 +68,12 @@ class PayrollController extends Controller
         $this->payrollService->store($request->all());
         return to_route('payroll.index')->with('success', 'Payroll created successfully.');
     }
+
+    public function show(Payroll $payroll)
+    {
+        $payroll = $this->payrollService->getDetail($payroll);
+        return Inertia::render('admin_and_user/payroll/show', [
+            'payroll' => $payroll,
+        ]);
+    }
 }

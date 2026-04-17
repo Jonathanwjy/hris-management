@@ -46,4 +46,9 @@ class PayrollService
             'pay_date'    => $data['pay_date'],
         ]);
     }
+
+    public function getDetail(Payroll $payroll): Payroll
+    {
+        return $payroll->load('employee.role');
+    }
 }

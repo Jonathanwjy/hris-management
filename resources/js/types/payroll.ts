@@ -14,6 +14,7 @@ export interface Payroll {
 export interface Employee {
     id: number;
     full_name: string;
+    role?: Role;
 }
 
 export interface Role {
@@ -40,4 +41,8 @@ export interface PayrollProps {
         date?: string;
     };
     isAdmin: boolean;
+}
+
+export interface PayrollDetailProps {
+    payroll: PayrollWithRelation;
 }
