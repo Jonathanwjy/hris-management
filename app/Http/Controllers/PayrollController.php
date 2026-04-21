@@ -53,6 +53,22 @@ class PayrollController extends Controller
         ]);
     }
 
+    public function checkDeduction(Request $request)
+    {
+        $request->validate([
+            'employee_id' => 'required|exists:employees,id',
+            'month'       => 'required|integer|min:1|max:12',
+            'year'        => 'required|integer'
+        ]);
+
+        $deductionData = $this->payrollService->calculateDeduction(
+            $request->employee_id,
+            $request->month,
+            $request->year
+        );
+
+        return response()->json($deductionData);
+    }
 
     public function create()
     {

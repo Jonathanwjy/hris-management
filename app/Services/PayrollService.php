@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\LeaveRequest;
 use App\Models\Presence;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class PayrollService
 {
@@ -45,11 +46,9 @@ class PayrollService
     {
         $deductionPerDay = 50000;
 
-        // Periode bulan payroll (misal: 1 - 31 Mei)
         $payrollStart = Carbon::createFromDate($year, $month, 1)->startOfMonth();
         $payrollEnd = Carbon::createFromDate($year, $month, 1)->endOfMonth();
 
-        // Ambil semua cuti yang BERIRISAN dengan bulan ini
         $leaves = LeaveRequest::where('employee_id', $employeeId)
             ->where('status', 'accepted')
             ->where(function ($query) use ($payrollStart, $payrollEnd) {
@@ -68,24 +67,27 @@ class PayrollService
             $start = Carbon::parse($leave->start_date);
             $end = Carbon::parse($leave->end_date);
 
-            // Cari tanggal mulai efektif (mana yang lebih lambat antara awal bulan atau awal cuti)
             $effectiveStart = $start->gt($payrollStart) ? $start : $payrollStart;
 
-            // Cari tanggal selesai efektif (mana yang lebih awal antara akhir bulan atau akhir cuti)
             $effectiveEnd = $end->lt($payrollEnd) ? $end : $payrollEnd;
 
-            // Hitung selisih hari (ditambah 1 agar inklusif)
             $days = $effectiveStart->diffInDays($effectiveEnd) + 1;
             $totalDaysInMonth += $days;
         }
 
-        // Tambahkan logika untuk presences alpa (biasanya alpa tidak lintas bulan, jadi aman)
         $absenceDays = Presence::where('employee_id', $employeeId)
-            ->where('status', ['alpa', 'izin', 'sakit'])
+            ->whereIn('status', ['alpa', 'izin', 'sakit'])
             ->whereBetween('date', [$payrollStart, $payrollEnd])
             ->count();
 
-        return ($totalDaysInMonth + $absenceDays) * $deductionPerDay;
+        $totalDays = $totalDaysInMonth + $absenceDays;
+
+        return [
+            'leave_days'      => $totalDaysInMonth,
+            'absence_days'    => $absenceDays,
+            'amount_per_day'  => $deductionPerDay,
+            'total_deduction' => $totalDays * $deductionPerDay
+        ];
     }
 
     public function store(array $data): Payroll
@@ -95,23 +97,21 @@ class PayrollService
         $baseSalary = $employee->role->salary;
         $bonuses = $data['bonuses'] ?? 0;
 
-        // 1. Ekstrak bulan dan tahun dari pay_date
         $payDate = Carbon::parse($data['pay_date']);
         $month = $payDate->month;
         $year = $payDate->year;
 
-        // 2. Panggil fungsi kalkulasi menggunakan data yang sudah diekstrak
-        $autoDeduction = $this->calculateDeduction(
+        $deductionData = $this->calculateDeduction(
             $employee->id,
             $month,
             $year
         );
 
-        // 3. (Opsional) Gabungkan potongan otomatis dengan potongan manual (jika ada input dari form)
+        $autoDeduction = $deductionData['total_deduction'];
+
         $manualDeduction = $data['deduction'] ?? 0;
         $totalDeduction = $autoDeduction + $manualDeduction;
 
-        // 4. Hitung gaji bersih
         $netSalary = $baseSalary + $bonuses - $totalDeduction;
 
         return Payroll::create([
@@ -124,6 +124,8 @@ class PayrollService
             'pay_date'    => $data['pay_date'],
         ]);
     }
+
+ 
 
     public function getDetail(Payroll $payroll): Payroll
     {

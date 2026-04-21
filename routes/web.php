@@ -44,6 +44,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::get('presence/{presence}', [PresenceController::class, 'show'])->name('presence.admin.show');
         Route::get('presence', [PresenceController::class, 'adminIndex'])->name('presence.admin.index');
 
+        Route::get('/payroll/check-deduction', [PayrollController::class, 'checkDeduction'])->name('payroll.check-deduction');
         Route::resource('payroll', PayrollController::class)->except('delete');
     });
 });
