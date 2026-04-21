@@ -49,7 +49,7 @@ class LeaveService
 
     public function getLeaveRequestAdmin()
     {
-        return LeaveRequest::with('employee')->orderBy('status', 'asc')->paginate(10);
+        return LeaveRequest::with('employee')->latest()->orderBy('status', 'asc')->paginate(10);
     }
 
     public function store(array $data): LeaveRequest

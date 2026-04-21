@@ -38,7 +38,6 @@ export default function PayrollForm({ payroll, employees }: PayrollFormProps) {
     useEffect(() => {
         if (data.employee_id) {
             const selectedEmp = employees.find((emp) => String(emp.id) === data.employee_id);
-            // Paksa menjadi Number di sini untuk mencegah data dari backend berupa String
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const salary = Number((selectedEmp as any)?.role?.salary) || 0;
             setBaseSalary(salary);
@@ -71,7 +70,6 @@ export default function PayrollForm({ payroll, employees }: PayrollFormProps) {
 
     return (
         <form onSubmit={submit} className="h-auto max-w-xl">
-            {/* Input Autocomplete Employee */}
             <div className="relative mb-4" ref={dropdownRef}>
                 <Label htmlFor="employee_search">Employee Name</Label>
                 <Input
@@ -89,7 +87,6 @@ export default function PayrollForm({ payroll, employees }: PayrollFormProps) {
                     className="text-muted-foreground mt-1"
                 />
 
-                {/* Dropdown List */}
                 {isDropdownOpen && searchQuery && (
                     <ul className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md border bg-white shadow-lg">
                         {filteredEmployees.length > 0 ? (
