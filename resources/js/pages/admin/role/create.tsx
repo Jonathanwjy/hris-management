@@ -8,7 +8,7 @@ export default function RoleCreate({ departments }: { departments: Department[] 
     return (
         <AppLayout>
             <div className="p-8">
-                <div className="flex gap-105">
+                <div className="flex justify-center gap-94">
                     {' '}
                     <h1>Add Role</h1>
                     <Link
@@ -19,7 +19,9 @@ export default function RoleCreate({ departments }: { departments: Department[] 
                         Back
                     </Link>
                 </div>
-                <RoleForm departments={departments} />
+                <div className="flex min-h-screen justify-center">
+                    <RoleForm departments={departments} />
+                </div>
             </div>
         </AppLayout>
     );

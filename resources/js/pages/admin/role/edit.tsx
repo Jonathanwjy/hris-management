@@ -9,7 +9,7 @@ export default function RoleEdit({ role, departments }: { role?: Role; departmen
         <>
             <AppLayout>
                 <div className="p-8">
-                    <div className="flex gap-105">
+                    <div className="flex justify-center gap-95">
                         {' '}
                         <h1>Edit Role</h1>
                         <Link
@@ -21,7 +21,9 @@ export default function RoleEdit({ role, departments }: { role?: Role; departmen
                         </Link>
                     </div>
 
-                    <RoleForm role={role} departments={departments} />
+                    <div className="flex min-h-screen justify-center">
+                        <RoleForm role={role} departments={departments} />
+                    </div>
                 </div>
             </AppLayout>
         </>

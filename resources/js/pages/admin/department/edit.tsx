@@ -9,7 +9,7 @@ export default function DepartmentEdit({ department }: { department?: Department
         <>
             <AppLayout>
                 <div className="p-8">
-                    <div className="flex gap-91">
+                    <div className="flex justify-center gap-60">
                         {' '}
                         <h1>Edit Department</h1>
                         <Link
@@ -20,7 +20,9 @@ export default function DepartmentEdit({ department }: { department?: Department
                             Back
                         </Link>
                     </div>
-                    <DepartmentForm department={department} />
+                    <div className="flex min-h-screen justify-center">
+                        <DepartmentForm department={department} />
+                    </div>
                 </div>
             </AppLayout>
         </>

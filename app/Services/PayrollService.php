@@ -126,13 +126,11 @@ class PayrollService
             'pay_date'    => $data['pay_date'],
         ]);
 
-        // 2. Kirim email menggunakan variabel $payroll yang baru dibuat
         if ($employee->email) {
-            // Gunakan Mail::to()->send() atau Mail::to()->queue()
+
             Mail::to($employee->email)->send(new PayrollPublishedMail($payroll));
         }
 
-        // 3. Terakhir, baru return hasilnya
         return $payroll;
     }
 

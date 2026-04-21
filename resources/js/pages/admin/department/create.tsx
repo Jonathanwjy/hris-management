@@ -8,7 +8,7 @@ export default function DepartmentCreate() {
         <>
             <AppLayout>
                 <div className="p-8">
-                    <div className="flex gap-91">
+                    <div className="flex justify-center gap-60">
                         {' '}
                         <h1>Add Department</h1>
                         <Link
@@ -19,7 +19,9 @@ export default function DepartmentCreate() {
                             Back
                         </Link>
                     </div>
-                    <DepartmentForm />
+                    <div className="flex min-h-screen justify-center">
+                        <DepartmentForm />
+                    </div>
                 </div>
             </AppLayout>
         </>
