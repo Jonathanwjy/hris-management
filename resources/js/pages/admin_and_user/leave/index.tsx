@@ -27,9 +27,13 @@ export default function LeaveIndex({ leaveRequests, isAdmin, remainingLeave }: L
     const leaveRequestLinks = leaveRequests?.links || [];
 
     const handleAccept = async (id: number, currentStatus: string) => {
-        const actionText = currentStatus === 'active' ? 'menonaktifkan' : 'mengaktifkan';
+        const actionText = currentStatus === 'active' ? 'tolak' : 'merima';
 
-        const isConfirmed = await showConfirm('Ubah Status Department?', `Apakah Anda yakin ingin ${actionText} department ini?`, 'Ya, Ubah Status!');
+        const isConfirmed = await showConfirm(
+            'Terima Pengajuan Cuti?',
+            `Apakah Anda yakin ingin ${actionText} pengajuan cuti ini?`,
+            'Ya, Terima!',
+        );
 
         if (isConfirmed) {
             router.patch(`/admin/leave/${id}/accept-request`, {}, { preserveScroll: true });
@@ -37,9 +41,13 @@ export default function LeaveIndex({ leaveRequests, isAdmin, remainingLeave }: L
     };
 
     const handleDecline = async (id: number, currentStatus: string) => {
-        const actionText = currentStatus === 'active' ? 'menonaktifkan' : 'mengaktifkan';
+        const actionText = currentStatus === 'active' ? 'menerima' : 'tolak';
 
-        const isConfirmed = await showConfirm('Ubah Status Department?', `Apakah Anda yakin ingin ${actionText} department ini?`, 'Ya, Ubah Status!');
+        const isConfirmed = await showConfirm(
+            'Tolak Pengajuan Cuti?',
+            `Apakah Anda yakin ingin ${actionText} pengajuan cuti ini?`,
+            'Ya, Tolak!',
+        );
 
         if (isConfirmed) {
             router.patch(`/admin/leave/${id}/decline-request`, {}, { preserveScroll: true });
@@ -104,13 +112,23 @@ export default function LeaveIndex({ leaveRequests, isAdmin, remainingLeave }: L
                                                 </Button>
 
                                                 {isAdmin && leave.status === 'pending' && (
-                                                    <Button size="sm" variant="destructive" onClick={() => handleDecline(leave.id, leave.status)}>
+                                                    <Button
+                                                        size="sm"
+                                                        variant="destructive"
+                                                        onClick={() => handleDecline(leave.id, leave.status)}
+                                                        className="cursor-pointer"
+                                                    >
                                                         Decline
                                                     </Button>
                                                 )}
 
                                                 {isAdmin && leave.status === 'pending' && (
-                                                    <Button size="sm" variant="secondary" onClick={() => handleAccept(leave.id, leave.status)}>
+                                                    <Button
+                                                        size="sm"
+                                                        variant="secondary"
+                                                        onClick={() => handleAccept(leave.id, leave.status)}
+                                                        className="cursor-pointer"
+                                                    >
                                                         Accept
                                                     </Button>
                                                 )}

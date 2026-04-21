@@ -12,9 +12,9 @@ export default function LeaveShow({ leave }: LeaveShowProps) {
     const { processing } = useForm();
 
     const handleAccept = async (id: number, currentStatus: string) => {
-        const actionText = currentStatus === 'active' ? 'menonaktifkan' : 'mengaktifkan';
+        const actionText = currentStatus === 'active' ? 'tolak' : 'merima';
 
-        const isConfirmed = await showConfirm('Ubah Status Department?', `Apakah Anda yakin ingin ${actionText} department ini?`, 'Ya, Ubah Status!');
+        const isConfirmed = await showConfirm('Terima Pengajuan Cuti?', `Apakah Anda yakin ingin ${actionText} pengajuan cuti ini?`, 'Ya, Terima!');
 
         if (isConfirmed) {
             router.patch(`/admin/leave/${id}/accept-request`, {}, { preserveScroll: true });
@@ -22,9 +22,9 @@ export default function LeaveShow({ leave }: LeaveShowProps) {
     };
 
     const handleDecline = async (id: number, currentStatus: string) => {
-        const actionText = currentStatus === 'active' ? 'menonaktifkan' : 'mengaktifkan';
+        const actionText = currentStatus === 'active' ? 'menerima' : 'tolak';
 
-        const isConfirmed = await showConfirm('Ubah Status Department?', `Apakah Anda yakin ingin ${actionText} department ini?`, 'Ya, Ubah Status!');
+        const isConfirmed = await showConfirm('Tolak Pengajuan Cuti?', `Apakah Anda yakin ingin ${actionText} pengajuan cuti ini?`, 'Ya, Tolak!');
 
         if (isConfirmed) {
             router.patch(`/admin/leave/${id}/decline-request`, {}, { preserveScroll: true });
@@ -106,11 +106,16 @@ export default function LeaveShow({ leave }: LeaveShowProps) {
                     <CardFooter className="bg-muted/10 flex justify-end gap-3 border-t pt-6">
                         {isAdmin && leave.status === 'pending' && (
                             <>
-                                <Button variant="destructive" onClick={() => handleDecline(leave.id, leave.status)} disabled={processing}>
+                                <Button
+                                    variant="destructive"
+                                    onClick={() => handleDecline(leave.id, leave.status)}
+                                    disabled={processing}
+                                    className="cursor-pointer"
+                                >
                                     Tolak Pengajuan
                                 </Button>
                                 <Button
-                                    className="bg-green-600 hover:bg-green-700"
+                                    className="cursor-pointer bg-green-600 hover:bg-green-700"
                                     onClick={() => handleAccept(leave.id, leave.status)}
                                     disabled={processing}
                                 >
