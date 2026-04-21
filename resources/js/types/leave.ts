@@ -27,8 +27,13 @@ export interface LeaveFormProps {
 
 export type LeaveIndexProps = {
     leaveRequests: PaginatedData<LeaveWithEmployee>;
+
     isAdmin: boolean;
     remainingLeave: number;
+    statusOptions: Record<string, string>;
+    filters: {
+        status?: string;
+    };
 };
 
 export interface LeaveShowProps {

@@ -16,16 +16,14 @@ class LeaveService
 
     public function getRemainingLeaveDays($employee): int
     {
-        // Hitung durasi cuti yang sudah disetujui tahun ini
+
         $usedLeave = $employee->leaveRequest()
             ->where('status', 'accepted')
             ->whereYear('start_date', Carbon::now()->year)
             ->sum('duration');
 
-        // Hitung sisa cuti
         $remaining = self::MAX_LEAVE_DAYS_PER_YEAR - $usedLeave;
 
-        // Pastikan nilainya tidak minus (berjaga-jaga jika ada data manual dari admin)
         return max(0, $remaining);
     }
     public function getLeaveRequest()
@@ -47,9 +45,16 @@ class LeaveService
         ];
     }
 
-    public function getLeaveRequestAdmin()
+    public function getLeaveRequestAdmin($status = null)
     {
-        return LeaveRequest::with('employee')->latest()->orderBy('status', 'asc')->paginate(10);
+
+        return LeaveRequest::with('employee')
+            ->when($status, function ($query) use ($status) {
+                $query->where('status', $status);
+            })
+            ->orderByRaw("FIELD(status, 'pending', 'accepted', 'declined')")
+            ->latest()
+            ->paginate(10);
     }
 
     public function store(array $data): LeaveRequest

@@ -6,9 +6,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LeaveRequestRequest;
 use App\Models\LeaveRequest;
 use App\Services\LeaveService;
-use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
 
 class LeaveRequestController extends Controller
 {
@@ -22,8 +23,10 @@ class LeaveRequestController extends Controller
     {
         $this->leaveService = $leaveService;
     }
-    public function index()
+    public function index(Request $request)
     {
+
+
         $data = $this->leaveService->getLeaveRequest();
 
         return Inertia::render('admin_and_user/leave/index', [
@@ -33,13 +36,25 @@ class LeaveRequestController extends Controller
         ]);
     }
 
-    public function adminIndex()
+    public function adminIndex(Request $request)
     {
-        $leaveRequests = $this->leaveService->getLeaveRequestAdmin();
+
+        $status = $request->input('status');
+        $leaveRequests = $this->leaveService->getLeaveRequestAdmin($status);
+
+        $statusOptions = [
+            'pending' => 'Pending',
+            'accepted' => 'Accepted',
+            'declined' => 'Declined',
+        ];
 
         return Inertia::render('admin_and_user/leave/index', [
             'leaveRequests' => $leaveRequests,
             'isAdmin' => true,
+            'statusOptions' => $statusOptions,
+            'filters' => [
+                'status' => $status,
+            ]
         ]);
     }
     /**
