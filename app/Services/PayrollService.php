@@ -2,13 +2,15 @@
 
 namespace App\Services;
 
+use App\Mail\PayrollPublishedMail;
 use App\Models\Employee;
-use App\Models\Payroll;
-use Illuminate\Support\Facades\Auth;
 use App\Models\LeaveRequest;
+use App\Models\Payroll;
 use App\Models\Presence;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class PayrollService
 {
@@ -114,7 +116,7 @@ class PayrollService
 
         $netSalary = $baseSalary + $bonuses - $totalDeduction;
 
-        return Payroll::create([
+        $payroll = Payroll::create([
             'employee_id' => $employee->id,
             'role_id'     => $employee->role_id,
             'salary'      => $baseSalary,
@@ -123,9 +125,18 @@ class PayrollService
             'net_salary'  => $netSalary,
             'pay_date'    => $data['pay_date'],
         ]);
+
+        // 2. Kirim email menggunakan variabel $payroll yang baru dibuat
+        if ($employee->email) {
+            // Gunakan Mail::to()->send() atau Mail::to()->queue()
+            Mail::to($employee->email)->send(new PayrollPublishedMail($payroll));
+        }
+
+        // 3. Terakhir, baru return hasilnya
+        return $payroll;
     }
 
- 
+
 
     public function getDetail(Payroll $payroll): Payroll
     {
