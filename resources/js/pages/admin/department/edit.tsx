@@ -20,7 +20,7 @@ export default function DepartmentEdit({ department }: { department?: Department
                             Back
                         </Link>
                     </div>
-                    <div className="flex min-h-screen justify-center">
+                    <div className="flex justify-center">
                         <DepartmentForm department={department} />
                     </div>
                 </div>

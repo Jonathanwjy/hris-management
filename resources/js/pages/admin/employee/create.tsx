@@ -9,7 +9,7 @@ export default function ({ roles, departments }: { roles: Role[]; departments: D
         <>
             <AppLayout>
                 <div className="p-8">
-                    <div className="flex gap-96">
+                    <div className="mb-4 flex justify-center gap-70">
                         {' '}
                         <h1>Add Employee</h1>
                         <Link
@@ -20,7 +20,9 @@ export default function ({ roles, departments }: { roles: Role[]; departments: D
                             Back
                         </Link>
                     </div>
-                    <EmployeeForm roles={roles} departments={departments} />
+                    <div className="flex justify-center">
+                        <EmployeeForm roles={roles} departments={departments} />
+                    </div>
                 </div>
             </AppLayout>
         </>

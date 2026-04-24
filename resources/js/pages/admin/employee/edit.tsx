@@ -9,7 +9,7 @@ export default function EmployeeEdit({ employee, roles, departments }: { employe
         <>
             <AppLayout>
                 <div className="p-8">
-                    <div className="flex gap-96">
+                    <div className="mb-4 flex justify-center gap-70">
                         {' '}
                         <h1>Edit Employee</h1>
                         <Link
@@ -20,7 +20,9 @@ export default function EmployeeEdit({ employee, roles, departments }: { employe
                             Back
                         </Link>
                     </div>
-                    <EmployeeForm employee={employee} roles={roles} departments={departments} />
+                    <div className="flex justify-center">
+                        <EmployeeForm employee={employee} roles={roles} departments={departments} />
+                    </div>
                 </div>
             </AppLayout>
         </>

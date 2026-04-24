@@ -9,7 +9,7 @@ export default function PayrollEdit({ payroll, employees }: PayrollFormProps) {
         <>
             <AppLayout>
                 <div className="p-8">
-                    <div className="flex gap-96">
+                    <div className="flex justify-center gap-66">
                         {' '}
                         <h1>Edit Payroll</h1>
                         <Link
@@ -20,7 +20,9 @@ export default function PayrollEdit({ payroll, employees }: PayrollFormProps) {
                             Back
                         </Link>
                     </div>
-                    <PayrollForm payroll={payroll} employees={employees} />
+                    <div className="flex justify-center">
+                        <PayrollForm payroll={payroll} employees={employees} />
+                    </div>
                 </div>
             </AppLayout>
         </>

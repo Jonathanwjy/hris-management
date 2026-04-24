@@ -21,7 +21,7 @@ export default function RoleEdit({ role, departments }: { role?: Role; departmen
                         </Link>
                     </div>
 
-                    <div className="flex min-h-screen justify-center">
+                    <div className="flex justify-center">
                         <RoleForm role={role} departments={departments} />
                     </div>
                 </div>

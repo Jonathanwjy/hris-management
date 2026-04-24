@@ -19,7 +19,7 @@ export default function DepartmentCreate() {
                             Back
                         </Link>
                     </div>
-                    <div className="flex min-h-screen justify-center">
+                    <div className="flex justify-center">
                         <DepartmentForm />
                     </div>
                 </div>

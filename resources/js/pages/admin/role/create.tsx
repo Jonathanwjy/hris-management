@@ -19,7 +19,7 @@ export default function RoleCreate({ departments }: { departments: Department[] 
                         Back
                     </Link>
                 </div>
-                <div className="flex min-h-screen justify-center">
+                <div className="flex justify-center">
                     <RoleForm departments={departments} />
                 </div>
             </div>
