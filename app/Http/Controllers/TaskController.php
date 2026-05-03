@@ -21,4 +21,14 @@ class TaskController extends Controller
         $data = $this->taskService->create();
         return Inertia::render('admin/task/create', $data);
     }
+
+    public function filterEmployees(Request $request)
+    {
+        $employees = $this->taskService->getEmployeesByDeptAndRole(
+            $request->department_id,
+            $request->role_id
+        );
+
+        return response()->json($employees);
+    }
 }

@@ -36,6 +36,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::prefix('admin')->group(function () {
 
         //task
+        Route::get('task/filter-employees', [TaskController::class, 'filterEmployees']);
         Route::resource('task', TaskController::class)->except('delete');
 
         //leave request

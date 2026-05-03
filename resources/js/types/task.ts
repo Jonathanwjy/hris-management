@@ -3,6 +3,16 @@ export interface Employee {
     full_name: string;
 }
 
+export interface Department {
+    id: number;
+    name: string;
+}
+
+export interface Role {
+    id: number;
+    title: string;
+}
+
 export interface EmployeeTask {
     id: number;
     task_id: number;
@@ -16,10 +26,16 @@ export interface Task {
     title: string;
     description: string;
     due_date: string;
+    department_id: number;
+    role_id: number;
+    department?: Department;
+    role?: Role;
     employee_tasks?: EmployeeTask[];
 }
 
 export interface TaskFormProps {
     task?: Task;
+    departments: Department[];
+    roles: Role[];
     employees: Employee[];
 }

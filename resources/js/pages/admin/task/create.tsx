@@ -4,7 +4,7 @@ import { Link } from '@inertiajs/react';
 import { ArrowLeftIcon } from 'lucide-react';
 import TaskForm from './task-form';
 
-export default function CreateTask({ employees }: TaskFormProps) {
+export default function CreateTask({ employees, departments, roles }: TaskFormProps) {
     return (
         <AppLayout>
             <div className="p-8">
@@ -20,7 +20,7 @@ export default function CreateTask({ employees }: TaskFormProps) {
                     </Link>
                 </div>
                 <div className="flex justify-center">
-                    <TaskForm employees={employees} />
+                    <TaskForm employees={employees} departments={departments} roles={roles} />
                 </div>
             </div>
         </AppLayout>
