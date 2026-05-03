@@ -47,4 +47,9 @@ class Employee extends Model
     {
         return $this->hasMany(Payroll::class);
     }
+
+    public function employeeTask()
+    {
+        return $this->hasMany(EmployeeTask::class);
+    }
 }
