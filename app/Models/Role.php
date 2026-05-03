@@ -28,4 +28,9 @@ class Role extends Model
     {
         return $this->hasOne(Payroll::class);
     }
+
+    public function task()
+    {
+        return $this->hasMany(Task::class);
+    }
 }

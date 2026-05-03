@@ -24,4 +24,9 @@ class Department extends Model
     {
         return $this->hasMany(Role::class);
     }
+
+    public function task()
+    {
+        return $this->hasMany(Task::class);
+    }
 }

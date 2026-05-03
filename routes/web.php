@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PresenceController;
+use App\Http\Controllers\TaskController;
 
 
 Route::get('/', function () {
@@ -34,6 +35,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::prefix('admin')->group(function () {
 
+        //task
+        Route::resource('task', TaskController::class)->except('delete');
+
         //leave request
         Route::get('leave', [LeaveRequestController::class, 'adminIndex'])->name('leave.admin.index');
         Route::get('leave/{leave}', [LeaveRequestController::class, 'show'])->name('leave.admin.show');
@@ -44,6 +48,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::get('presence/{presence}', [PresenceController::class, 'show'])->name('presence.admin.show');
         Route::get('presence', [PresenceController::class, 'adminIndex'])->name('presence.admin.index');
 
+        //payroll
         Route::get('/payroll/check-deduction', [PayrollController::class, 'checkDeduction'])->name('payroll.check-deduction');
         Route::resource('payroll', PayrollController::class)->except('delete');
     });
