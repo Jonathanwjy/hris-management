@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
+
 class PayrollService
 {
 
@@ -146,6 +147,14 @@ class PayrollService
     public function getDetail(Payroll $payroll): Payroll
     {
         return $payroll->load('employee.role');
+    }
+
+    public function edit(Payroll $payroll): array
+    {
+        return [
+            'payroll' => $this->getDetail($payroll),
+            'employees' => Employee::with('role:id,salary')->get(['id', 'full_name', 'role_id'])
+        ];
     }
 
     public function update(Payroll $payroll, array $data): Payroll

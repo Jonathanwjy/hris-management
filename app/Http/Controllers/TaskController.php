@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TaskRequest;
 use Illuminate\Http\Request;
 use App\Services\TaskService;
 use Inertia\Inertia;
@@ -25,6 +26,12 @@ class TaskController extends Controller
 
         $data = $this->taskService->create();
         return Inertia::render('admin/task/create', $data);
+    }
+
+    public function store(TaskRequest $request)
+    {
+        $this->taskService->store($request->validated());
+        return to_route('task.index')->with('success', 'Task Berhasil dibuat');
     }
 
     public function filterEmployees(Request $request)

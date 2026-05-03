@@ -11,11 +11,11 @@ class Task extends Model
         'title',
         'description',
         'due_date',
-        'deparment_id',
+        'department_id',
         'role_id'
     ];
 
-    public function employeeTask()
+    public function employeeTasks()
     {
         return $this->hasMany(EmployeeTask::class);
     }

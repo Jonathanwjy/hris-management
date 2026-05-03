@@ -82,7 +82,7 @@ class PayrollController extends Controller
 
     public function store(PayrollRequest $request)
     {
-        $this->payrollService->store($request->all());
+        $this->payrollService->store($request->validated());
         return to_route('payroll.index')->with('success', 'Payroll created successfully.');
     }
 
@@ -96,12 +96,10 @@ class PayrollController extends Controller
 
     public function edit(Payroll $payroll)
     {
-        $payroll = $this->payrollService->getDetail($payroll);
-        $employees = Employee::with('role:id,salary')->get(['id', 'full_name', 'role_id']);
-
+        $data = $this->payrollService->edit($payroll);
         return Inertia::render('admin/payroll/edit', [
-            'payroll' => $payroll,
-            'employees' => $employees,
+            'payroll' => $data['payroll'],
+            'employees' => $data['employees'],
         ]);
     }
 

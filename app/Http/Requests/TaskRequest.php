@@ -23,10 +23,13 @@ class TaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string|max:60',
-            'description' => 'string|min:20',
-            'due_date' => 'required|date',
-            'employee_id' => 'required|exists:employees,id',
+            'title'        => 'required|string|max:100',
+            'description'  => 'required|string',
+            'due_date'     => 'required|date',
+            'department_id' => 'required|exists:departments,id',
+            'role_id'      => 'required|exists:roles,id',
+            'employee_ids' => 'required|array|min:1',
+            'employee_ids.*' => 'exists:employees,id',
         ];
     }
 }

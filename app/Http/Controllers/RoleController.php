@@ -46,12 +46,13 @@ class RoleController extends Controller
         return to_route("role.index")->with("success", "Role Berhasil ditambahkan");
     }
 
+
     public function edit(Role $role)
     {
-        $departments = Department::where('status', 'active')->get();
+        $data = $this->roleService->edit($role);
         return Inertia::render("admin/role/edit", [
-            "role" => $role,
-            "departments" => $departments
+            "role" => $data['role'],
+            "departments" => $data['departments']
         ]);
     }
 

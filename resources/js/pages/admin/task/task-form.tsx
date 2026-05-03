@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Employee, TaskFormProps } from '@/types/task'; // Pastikan import type Employee
+import { Employee, TaskFormProps } from '@/types/task';
 import { useForm } from '@inertiajs/react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -11,9 +11,8 @@ import { useEffect, useState } from 'react';
 export default function TaskForm({ task, departments, roles, employees }: TaskFormProps) {
     const isEdit = !!task;
 
-    // State untuk menyimpan daftar employee hasil filter dari API
     const [availableEmployees, setAvailableEmployees] = useState<Employee[]>(employees || []);
-    // State untuk loading state saat fetching data
+
     const [isLoadingEmployees, setIsLoadingEmployees] = useState(false);
 
     const { data, setData, post, put, processing, errors } = useForm({
@@ -25,15 +24,12 @@ export default function TaskForm({ task, departments, roles, employees }: TaskFo
         employee_ids: task?.employee_tasks?.map((et) => et.employee_id) || [],
     });
 
-    // Effect: Berjalan setiap kali department_id atau role_id berubah
     useEffect(() => {
         const fetchEmployees = async () => {
-            // Hanya nge-hit API jika KEDUANYA sudah dipilih
             if (data.department_id && data.role_id) {
                 setIsLoadingEmployees(true);
                 try {
                     const response = await axios.get('/admin/task/filter-employees', {
-                        // <--- BENAR
                         params: {
                             department_id: data.department_id,
                             role_id: data.role_id,
@@ -46,7 +42,6 @@ export default function TaskForm({ task, departments, roles, employees }: TaskFo
                     setIsLoadingEmployees(false);
                 }
             } else {
-                // Jika salah satu kosong, kosongkan list
                 setAvailableEmployees([]);
             }
         };
@@ -54,7 +49,6 @@ export default function TaskForm({ task, departments, roles, employees }: TaskFo
         fetchEmployees();
     }, [data.department_id, data.role_id]);
 
-    // Fungsi handle dropdown (Mereset checkbox karyawan jika role/dept diganti)
     const handleDepartmentChange = (value: string) => {
         setData((prevData) => ({ ...prevData, department_id: value, employee_ids: [] }));
     };
@@ -76,6 +70,7 @@ export default function TaskForm({ task, departments, roles, employees }: TaskFo
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
+        console.log('Submitting data:', data);
         if (isEdit) {
             put(`/admin/task/${task.id}`);
         } else {
@@ -100,8 +95,6 @@ export default function TaskForm({ task, departments, roles, employees }: TaskFo
                 <InputError message={errors.title} className="mt-2" />
             </div>
 
-            {/* Description Textarea */}
-
             <div className="mb-4">
                 <Label htmlFor="description">Description</Label>
 
@@ -115,8 +108,6 @@ export default function TaskForm({ task, departments, roles, employees }: TaskFo
 
                 <InputError message={errors.description} className="mt-2" />
             </div>
-
-            {/* Due Date Input */}
 
             <div className="mb-4">
                 <Label htmlFor="due_date">Due Date</Label>
@@ -136,7 +127,7 @@ export default function TaskForm({ task, departments, roles, employees }: TaskFo
                 <Label htmlFor="department" className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">
                     Departemen
                 </Label>
-                {/* Gunakan handleDepartmentChange di sini */}
+
                 <Select value={data.department_id} onValueChange={handleDepartmentChange}>
                     <SelectTrigger>
                         <SelectValue placeholder="Pilih Departemen" />
@@ -159,7 +150,7 @@ export default function TaskForm({ task, departments, roles, employees }: TaskFo
                 <Label htmlFor="role" className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">
                     Role
                 </Label>
-                {/* Gunakan handleRoleChange di sini */}
+
                 <Select value={data.role_id} onValueChange={handleRoleChange}>
                     <SelectTrigger>
                         <SelectValue placeholder="Pilih Role" />
@@ -178,25 +169,20 @@ export default function TaskForm({ task, departments, roles, employees }: TaskFo
                 <InputError message={errors.role_id} />
             </div>
 
-            {/* Area Assign Employees Dinamis */}
             <div className="mb-4">
                 <Label>Assign Employees</Label>
 
                 {!data.department_id || !data.role_id ? (
-                    // State 1: Belum pilih departemen & role
                     <div className="text-muted-foreground bg-muted/50 mt-2 rounded-md border p-4 text-center text-sm">
                         Silakan pilih Departemen dan Role terlebih dahulu.
                     </div>
                 ) : isLoadingEmployees ? (
-                    // State 2: Sedang loading data dari API
                     <div className="text-muted-foreground mt-2 animate-pulse rounded-md border p-4 text-center text-sm">Mencari karyawan...</div>
                 ) : availableEmployees.length === 0 ? (
-                    // State 3: API selesai tapi hasilnya kosong
                     <div className="text-muted-foreground bg-muted/50 mt-2 rounded-md border p-4 text-center text-sm">
                         Tidak ada karyawan dengan Departemen dan Role tersebut.
                     </div>
                 ) : (
-                    // State 4: Karyawan ditemukan, render checkbox
                     <div className="bg-background mt-2 grid grid-cols-2 gap-3 rounded-md border p-4">
                         {availableEmployees.map((employee) => (
                             <label key={employee.id} className="flex cursor-pointer items-center space-x-2">

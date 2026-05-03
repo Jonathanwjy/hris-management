@@ -31,6 +31,14 @@ class RoleService
             return Role::create($data);
         });
     }
+
+    public function edit(Role $role): array
+    {
+        return [
+            'role' => $role,
+            'departments' => Department::where('status', 'active')->get()
+        ];
+    }
     public function update(Role $role, array $data): Role
     {
         $role->update($data);
