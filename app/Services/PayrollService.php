@@ -92,6 +92,13 @@ class PayrollService
         ];
     }
 
+    public function create()
+    {
+        return [
+            'employees' => Employee::with('role:id,salary')->get(['id', 'full_name', 'role_id']),
+        ];
+    }
+
     public function store(array $data): Payroll
     {
         $employee = Employee::with('role')->findOrFail($data['employee_id']);

@@ -15,6 +15,11 @@ class TaskController extends Controller
         $this->taskService = $taskService;
     }
 
+    public function index()
+    {
+        return Inertia::render('admin_and_user/task/index');
+    }
+
     public function create()
     {
 

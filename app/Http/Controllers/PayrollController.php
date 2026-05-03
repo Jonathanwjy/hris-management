@@ -72,10 +72,11 @@ class PayrollController extends Controller
 
     public function create()
     {
-        $employees = Employee::with('role:id,salary')->get(['id', 'full_name', 'role_id']);
+        $data = $this->payrollService->create();
 
         return Inertia::render('admin/payroll/create', [
-            'employees' => $employees,
+
+            'employees' => $data['employees'],
         ]);
     }
 

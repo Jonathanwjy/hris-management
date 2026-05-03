@@ -19,7 +19,7 @@ export function AppSidebar() {
 
     const mainNavItems: NavItem[] = [
         { title: 'Dashboard', url: '/dashboard', icon: LayoutGrid },
-        { title: 'Task', url: '/task', icon: BookmarkCheck },
+        { title: 'Task', url: isAdmin ? '/admin/task' : '/user/task', icon: BookmarkCheck },
         { title: 'Presences', url: isAdmin ? '/admin/presence' : '/user/presence', icon: Calendar1Icon },
         { title: 'Payrolls', url: isAdmin ? '/admin/payroll' : '/user/payroll', icon: DollarSign },
         { title: 'Leave Request', url: isAdmin ? '/admin/leave' : '/user/leave', icon: ArrowBigDownIcon },
