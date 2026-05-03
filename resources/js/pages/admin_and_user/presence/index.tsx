@@ -152,7 +152,7 @@ export default function PresenceIndex({ presences, isAdmin, filters, hadir, tela
                                     ) : (
                                         <TableRow>
                                             <TableCell colSpan={isAdmin ? 6 : 5} className="text-center">
-                                                Belum ada request presence
+                                                Belum ada data absensi
                                             </TableCell>
                                         </TableRow>
                                     )}
