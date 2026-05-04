@@ -41,6 +41,14 @@ class TaskController extends Controller
         return Inertia::render('admin/task/edit', $data);
     }
 
+    public function update(TaskRequest $request, Task $task)
+    {
+        $this->taskService->update($task, $request->validated());
+
+        // 3. Redirect kembali dengan pesan sukses
+        return redirect()->route('task.index')->with('success', 'Task berhasil diupdate!');
+    }
+
     public function filterEmployees(Request $request)
     {
         $employees = $this->taskService->getEmployeesByDeptAndRole(
