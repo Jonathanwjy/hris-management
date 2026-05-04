@@ -7,6 +7,7 @@ use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Role;
 use App\Models\Task;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
@@ -32,6 +33,24 @@ class TaskService
             ->orderByRaw("FIELD(status, 'ongoing','finished','canceled')")
             ->latest()
             ->paginate(10);
+    }
+
+    public function getTaskUser()
+    {
+        // Ambil ID karyawan yang sedang login
+        $employeeId = Auth::user()->employee->id;
+
+        // Query langsung ke model Task (sama seperti Admin)
+        // Tapi difilter HANYA task yang ditugaskan ke karyawan ini
+        $tasks = Task::whereHas('employeeTasks', function ($query) use ($employeeId) {
+            $query->where('employee_id', $employeeId);
+        })
+            ->latest()
+            ->paginate(10);
+
+        return [
+            "tasks" => $tasks
+        ];
     }
 
     public function create(): array

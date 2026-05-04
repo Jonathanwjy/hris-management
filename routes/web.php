@@ -59,6 +59,11 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 Route::middleware(['auth', 'user'])->group(function () {
     Route::prefix('user')->group(function () {
+
+        //task
+        Route::get('task', [TaskController::class, 'userIndex'])->name('task.index');
+        Route::get('task/show', [TaskController::class, 'userIndex'])->name('task.user.show');
+
         Route::resource('leave', LeaveRequestController::class)->except('delete', 'edit');
 
         Route::get('presence/create-absence', [PresenceController::class, 'createAbsence'])->name('presence.absence');

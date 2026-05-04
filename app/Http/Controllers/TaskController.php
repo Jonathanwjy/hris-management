@@ -39,6 +39,16 @@ class TaskController extends Controller
         ]);
     }
 
+    public function userIndex()
+    {
+        $data = $this->taskService->getTaskUser();
+
+        return Inertia::render('admin_and_user/task/index', [
+            "tasks" => $data['tasks'],
+            'isAdmin' => false,
+        ]);
+    }
+
     public function create()
     {
 
