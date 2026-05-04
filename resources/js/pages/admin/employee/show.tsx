@@ -22,18 +22,18 @@ export default function EmployeeShow({ employee }: { employee: EmployeeWithRelat
     const statusConfig = {
         active: {
             label: 'Active',
-            dot: 'bg-emerald-400',
-            badge: 'bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200',
+            dot: 'bg-emerald-400 dark:bg-emerald-500',
+            badge: 'bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-400 dark:ring-emerald-800',
         },
         inactive: {
             label: 'Inactive',
-            dot: 'bg-red-400',
-            badge: 'bg-red-50 text-red-700 ring-1 ring-red-200',
+            dot: 'bg-red-400 dark:bg-red-500',
+            badge: 'bg-red-50 text-red-700 ring-1 ring-red-200 dark:bg-red-900/30 dark:text-red-400 dark:ring-red-800',
         },
         default: {
             label: employee.status,
-            dot: 'bg-amber-400',
-            badge: 'bg-amber-50 text-amber-700 ring-1 ring-amber-200',
+            dot: 'bg-amber-400 dark:bg-amber-500',
+            badge: 'bg-amber-50 text-amber-700 ring-1 ring-amber-200 dark:bg-amber-900/30 dark:text-amber-400 dark:ring-amber-800',
         },
     };
 
@@ -52,30 +52,31 @@ export default function EmployeeShow({ employee }: { employee: EmployeeWithRelat
         <>
             <Head title="Employee Detail" />
             <AppLayout>
-                <div className="min-h-screen bg-slate-50 px-4 py-10 sm:px-8">
+                <div className="min-h-screen bg-slate-50 px-4 py-10 transition-colors duration-200 sm:px-8 dark:bg-slate-950">
+                    {/* Header */}
                     <div className="mb-8 flex items-center justify-between">
                         <div>
-                            <h1 className="mt-1 text-2xl font-bold text-slate-800">Employee Profile</h1>
+                            <h1 className="mt-1 text-2xl font-bold text-slate-800 dark:text-slate-100">Employee Profile</h1>
                         </div>
 
                         <div className="flex items-center gap-2">
                             <Link
                                 href="/employee"
-                                className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-600 shadow-sm transition hover:bg-slate-50"
+                                className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-600 shadow-sm transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
                             >
                                 <ArrowLeftIcon className="h-4 w-4" />
                                 Back
                             </Link>
                             <Link
                                 href={`/employee/${employee.id}/edit`}
-                                className="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-blue-700"
+                                className="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
                             >
                                 <PencilIcon className="h-4 w-4" />
                                 Edit
                             </Link>
                             <Button
                                 onClick={() => handleFired(employee.id, employee.status)}
-                                className="inline-flex cursor-pointer items-center gap-1.5 rounded-lg bg-red-500 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-red-600"
+                                className="inline-flex cursor-pointer items-center gap-1.5 rounded-lg bg-red-500 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700"
                             >
                                 <FireIcon className="h-4 w-4" />
                                 Fire
@@ -83,10 +84,13 @@ export default function EmployeeShow({ employee }: { employee: EmployeeWithRelat
                         </div>
                     </div>
 
-                    <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-                        <div className="h-28 w-full bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-500" />
+                    {/* Card */}
+                    <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-colors duration-200 dark:border-slate-700/60 dark:bg-slate-900">
+                        {/* Banner */}
+                        <div className="h-28 w-full bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-500 dark:from-blue-800 dark:via-blue-700 dark:to-indigo-700" />
 
                         <div className="relative px-8 pb-8">
+                            {/* Avatar + Status */}
                             <div className="-mt-14 mb-4 flex items-end justify-between">
                                 <div className="relative">
                                     <img
@@ -96,9 +100,11 @@ export default function EmployeeShow({ employee }: { employee: EmployeeWithRelat
                                                 : `https://ui-avatars.com/api/?name=${employee.full_name}&size=112&background=1d4ed8&color=fff&bold=true`
                                         }
                                         alt={employee.full_name}
-                                        className="h-28 w-28 rounded-2xl border-4 border-white object-cover shadow-lg"
+                                        className="h-28 w-28 rounded-2xl border-4 border-white object-cover shadow-lg dark:border-slate-900"
                                     />
-                                    <span className={`absolute right-1 bottom-1 h-4 w-4 rounded-full border-2 border-white ${status.dot} shadow`} />
+                                    <span
+                                        className={`absolute right-1 bottom-1 h-4 w-4 rounded-full border-2 border-white dark:border-slate-900 ${status.dot} shadow`}
+                                    />
                                 </div>
 
                                 <span
@@ -109,23 +115,28 @@ export default function EmployeeShow({ employee }: { employee: EmployeeWithRelat
                                 </span>
                             </div>
 
+                            {/* Name & Email */}
                             <div className="mb-8">
-                                <h2 className="text-xl font-bold text-slate-900">{employee.full_name}</h2>
-                                <p className="mt-0.5 text-sm text-slate-500">{employee.email}</p>
+                                <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">{employee.full_name}</h2>
+                                <p className="mt-0.5 text-sm text-slate-500 dark:text-slate-400">{employee.email}</p>
                             </div>
 
-                            <div className="mb-6 border-t border-slate-100" />
+                            <div className="mb-6 border-t border-slate-100 dark:border-slate-700/60" />
 
+                            {/* Fields Grid */}
                             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
                                 {fields.map(({ icon: Icon, label, value }) => (
-                                    <div key={label} className="flex items-start gap-3 rounded-xl bg-slate-50 px-4 py-3.5">
-                                        <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-blue-100 text-blue-600">
+                                    <div
+                                        key={label}
+                                        className="flex items-start gap-3 rounded-xl bg-slate-50 px-4 py-3.5 transition-colors duration-200 dark:bg-slate-800/60"
+                                    >
+                                        <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-blue-100 text-blue-600 dark:bg-blue-900/40 dark:text-blue-400">
                                             <Icon className="h-4 w-4" />
                                         </div>
                                         <div className="min-w-0">
-                                            <p className="text-xs font-medium text-slate-400">{label}</p>
-                                            <p className="mt-0.5 truncate text-sm font-semibold text-slate-800">
-                                                {value ?? <span className="text-slate-400 italic">—</span>}
+                                            <p className="text-xs font-medium text-slate-400 dark:text-slate-500">{label}</p>
+                                            <p className="mt-0.5 truncate text-sm font-semibold text-slate-800 dark:text-slate-200">
+                                                {value ?? <span className="text-slate-400 italic dark:text-slate-600">—</span>}
                                             </p>
                                         </div>
                                     </div>

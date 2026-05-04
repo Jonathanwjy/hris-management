@@ -74,10 +74,15 @@ export default function PresenceIndex({ presences, isAdmin, filters, hadir, tela
                     <div className="flex flex-col gap-4">
                         {isAdmin && (
                             <div className="flex items-center justify-end gap-2">
-                                <span className="text-sm text-gray-500">Filter Tanggal:</span>
-                                <Input type="date" className="w-auto" value={filters?.date || ''} onChange={handleDateChange} />
+                                <span className="text-sm">Filter Tanggal:</span>
+                                <Input
+                                    type="date"
+                                    className="w-auto cursor-pointer dark:[&::-webkit-calendar-picker-indicator]:invert"
+                                    value={filters?.date || ''}
+                                    onChange={handleDateChange}
+                                />
                                 {filters?.date && (
-                                    <Button variant="outline" size="sm" onClick={resetFilter}>
+                                    <Button variant="outline" className="cursor-pointer" size="sm" onClick={resetFilter}>
                                         Reset
                                     </Button>
                                 )}

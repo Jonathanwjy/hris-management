@@ -64,7 +64,7 @@ export default function PresenceShow({ presence }: PresenceDetailProps) {
 
                                 <div className="col-span-1 space-y-1 md:col-span-2">
                                     <p className="text-sm font-medium text-gray-500">Catatan / Keterangan</p>
-                                    <p className="rounded-md bg-gray-50 p-3 text-sm">{presence.desc}</p>
+                                    <p className="rounded-md border-2 p-3 text-sm">{presence.desc}</p>
                                 </div>
                             </div>
                         </CardContent>

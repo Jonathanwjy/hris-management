@@ -8,19 +8,21 @@ export default function CreateTask({ employees, departments, roles }: TaskFormPr
     return (
         <AppLayout>
             <div className="p-8">
-                <div className="flex justify-center gap-66">
-                    {' '}
-                    <h1>Create Task</h1>
-                    <Link
-                        href="/admin/payroll"
-                        className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-600 shadow-sm transition hover:bg-slate-50"
-                    >
-                        <ArrowLeftIcon className="h-4 w-4" />
-                        Back
-                    </Link>
-                </div>
-                <div className="flex justify-center">
-                    <TaskForm employees={employees} departments={departments} roles={roles} />
+                <div className="mx-auto w-full max-w-2xl">
+                    <div className="mb-6 flex items-center justify-between">
+                        <h1 className="text-xl font-semibold">Add Task</h1>
+                        <Link
+                            href="/admin/task"
+                            className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-600 shadow-sm transition hover:bg-slate-50"
+                        >
+                            <ArrowLeftIcon className="h-4 w-4" />
+                            Back
+                        </Link>
+                    </div>
+
+                    <div className="w-full">
+                        <TaskForm employees={employees} departments={departments} roles={roles} />
+                    </div>
                 </div>
             </div>
         </AppLayout>

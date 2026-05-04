@@ -92,7 +92,7 @@ export default function PayrollIndex({ payrolls, isAdmin, filters, availableMont
                                 </Select>
 
                                 {filters?.month_year && filters.month_year !== 'all' && (
-                                    <Button variant="outline" size="sm" onClick={resetFilter}>
+                                    <Button variant="outline" size="sm" className="cursor-pointer" onClick={resetFilter}>
                                         Reset
                                     </Button>
                                 )}

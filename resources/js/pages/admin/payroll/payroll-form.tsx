@@ -138,12 +138,12 @@ export default function PayrollForm({ payroll, employees }: PayrollFormProps) {
                 />
 
                 {isDropdownOpen && searchQuery && (
-                    <ul className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md border bg-white shadow-lg">
+                    <ul className="bg-primary absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md border shadow-lg">
                         {filteredEmployees.length > 0 ? (
                             filteredEmployees.map((emp) => (
                                 <li
                                     key={emp.id}
-                                    className="cursor-pointer px-4 py-2 hover:bg-gray-100"
+                                    className="text-primary-foreground cursor-pointer px-4 py-2 hover:bg-gray-100"
                                     onClick={() => {
                                         setData('employee_id', String(emp.id));
                                         setSearchQuery(emp.full_name);
@@ -169,7 +169,7 @@ export default function PayrollForm({ payroll, employees }: PayrollFormProps) {
                     type="date"
                     value={data.pay_date}
                     onChange={(e) => setData('pay_date', e.target.value)}
-                    className="text-muted-foreground mt-1"
+                    className="text-muted-foreground mt-1 w-auto cursor-pointer dark:[&::-webkit-calendar-picker-indicator]:invert"
                 />
                 <InputError message={errors.pay_date} className="mt-2" />
             </div>
@@ -186,11 +186,11 @@ export default function PayrollForm({ payroll, employees }: PayrollFormProps) {
                 {!isLoadingDeduction && systemDeduction && (
                     <div className="space-y-2 rounded-lg border border-blue-200 bg-blue-50/50 p-4">
                         <h3 className="text-sm font-semibold text-blue-900">Rincian Kehadiran Sistem</h3>
-                        <div className="flex justify-between text-sm text-gray-600">
+                        <div className="text-primary flex justify-between text-sm">
                             <span>Hari Cuti:</span>
                             <span className="font-medium">{systemDeduction.leave_days} hari</span>
                         </div>
-                        <div className="flex justify-between text-sm text-gray-600">
+                        <div className="text-primary flex justify-between text-sm">
                             <span>Hari Alpa/Izin/Sakit:</span>
                             <span className="font-medium">{systemDeduction.absence_days} hari</span>
                         </div>

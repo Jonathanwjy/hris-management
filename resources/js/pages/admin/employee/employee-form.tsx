@@ -182,7 +182,7 @@ export default function EmployeeForm({ employee, roles, departments }: EmployeeF
                                     type="date"
                                     value={data.hire_date || ''}
                                     onChange={(e) => setData('hire_date', e.target.value)}
-                                    className="bg-muted/50 mt-1.5"
+                                    className="w-auto cursor-pointer dark:[&::-webkit-calendar-picker-indicator]:invert"
                                 />
                                 <InputError message={errors.hire_date} className="mt-1.5" />
                             </div>
@@ -192,7 +192,7 @@ export default function EmployeeForm({ employee, roles, departments }: EmployeeF
                     {/* Footer */}
                     <div className="flex items-center justify-between px-6 py-4">
                         <span className="text-muted-foreground text-xs">Pastikan Data Sudah Benar</span>
-                        <Button type="submit" disabled={processing}>
+                        <Button type="submit" disabled={processing} className="cursor-pointer">
                             {processing ? 'Saving...' : isEdit ? 'Update employee' : 'Add employee'}
                         </Button>
                     </div>
