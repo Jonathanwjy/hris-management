@@ -12,7 +12,7 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Carbon\Carbon;
 
-class PayrollPublishedMail extends Mailable
+class PayrollPublishedMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 

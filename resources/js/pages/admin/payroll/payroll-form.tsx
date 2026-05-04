@@ -143,7 +143,7 @@ export default function PayrollForm({ payroll, employees }: PayrollFormProps) {
                             filteredEmployees.map((emp) => (
                                 <li
                                     key={emp.id}
-                                    className="text-primary-foreground cursor-pointer px-4 py-2 hover:bg-gray-100"
+                                    className="bg-primary text-primary-foreground hover:bg-foreground cursor-pointer px-4 py-2"
                                     onClick={() => {
                                         setData('employee_id', String(emp.id));
                                         setSearchQuery(emp.full_name);

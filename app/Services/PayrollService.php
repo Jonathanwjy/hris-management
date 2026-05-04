@@ -136,7 +136,7 @@ class PayrollService
 
         if ($employee->email) {
 
-            Mail::to($employee->email)->send(new PayrollPublishedMail($payroll));
+            Mail::to($employee->email)->queue(new PayrollPublishedMail($payroll));
         }
 
         return $payroll;
