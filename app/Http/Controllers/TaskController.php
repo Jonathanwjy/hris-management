@@ -66,6 +66,15 @@ class TaskController extends Controller
         return redirect()->route('task.index')->with('success', 'Task berhasil diupdate!');
     }
 
+    public function show(Task $task)
+    {
+        $taskData = $this->taskService->showAdmin($task);
+
+        return Inertia::render('admin/task/show', [
+            'task' => $taskData
+        ]);
+    }
+
     public function filterEmployees(Request $request)
     {
         $employees = $this->taskService->getEmployeesByDeptAndRole(

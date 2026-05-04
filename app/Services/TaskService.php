@@ -122,4 +122,43 @@ class TaskService
             return $task;
         });
     }
+
+    public function showAdmin(Task $task)
+    {
+        return $task->load(['department', 'role', 'employeeTasks.employee']);
+    }
+
+    public function finishTask(Task $task): Task
+    {
+        if ($task->status !== 'ongoing') {
+            throw new \Exception('Task ini sudah diproses dan tidak dapat diubah lagi.');
+        }
+
+        $task->update([
+            'status' => 'finished'
+        ]);
+
+        $task->employeeTasks()->update([
+            'status' => 'finished'
+        ]);
+
+        return $task;
+    }
+
+    public function cancelTask(Task $task): Task
+    {
+        if ($task->status !== 'ongoing') {
+            throw new \Exception('Task ini sudah diproses dan tidak dapat diubah lagi.');
+        }
+
+        $task->update([
+            'status' => 'canceled'
+        ]);
+
+        $task->employeeTasks()->update([
+            'status' => 'canceled'
+        ]);
+
+        return $task;
+    }
 }

@@ -67,29 +67,31 @@ export default function index({ tasks, isAdmin, statusOptions, filters }: TaskIn
                 <div className="space-y-6 p-8">
                     <div className="flex items-center justify-between">
                         <h1 className="text-2xl font-semibold">Tasks</h1>
-                        {isAdmin && (
-                            <Select value={filters.status || 'all'} onValueChange={handleFilterChange}>
-                                <SelectTrigger className="w-[200px] cursor-pointer">
-                                    <SelectValue placeholder="Filter Status" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="all" className="cursor-pointer">
-                                        Semua Status
-                                    </SelectItem>
-                                    {Object.entries(statusOptions).map(([value, label]) => (
-                                        <SelectItem key={value} value={value} className="cursor-pointer">
-                                            {label}
+                        <div className="flex gap-12">
+                            {isAdmin && (
+                                <Select value={filters.status || 'all'} onValueChange={handleFilterChange}>
+                                    <SelectTrigger className="w-[200px] cursor-pointer">
+                                        <SelectValue placeholder="Filter Status" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="all" className="cursor-pointer">
+                                            Semua Status
                                         </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        )}
+                                        {Object.entries(statusOptions).map(([value, label]) => (
+                                            <SelectItem key={value} value={value} className="cursor-pointer">
+                                                {label}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            )}
 
-                        {isAdmin && (
-                            <Button asChild>
-                                <Link href="/admin/task/create">Add Task</Link>
-                            </Button>
-                        )}
+                            {isAdmin && (
+                                <Button asChild>
+                                    <Link href="/admin/task/create">Add Task</Link>
+                                </Button>
+                            )}
+                        </div>
                     </div>
 
                     <div className="rounded-xl border">
