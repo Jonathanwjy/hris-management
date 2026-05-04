@@ -62,7 +62,7 @@ Route::middleware(['auth', 'user'])->group(function () {
 
         //task
         Route::get('task', [TaskController::class, 'userIndex'])->name('task.index');
-        Route::get('task/show', [TaskController::class, 'userIndex'])->name('task.user.show');
+        Route::get('task/{task}', [TaskController::class, 'userShow'])->name('task.user.show');
 
         Route::resource('leave', LeaveRequestController::class)->except('delete', 'edit');
 

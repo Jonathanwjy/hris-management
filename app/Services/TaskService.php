@@ -152,10 +152,12 @@ class TaskService
         });
     }
 
-    public function showAdmin(Task $task)
+    public function show(Task $task)
     {
         return $task->load(['department', 'role', 'employeeTasks.employee']);
     }
+
+
 
     public function finishTask(Task $task): Task
     {

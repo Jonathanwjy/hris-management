@@ -1,9 +1,9 @@
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
-import { Task } from '@/types/task';
+import { ShowTaskProps } from '@/types/task';
 import { Head, Link } from '@inertiajs/react';
 
-export default function AdminShow({ task }: { task: Task }) {
+export default function AdminShow({ task, isAdmin }: ShowTaskProps) {
     const getTaskStatusColor = (status: string) => {
         switch (status) {
             case 'ongoing':
@@ -79,45 +79,49 @@ export default function AdminShow({ task }: { task: Task }) {
                     </div>
                 </div>
 
-                <div className="bg-background overflow-hidden rounded-lg border shadow-sm">
-                    <div className="bg-muted/20 border-b p-6">
-                        <h2 className="text-lg font-bold">Karyawan yang Ditugaskan</h2>
-                        <p className="text-muted-foreground mt-1 text-sm">Daftar karyawan yang mengerjakan tugas ini beserta status pengerjaannya.</p>
-                    </div>
+                {isAdmin && (
+                    <div className="bg-background overflow-hidden rounded-lg border shadow-sm">
+                        <div className="bg-muted/20 border-b p-6">
+                            <h2 className="text-lg font-bold">Karyawan yang Ditugaskan</h2>
+                            <p className="text-muted-foreground mt-1 text-sm">
+                                Daftar karyawan yang mengerjakan tugas ini beserta status pengerjaannya.
+                            </p>
+                        </div>
 
-                    <div className="overflow-x-auto">
-                        <table className="w-full text-left text-sm">
-                            <thead className="bg-muted/50 text-muted-foreground border-b text-xs uppercase">
-                                <tr>
-                                    <th className="px-6 py-3 font-semibold">Nama Karyawan</th>
-                                    <th className="px-6 py-3 font-semibold">Status Pengerjaan</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {task.employee_tasks && task.employee_tasks.length > 0 ? (
-                                    task.employee_tasks.map((et) => (
-                                        <tr key={et.id} className="hover:bg-muted/30 border-b last:border-0">
-                                            <td className="px-6 py-4 font-medium">{et.employee?.full_name || 'Karyawan tidak ditemukan'}</td>
-                                            <td className="px-6 py-4">
-                                                <span
-                                                    className={`rounded-full px-2.5 py-1 text-xs font-semibold capitalize ${getEmployeeStatusColor(et.status)}`}
-                                                >
-                                                    {et.status}
-                                                </span>
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-left text-sm">
+                                <thead className="bg-muted/50 text-muted-foreground border-b text-xs uppercase">
+                                    <tr>
+                                        <th className="px-6 py-3 font-semibold">Nama Karyawan</th>
+                                        <th className="px-6 py-3 font-semibold">Status Pengerjaan</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {task.employee_tasks && task.employee_tasks.length > 0 ? (
+                                        task.employee_tasks.map((et) => (
+                                            <tr key={et.id} className="hover:bg-muted/30 border-b last:border-0">
+                                                <td className="px-6 py-4 font-medium">{et.employee?.full_name || 'Karyawan tidak ditemukan'}</td>
+                                                <td className="px-6 py-4">
+                                                    <span
+                                                        className={`rounded-full px-2.5 py-1 text-xs font-semibold capitalize ${getEmployeeStatusColor(et.status)}`}
+                                                    >
+                                                        {et.status}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    ) : (
+                                        <tr>
+                                            <td colSpan={2} className="text-muted-foreground px-6 py-8 text-center">
+                                                Belum ada karyawan yang ditugaskan untuk task ini.
                                             </td>
                                         </tr>
-                                    ))
-                                ) : (
-                                    <tr>
-                                        <td colSpan={2} className="text-muted-foreground px-6 py-8 text-center">
-                                            Belum ada karyawan yang ditugaskan untuk task ini.
-                                        </td>
-                                    </tr>
-                                )}
-                            </tbody>
-                        </table>
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
+                )}
             </div>
         </AppLayout>
     );

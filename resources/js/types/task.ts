@@ -52,3 +52,8 @@ export type TaskIndexProps = {
         status?: string;
     };
 };
+
+export interface ShowTaskProps {
+    task: Task;
+    isAdmin: boolean;
+}

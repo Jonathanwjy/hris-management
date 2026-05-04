@@ -78,10 +78,21 @@ class TaskController extends Controller
 
     public function show(Task $task)
     {
-        $taskData = $this->taskService->showAdmin($task);
+        $taskData = $this->taskService->show($task);
 
         return Inertia::render('admin/task/show', [
-            'task' => $taskData
+            'task' => $taskData,
+            'isAdmin' => true,
+        ]);
+    }
+
+    public function userShow(Task $task)
+    {
+        $taskData = $this->taskService->show($task);
+
+        return Inertia::render('admin/task/show', [
+            'task' => $taskData,
+            'isAdmin' => false,
         ]);
     }
 
