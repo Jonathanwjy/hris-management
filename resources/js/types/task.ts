@@ -1,3 +1,5 @@
+import { PaginatedData } from './pagination';
+
 export interface Employee {
     id: number;
     full_name: string;
@@ -40,3 +42,12 @@ export interface TaskFormProps {
     roles: Role[];
     employees: Employee[];
 }
+
+export type TaskIndexProps = {
+    tasks: PaginatedData<Task>;
+    isAdmin: boolean;
+    statusOptions: Record<string, string>;
+    filters: {
+        status?: string;
+    };
+};

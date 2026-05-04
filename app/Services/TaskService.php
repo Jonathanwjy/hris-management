@@ -22,6 +22,16 @@ class TaskService
             ->get();
     }
 
+    public function getTaskAdmin($status = null)
+    {
+        return Task::when($status, function ($query) use ($status) {
+            $query->where('status', $status);
+        })
+            ->orderByRaw("FIELD(status, 'ongoing','finished','canceled')")
+            ->latest()
+            ->paginate(10);
+    }
+
     public function create(): array
     {
         return [

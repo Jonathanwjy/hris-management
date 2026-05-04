@@ -8,6 +8,8 @@ use App\Services\TaskService;
 use Inertia\Inertia;
 use App\Models\Task;
 
+use function PHPUnit\Framework\isReadable;
+
 class TaskController extends Controller
 {
 
@@ -17,9 +19,24 @@ class TaskController extends Controller
         $this->taskService = $taskService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return Inertia::render('admin_and_user/task/index');
+        $status = $request->input('status');
+        $tasks = $this->taskService->getTaskAdmin($status);
+
+        $statusOptions = [
+            'ongoing' => 'Ongoing',
+            'finished' => 'Finished',
+            'canceled' => 'Canceled',
+        ];
+        return Inertia::render('admin_and_user/task/index', [
+            'tasks' => $tasks,
+            'isAdmin' => true,
+            'statusOptions' => $statusOptions,
+            'filters' => [
+                'status' => $status,
+            ]
+        ]);
     }
 
     public function create()
