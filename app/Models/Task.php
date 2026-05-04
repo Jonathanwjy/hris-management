@@ -12,7 +12,8 @@ class Task extends Model
         'description',
         'due_date',
         'department_id',
-        'role_id'
+        'role_id',
+        'status'
     ];
 
     public function employeeTasks()

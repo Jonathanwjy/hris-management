@@ -201,7 +201,7 @@ export default function TaskForm({ task, departments, roles, employees }: TaskFo
                 <InputError message={errors.employee_ids} className="mt-2" />
             </div>
 
-            <Button type="submit" disabled={processing}>
+            <Button type="submit" disabled={processing} className="cursor-pointer">
                 {processing ? 'Saving...' : isEdit ? 'Update Task' : 'Create Task'}
             </Button>
         </form>

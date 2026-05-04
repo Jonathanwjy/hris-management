@@ -30,6 +30,7 @@ export interface Task {
     role_id: number;
     department?: Department;
     role?: Role;
+    status: 'ongoing' | 'finished' | 'canceled';
     employee_tasks?: EmployeeTask[];
 }
 
