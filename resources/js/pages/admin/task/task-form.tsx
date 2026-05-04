@@ -12,7 +12,6 @@ export default function TaskForm({ task, departments, roles, employees }: TaskFo
     const isEdit = !!task;
 
     const [availableEmployees, setAvailableEmployees] = useState<Employee[]>(employees || []);
-
     const [isLoadingEmployees, setIsLoadingEmployees] = useState(false);
 
     const { data, setData, post, put, processing, errors } = useForm({
@@ -23,6 +22,9 @@ export default function TaskForm({ task, departments, roles, employees }: TaskFo
         role_id: task?.role_id ? String(task.role_id) : '',
         employee_ids: task?.employee_tasks?.map((et) => et.employee_id) || [],
     });
+
+    // 1. FILTER ROLES: Ambil role yang department_id-nya sama dengan yang dipilih
+    const filteredRoles = roles.filter((role) => String(role.department_id) === data.department_id);
 
     useEffect(() => {
         const fetchEmployees = async () => {
@@ -50,7 +52,13 @@ export default function TaskForm({ task, departments, roles, employees }: TaskFo
     }, [data.department_id, data.role_id]);
 
     const handleDepartmentChange = (value: string) => {
-        setData((prevData) => ({ ...prevData, department_id: value, employee_ids: [] }));
+        // 2. UPDATE LOGIC: Reset role_id juga saat departemen diganti
+        setData((prevData) => ({
+            ...prevData,
+            department_id: value,
+            role_id: '',
+            employee_ids: [],
+        }));
     };
 
     const handleRoleChange = (value: string) => {
@@ -70,7 +78,6 @@ export default function TaskForm({ task, departments, roles, employees }: TaskFo
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('Submitting data:', data);
         if (isEdit) {
             put(`/admin/task/${task.id}`);
         } else {
@@ -80,9 +87,9 @@ export default function TaskForm({ task, departments, roles, employees }: TaskFo
 
     return (
         <form onSubmit={submit} className="h-auto max-w-xl">
+            {/* Input Title, Description, Due Date disembunyikan agar kode tidak kepanjangan, biarkan seperti kodemu sebelumnya */}
             <div className="mb-4">
                 <Label htmlFor="title">Title</Label>
-
                 <Input
                     id="title"
                     type="text"
@@ -91,13 +98,11 @@ export default function TaskForm({ task, departments, roles, employees }: TaskFo
                     onChange={(e) => setData('title', e.target.value)}
                     className="text-muted-foreground mt-1"
                 />
-
                 <InputError message={errors.title} className="mt-2" />
             </div>
 
             <div className="mb-4">
                 <Label htmlFor="description">Description</Label>
-
                 <textarea
                     id="description"
                     placeholder="Task description..."
@@ -105,13 +110,11 @@ export default function TaskForm({ task, departments, roles, employees }: TaskFo
                     onChange={(e) => setData('description', e.target.value)}
                     className="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring text-muted-foreground mt-1 flex min-h-[80px] w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                 />
-
                 <InputError message={errors.description} className="mt-2" />
             </div>
 
             <div className="mb-4">
                 <Label htmlFor="due_date">Due Date</Label>
-
                 <Input
                     id="due_date"
                     type="date"
@@ -119,7 +122,6 @@ export default function TaskForm({ task, departments, roles, employees }: TaskFo
                     onChange={(e) => setData('due_date', e.target.value)}
                     className="text-muted-foreground mt-1"
                 />
-
                 <InputError message={errors.due_date} className="mt-2" />
             </div>
 
@@ -127,7 +129,6 @@ export default function TaskForm({ task, departments, roles, employees }: TaskFo
                 <Label htmlFor="department" className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">
                     Departemen
                 </Label>
-
                 <Select value={data.department_id} onValueChange={handleDepartmentChange}>
                     <SelectTrigger>
                         <SelectValue placeholder="Pilih Departemen" />
@@ -150,15 +151,15 @@ export default function TaskForm({ task, departments, roles, employees }: TaskFo
                 <Label htmlFor="role" className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">
                     Role
                 </Label>
-
-                <Select value={data.role_id} onValueChange={handleRoleChange}>
+                {/* 3. UPDATE SELECT ROLE: Tambah disabled prop, ubah placeholder, dan gunakan filteredRoles */}
+                <Select value={data.role_id} onValueChange={handleRoleChange} disabled={!data.department_id}>
                     <SelectTrigger>
-                        <SelectValue placeholder="Pilih Role" />
+                        <SelectValue placeholder={data.department_id ? 'Pilih Role' : 'Pilih departemen terlebih dahulu'} />
                     </SelectTrigger>
                     <SelectContent>
                         <SelectGroup>
                             <SelectLabel>Roles</SelectLabel>
-                            {roles.map((role) => (
+                            {filteredRoles.map((role) => (
                                 <SelectItem key={role.id} value={String(role.id)}>
                                     {role.title}
                                 </SelectItem>
@@ -171,7 +172,6 @@ export default function TaskForm({ task, departments, roles, employees }: TaskFo
 
             <div className="mb-4">
                 <Label>Assign Employees</Label>
-
                 {!data.department_id || !data.role_id ? (
                     <div className="text-muted-foreground bg-muted/50 mt-2 rounded-md border p-4 text-center text-sm">
                         Silakan pilih Departemen dan Role terlebih dahulu.

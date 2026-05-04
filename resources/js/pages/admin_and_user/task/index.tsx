@@ -28,23 +28,12 @@ export default function index({ tasks, isAdmin, statusOptions, filters }: TaskIn
     const taskLinks = tasks?.links || [];
 
     const handleFilterChange = (value: string) => {
-        router.get(
-            '/admin/task',
-            {
-                status: value === 'all' ? null : value,
-            },
-            {
-                preserveState: true,
-                replace: true,
-            },
-        );
+        router.get('/admin/task', { status: value === 'all' ? null : value }, { preserveState: true, replace: true });
     };
 
     const handleFinish = async (id: number, currentStatus: string) => {
         const actionText = currentStatus === 'ongoing' ? 'selesai' : 'batal';
-
         const isConfirmed = await showConfirm('Selesaikan Task ini?', `Apakah Anda yakin ingin ${actionText} task ini?`, 'Ya, Selesaikan!');
-
         if (isConfirmed) {
             router.patch(`/admin/task/${id}/finish-task`, {}, { preserveScroll: true });
         }
@@ -52,9 +41,7 @@ export default function index({ tasks, isAdmin, statusOptions, filters }: TaskIn
 
     const handleCancel = async (id: number, currentStatus: string) => {
         const actionText = currentStatus === 'ongoing' ? 'Batalkan' : 'batal';
-
         const isConfirmed = await showConfirm('Batalkan task?', `Apakah Anda yakin ingin ${actionText} task ini?`, 'Ya, Batalkan!');
-
         if (isConfirmed) {
             router.patch(`/admin/task/${id}/cancel-task`, {}, { preserveScroll: true });
         }
@@ -85,7 +72,6 @@ export default function index({ tasks, isAdmin, statusOptions, filters }: TaskIn
                                     </SelectContent>
                                 </Select>
                             )}
-
                             {isAdmin && (
                                 <Button asChild>
                                     <Link href="/admin/task/create">Add Task</Link>
@@ -95,15 +81,15 @@ export default function index({ tasks, isAdmin, statusOptions, filters }: TaskIn
                     </div>
 
                     <div className="rounded-xl border">
-                        <Table>
+                        <Table className="w-full table-fixed">
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead>No</TableHead>
-                                    <TableHead>Tugas</TableHead>
-                                    <TableHead>Deskripsi</TableHead>
-                                    <TableHead>Tenggat</TableHead>
-                                    <TableHead>Status</TableHead>
-                                    <TableHead>Action</TableHead>
+                                    <TableHead className="w-12">No</TableHead>
+                                    <TableHead className="w-60">Tugas</TableHead>
+                                    <TableHead className="w-auto">Deskripsi</TableHead>
+                                    <TableHead className="w-28">Tenggat</TableHead>
+                                    <TableHead className="w-28">Status</TableHead>
+                                    <TableHead className="w-52">Action</TableHead>
                                 </TableRow>
                             </TableHeader>
 
@@ -111,50 +97,79 @@ export default function index({ tasks, isAdmin, statusOptions, filters }: TaskIn
                                 {TaskData.length > 0 ? (
                                     TaskData.map((task, index) => (
                                         <TableRow key={task.id}>
-                                            <TableCell>{index + 1}</TableCell>
-                                            <TableCell>{task.title}</TableCell>
-                                            <TableCell>{task.description}</TableCell>
-                                            <TableCell>{task.due_date}</TableCell>
+                                            <TableCell className="w-12">{index + 1}</TableCell>
 
-                                            <TableCell>
+                                            <TableCell className="w-60">
+                                                <span className="block truncate font-medium" title={task.title}>
+                                                    {task.title}
+                                                </span>
+                                            </TableCell>
+
+                                            <TableCell className="w-auto">
+                                                <p
+                                                    className="text-muted-foreground text-sm"
+                                                    style={{
+                                                        display: '-webkit-box',
+                                                        WebkitLineClamp: 2,
+                                                        WebkitBoxOrient: 'vertical',
+                                                        overflow: 'hidden',
+                                                    }}
+                                                    title={task.description}
+                                                >
+                                                    {task.description}
+                                                </p>
+                                            </TableCell>
+
+                                            <TableCell className="w-28 whitespace-nowrap">{task.due_date}</TableCell>
+
+                                            <TableCell className="w-28">
                                                 <span
-                                                    className={`rounded px-2 py-1 text-xs ${
+                                                    className={`inline-block rounded px-2 py-1 text-xs font-medium ${
                                                         task.status === 'finished'
-                                                            ? 'bg-green-100 text-green-700'
+                                                            ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
                                                             : task.status === 'canceled'
-                                                              ? 'bg-red-100 text-red-700'
-                                                              : 'bg-blue-700 text-white'
+                                                              ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
+                                                              : 'bg-blue-700 text-white dark:bg-blue-600'
                                                     }`}
                                                 >
                                                     {task.status}
                                                 </span>
                                             </TableCell>
-                                            <TableCell className="flex gap-2">
-                                                <Button size="sm" asChild>
-                                                    <Link href={route(isAdmin ? 'task.show' : 'task.user.show', { task: task.id })}>Detail</Link>
-                                                </Button>
 
-                                                {isAdmin && task.status === 'ongoing' && (
-                                                    <Button
-                                                        size="sm"
-                                                        variant="destructive"
-                                                        onClick={() => handleCancel(task.id, task.status)}
-                                                        className="cursor-pointer"
-                                                    >
-                                                        Cancel
+                                            <TableCell className="w-52">
+                                                <div className="flex flex-wrap gap-1.5">
+                                                    <Button size="sm" asChild>
+                                                        <Link href={route(isAdmin ? 'task.show' : 'task.user.show', { task: task.id })}>Detail</Link>
                                                     </Button>
-                                                )}
 
-                                                {isAdmin && task.status === 'ongoing' && (
-                                                    <Button
-                                                        size="sm"
-                                                        variant="secondary"
-                                                        onClick={() => handleFinish(task.id, task.status)}
-                                                        className="cursor-pointer"
-                                                    >
-                                                        Finish
-                                                    </Button>
-                                                )}
+                                                    {isAdmin && (
+                                                        <Button size="sm" asChild>
+                                                            <Link href={`/admin/task/${task.id}/edit`}>Edit</Link>
+                                                        </Button>
+                                                    )}
+
+                                                    {isAdmin && task.status === 'ongoing' && (
+                                                        <Button
+                                                            size="sm"
+                                                            variant="destructive"
+                                                            onClick={() => handleCancel(task.id, task.status)}
+                                                            className="cursor-pointer"
+                                                        >
+                                                            Cancel
+                                                        </Button>
+                                                    )}
+
+                                                    {isAdmin && task.status === 'ongoing' && (
+                                                        <Button
+                                                            size="sm"
+                                                            variant="secondary"
+                                                            onClick={() => handleFinish(task.id, task.status)}
+                                                            className="cursor-pointer"
+                                                        >
+                                                            Finish
+                                                        </Button>
+                                                    )}
+                                                </div>
                                             </TableCell>
                                         </TableRow>
                                     ))

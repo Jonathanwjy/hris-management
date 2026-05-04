@@ -13,6 +13,7 @@ export interface Department {
 export interface Role {
     id: number;
     title: string;
+    deparment_id: number;
 }
 
 export interface EmployeeTask {
