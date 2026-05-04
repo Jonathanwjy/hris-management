@@ -2,11 +2,13 @@
 
 namespace App\Services;
 
+use App\Mail\TaskAssignedMail;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Role;
 use App\Models\Task;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class TaskService
 {
@@ -65,6 +67,14 @@ class TaskService
 
 
             $task->employeeTasks()->createMany($employeeTasks);
+
+            $employees = Employee::whereIn('id', $data['employee_ids'])->get();
+
+            foreach ($employees as $employee) {
+                // Kirim email ke masing-masing karyawan
+                // Tips: Ganti send() menjadi queue() jika kamu sudah mengatur antrean (Queue) di Laravel agar loading form lebih cepat.
+                Mail::to($employee->email)->queue(new TaskAssignedMail($task, $employee));
+            }
 
             return $task;
         });
