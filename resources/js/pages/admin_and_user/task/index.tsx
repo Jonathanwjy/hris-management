@@ -41,22 +41,22 @@ export default function index({ tasks, isAdmin, statusOptions, filters }: TaskIn
     };
 
     const handleFinish = async (id: number, currentStatus: string) => {
-        const actionText = currentStatus === 'ongoing' ? 'tolak' : 'merima';
+        const actionText = currentStatus === 'ongoing' ? 'selesai' : 'batal';
 
-        const isConfirmed = await showConfirm('Terima Pengajuan Cuti?', `Apakah Anda yakin ingin ${actionText} pengajuan cuti ini?`, 'Ya, Terima!');
+        const isConfirmed = await showConfirm('Selesaikan Task ini?', `Apakah Anda yakin ingin ${actionText} task ini?`, 'Ya, Selesaikan!');
 
         if (isConfirmed) {
-            router.patch(`/admin/leave/${id}/accept-request`, {}, { preserveScroll: true });
+            router.patch(`/admin/task/${id}/finish-task`, {}, { preserveScroll: true });
         }
     };
 
     const handleCancel = async (id: number, currentStatus: string) => {
-        const actionText = currentStatus === 'ongoing' ? 'menerima' : 'tolak';
+        const actionText = currentStatus === 'ongoing' ? 'Batalkan' : 'batal';
 
-        const isConfirmed = await showConfirm('Tolak Pengajuan Cuti?', `Apakah Anda yakin ingin ${actionText} pengajuan cuti ini?`, 'Ya, Tolak!');
+        const isConfirmed = await showConfirm('Batalkan task?', `Apakah Anda yakin ingin ${actionText} task ini?`, 'Ya, Batalkan!');
 
         if (isConfirmed) {
-            router.patch(`/admin/leave/${id}/decline-request`, {}, { preserveScroll: true });
+            router.patch(`/admin/task/${id}/cancel-task`, {}, { preserveScroll: true });
         }
     };
 

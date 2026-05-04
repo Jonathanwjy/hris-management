@@ -84,4 +84,17 @@ class TaskController extends Controller
 
         return response()->json($employees);
     }
+
+    public function finishTask(Task $task)
+    {
+        $task = $this->taskService->finishTask($task);
+        return back()->with('success', 'Task Berhasil Diselesaikan');
+    }
+
+
+    public function cancelTask(Task $task)
+    {
+        $task = $this->taskService->cancelTask($task);
+        return back()->with('success', 'Task Berhasil Dibatalkan');
+    }
 }

@@ -38,6 +38,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
         //task
         Route::get('task/filter-employees', [TaskController::class, 'filterEmployees']);
         Route::resource('task', TaskController::class)->except('delete');
+        Route::patch('task/{task}/finish-task', [TaskController::class, 'finishTask'])->name('task.admin.finishTask');
+        Route::patch('task/{task}/cancel-task', [TaskController::class, 'cancelTask'])->name('task.admin.cancelTask');
 
         //leave request
         Route::get('leave', [LeaveRequestController::class, 'adminIndex'])->name('leave.admin.index');
