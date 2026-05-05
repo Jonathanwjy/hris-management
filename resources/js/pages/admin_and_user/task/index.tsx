@@ -142,6 +142,12 @@ export default function index({ tasks, isAdmin, statusOptions, filters }: TaskIn
                                                         <Link href={route(isAdmin ? 'task.show' : 'task.user.show', { task: task.id })}>Detail</Link>
                                                     </Button>
 
+                                                    {!isAdmin && (
+                                                        <Button size="sm" variant="secondary" asChild>
+                                                            <Link href={`/admin/task/${task.id}/edit`}>Mark As Done</Link>
+                                                        </Button>
+                                                    )}
+
                                                     {isAdmin && (
                                                         <Button size="sm" asChild>
                                                             <Link href={`/admin/task/${task.id}/edit`}>Edit</Link>

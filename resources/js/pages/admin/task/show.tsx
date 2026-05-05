@@ -41,7 +41,7 @@ export default function AdminShow({ task, isAdmin }: ShowTaskProps) {
                 <div className="mb-3 flex items-center justify-between">
                     <h1 className="text-2xl font-semibold">Task Detail</h1>
                     <Button variant="outline" asChild>
-                        <Link href={route('task.index')}>Back</Link>
+                        <Link href={route(isAdmin ? 'task.index' : 'task.user.index')}>Back</Link>
                     </Button>
                 </div>
 

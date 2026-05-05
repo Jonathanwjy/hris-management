@@ -37,16 +37,28 @@ class TaskService
 
     public function getTaskUser()
     {
-        // Ambil ID karyawan yang sedang login
         $employeeId = Auth::user()->employee->id;
 
-        // Query langsung ke model Task (sama seperti Admin)
-        // Tapi difilter HANYA task yang ditugaskan ke karyawan ini
+        // 1. Ambil task sekaligus muat (eager load) relasi employeeTasks KHUSUS untuk user ini
         $tasks = Task::whereHas('employeeTasks', function ($query) use ($employeeId) {
             $query->where('employee_id', $employeeId);
         })
+            ->with(['employeeTasks' => function ($query) use ($employeeId) {
+                $query->where('employee_id', $employeeId); // Hanya load data karyawan ini
+            }])
             ->latest()
             ->paginate(10);
+
+        // 2. Manipulasi data sebelum dikirim ke frontend
+        // Kita ubah (transform) isi collection pagination-nya
+        $tasks->getCollection()->transform(function ($task) {
+            if ($task->employeeTasks->isNotEmpty()) {
+                // Timpa 'status' utama task dengan 'status' dari tabel pivot employeeTasks
+                $task->status = $task->employeeTasks->first()->status;
+            }
+
+            return $task;
+        });
 
         return [
             "tasks" => $tasks
@@ -90,8 +102,7 @@ class TaskService
             $employees = Employee::whereIn('id', $data['employee_ids'])->get();
 
             foreach ($employees as $employee) {
-                // Kirim email ke masing-masing karyawan
-                // Tips: Ganti send() menjadi queue() jika kamu sudah mengatur antrean (Queue) di Laravel agar loading form lebih cepat.
+
                 Mail::to($employee->email)->queue(new TaskAssignedMail($task, $employee));
             }
 
@@ -122,27 +133,24 @@ class TaskService
                 'role_id'       => $data['role_id'],
             ]);
 
-            // 2. Kelola relasi Karyawan (Tanpa mereset status yang sudah ada)
-            // Ambil array employee_id yang sudah ada di database saat ini
+
             $existingEmployeeIds = $task->employeeTasks()->pluck('employee_id')->toArray();
 
-            // Array employee_id dari inputan form edit
             $newEmployeeIds = $data['employee_ids'];
 
-            // A. Cari karyawan yang di-UNCHECK (Ada di lama, tapi tidak ada di inputan baru)
             $toDelete = array_diff($existingEmployeeIds, $newEmployeeIds);
             if (!empty($toDelete)) {
                 $task->employeeTasks()->whereIn('employee_id', $toDelete)->delete();
             }
 
-            // B. Cari karyawan yang di-CHECK BARU (Ada di inputan baru, tidak ada di lama)
+
             $toAdd = array_diff($newEmployeeIds, $existingEmployeeIds);
             if (!empty($toAdd)) {
                 $employeeTasks = [];
                 foreach ($toAdd as $employeeId) {
                     $employeeTasks[] = [
                         'employee_id' => $employeeId,
-                        'status'      => 'pending' // Yang baru ditambahkan statusnya pending
+                        'status'      => 'pending'
                     ];
                 }
                 $task->employeeTasks()->createMany($employeeTasks);
@@ -152,9 +160,30 @@ class TaskService
         });
     }
 
-    public function show(Task $task)
+    public function showAdmin(Task $task)
     {
         return $task->load(['department', 'role', 'employeeTasks.employee']);
+    }
+
+    public function showUser(Task $task)
+    {
+        $employeeId = Auth::user()->employee->id;
+
+        // Load relasi, tapi FILTER tabel karyawan hanya untuk user yang sedang login
+        $task->load([
+            'department',
+            'role',
+            'employeeTasks' => function ($query) use ($employeeId) {
+                $query->where('employee_id', $employeeId)->with('employee');
+            }
+        ]);
+
+        // Timpa status utama task dengan status dari tabel pivot (agar badge di atas kanan berubah)
+        if ($task->employeeTasks->isNotEmpty()) {
+            $task->status = $task->employeeTasks->first()->status;
+        }
+
+        return $task;
     }
 
 
