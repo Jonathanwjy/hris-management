@@ -118,4 +118,10 @@ class TaskController extends Controller
         $task = $this->taskService->cancelTask($task);
         return back()->with('success', 'Task Berhasil Dibatalkan');
     }
+
+    public function markAsDone(Task $task)
+    {
+        $task = $this->taskService->markAsDone($task);
+        return back()->with('success', 'Task Berhasil Diselesaikan');
+    }
 }

@@ -63,6 +63,7 @@ Route::middleware(['auth', 'user'])->group(function () {
         //task
         Route::get('task', [TaskController::class, 'userIndex'])->name('task.user.index');
         Route::get('task/{task}', [TaskController::class, 'userShow'])->name('task.user.show');
+        Route::patch('task/{task}/mark-as-done', [TaskController::class, 'markAsDone'])->name('task.user.done');
 
         Route::resource('leave', LeaveRequestController::class)->except('delete', 'edit');
 

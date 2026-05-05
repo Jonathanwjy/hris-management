@@ -221,4 +221,33 @@ class TaskService
 
         return $task;
     }
+
+    public function markAsDone(Task $task): Task
+    {
+        $employeeId = Auth::user()->employee->id;
+
+        return DB::transaction(function () use ($task, $employeeId) {
+
+            // 1. Update status tugas milik karyawan yang sedang login menjadi 'finished'
+            $task->employeeTasks()
+                ->where('employee_id', $employeeId)
+                ->update(['status' => 'finished']);
+
+            // 2. Cek apakah SEMUA karyawan sudah menyelesaikan tugas ini.
+            // Kita hitung apakah masih ada karyawan yang statusnya 'pending' atau 'ongoing'
+            $uncompletedCount = $task->employeeTasks()
+                ->whereIn('status',  ['ongoing'])
+                ->count();
+
+            // 3. Jika tidak ada lagi yang pending/ongoing (artinya semua sudah finished/canceled),
+            // maka otomatis selesaikan task utamanya.
+            if ($uncompletedCount === 0) {
+                $task->update([
+                    'status' => 'finished'
+                ]);
+            }
+
+            return $task;
+        });
+    }
 }

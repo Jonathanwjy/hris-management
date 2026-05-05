@@ -1,7 +1,8 @@
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import { ShowTaskProps } from '@/types/task';
-import { Head, Link } from '@inertiajs/react';
+import { showConfirm } from '@/utils/alert';
+import { Head, Link, router } from '@inertiajs/react';
 
 export default function AdminShow({ task, isAdmin }: ShowTaskProps) {
     const getTaskStatusColor = (status: string) => {
@@ -30,6 +31,23 @@ export default function AdminShow({ task, isAdmin }: ShowTaskProps) {
                 return 'bg-red-100 text-red-800';
             default:
                 return 'bg-gray-100 text-gray-800';
+        }
+    };
+
+    const handleFinish = async (id: number) => {
+        const isConfirmed = await showConfirm('Selesaikan Task?', 'Pastikan sudah menyelesaikan task sesuai dengan ketentuan');
+
+        if (isConfirmed) {
+            const url = isAdmin ? `/admin/task/${id}/finish-task` : `/user/task/${id}/mark-as-done`;
+            router.patch(url, {}, { preserveScroll: true });
+        }
+    };
+
+    const handleCancel = async (id: number, currentStatus: string) => {
+        const actionText = currentStatus === 'ongoing' ? 'Batalkan' : 'batal';
+        const isConfirmed = await showConfirm('Batalkan task?', `Apakah Anda yakin ingin ${actionText} task ini?`, 'Ya, Batalkan!');
+        if (isConfirmed) {
+            router.patch(`/admin/task/${id}/cancel-task`, {}, { preserveScroll: true });
         }
     };
 
@@ -76,6 +94,16 @@ export default function AdminShow({ task, isAdmin }: ShowTaskProps) {
                                 <p className="text-sm font-medium">{task.role?.title || '-'}</p>
                             </div>
                         </div>
+                    </div>
+                    <div className="flex gap-2 p-4">
+                        <Button size="sm" className="cursor-pointer" variant="default" onClick={() => handleFinish(task.id)}>
+                            Mark As Done
+                        </Button>
+                        {isAdmin && (
+                            <Button size="sm" variant="destructive" onClick={() => handleCancel(task.id, task.status)} className="cursor-pointer">
+                                Cancel
+                            </Button>
+                        )}
                     </div>
                 </div>
 
