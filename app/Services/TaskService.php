@@ -46,6 +46,7 @@ class TaskService
             ->with(['employeeTasks' => function ($query) use ($employeeId) {
                 $query->where('employee_id', $employeeId); // Hanya load data karyawan ini
             }])
+            ->orderByRaw("FIELD(status, 'ongoing','finished','canceled')")
             ->latest()
             ->paginate(10);
 

@@ -6,7 +6,6 @@ import { useAuth } from '@/hooks/use-auth';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import { ArrowBigDownIcon, BookmarkCheck, Calendar1Icon, DollarSign, FolderClosed, LayoutGrid, LucideBaggageClaim, UserRound } from 'lucide-react';
-import AppLogo from './app-logo';
 
 const footerNavItems: NavItem[] = [
     { title: 'Departments', url: '/department', icon: LucideBaggageClaim },
@@ -32,7 +31,7 @@ export function AppSidebar() {
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
                             <Link href="/dashboard" prefetch className="logo-link">
-                                <AppLogo />
+                                <p className="text-primary text-center text-lg font-bold">PT. Maju Sukses Bersama</p>
                             </Link>
                         </SidebarMenuButton>
                     </SidebarMenuItem>

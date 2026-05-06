@@ -96,10 +96,13 @@ export default function AdminShow({ task, isAdmin }: ShowTaskProps) {
                         </div>
                     </div>
                     <div className="flex gap-2 p-4">
-                        <Button size="sm" className="cursor-pointer" variant="default" onClick={() => handleFinish(task.id)}>
-                            Mark As Done
-                        </Button>
-                        {isAdmin && (
+                        {task.status === 'ongoing' && (
+                            <Button size="sm" className="cursor-pointer" variant="default" onClick={() => handleFinish(task.id)}>
+                                Mark As Done
+                            </Button>
+                        )}
+
+                        {isAdmin && task.status === 'ongoing' && (
                             <Button size="sm" variant="destructive" onClick={() => handleCancel(task.id, task.status)} className="cursor-pointer">
                                 Cancel
                             </Button>
