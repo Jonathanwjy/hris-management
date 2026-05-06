@@ -19,6 +19,7 @@ return new class extends Migration
             $table->date('hire_date');
             $table->foreignId('department_id')->constrained('departments');
             $table->foreignId('role_id')->constrained('roles');
+            $table->string('photo')->nullable();
             $table->enum('status', ['active', 'inactive', 'leave'])->default('active');
             $table->softDeletes();
             $table->timestamps();

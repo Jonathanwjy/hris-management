@@ -30,7 +30,14 @@ class TaskService
         return Task::when($status, function ($query) use ($status) {
             $query->where('status', $status);
         })
-            ->orderByRaw("FIELD(status, 'ongoing','finished','canceled')")
+            ->orderByRaw("
+        CASE status
+            WHEN 'ongoing' THEN 1
+            WHEN 'finished' THEN 2
+            WHEN 'canceled' THEN 3
+            ELSE 4
+        END
+    ")
             ->latest()
             ->paginate(10);
     }
@@ -46,7 +53,14 @@ class TaskService
             ->with(['employeeTasks' => function ($query) use ($employeeId) {
                 $query->where('employee_id', $employeeId); // Hanya load data karyawan ini
             }])
-            ->orderByRaw("FIELD(status, 'ongoing','finished','canceled')")
+            ->orderByRaw("
+        CASE status
+            WHEN 'ongoing' THEN 1
+            WHEN 'finished' THEN 2
+            WHEN 'canceled' THEN 3
+            ELSE 4
+        END
+    ")
             ->latest()
             ->paginate(10);
 
@@ -93,7 +107,7 @@ class TaskService
             foreach ($data['employee_ids'] as $employeeId) {
                 $employeeTasks[] = [
                     'employee_id' => $employeeId,
-                    'status'      => 'pending'
+                    'status'      => 'ongoing'
                 ];
             }
 
@@ -151,7 +165,7 @@ class TaskService
                 foreach ($toAdd as $employeeId) {
                     $employeeTasks[] = [
                         'employee_id' => $employeeId,
-                        'status'      => 'pending'
+                        'status'      => 'ongoing'
                     ];
                 }
                 $task->employeeTasks()->createMany($employeeTasks);

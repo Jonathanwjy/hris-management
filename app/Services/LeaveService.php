@@ -52,7 +52,15 @@ class LeaveService
             ->when($status, function ($query) use ($status) {
                 $query->where('status', $status);
             })
-            ->orderByRaw("FIELD(status, 'pending', 'accepted', 'declined')")
+
+            ->orderByRaw("
+                CASE status
+                    WHEN 'pending' THEN 1
+                    WHEN 'accepted' THEN 2
+                    WHEN 'declined' THEN 3
+                    ELSE 4
+                END
+            ")
             ->latest()
             ->paginate(10);
     }

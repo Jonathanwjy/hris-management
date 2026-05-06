@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('leave_request', function (Blueprint $table) {
+        Schema::create('leave_requests', function (Blueprint $table) {
             $table->id();
             $table->foreignId('employee_id')->constrained('employees')->cascadeOnDelete();
+            $table->integer('duration')->after('end_date')->default(0);
             $table->text('reason');
             $table->date('start_date');
             $table->date('end_date');

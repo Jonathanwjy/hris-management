@@ -84,7 +84,7 @@ export default function CreateAbsence({ presence }: PresenceFormProps) {
                         <InputError message={errors.desc} className="mt-2" />
                     </div>
 
-                    <Button type="submit" className="w-full" disabled={processing}>
+                    <Button type="submit" className="w-full cursor-pointer" disabled={processing}>
                         {processing ? 'Menyimpan...' : 'Simpan Absensi'}
                     </Button>
                 </form>

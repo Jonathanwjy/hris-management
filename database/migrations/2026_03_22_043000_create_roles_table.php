@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('roles', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('department_id')->constrained('departments')->cascadeOnDelete();
             $table->string('title');
             $table->text('description')->nullable();
+            $table->enum('status', ['active', 'inactive'])->default('active');
             $table->decimal('salary', 10, 2)->default(0);
             $table->timestamps();
         });

@@ -64,7 +64,9 @@ export default function LeaveForm({ leave }: LeaveFormProps) {
                     <InputError message={errors.end_date} className="mt-2" />
                 </div>
 
-                <Button type="submit">{processing ? 'Saving...' : isEdit ? 'Update Leave' : 'Request Leave'}</Button>
+                <Button className="cursor-pointer" type="submit">
+                    {processing ? 'Saving...' : isEdit ? 'Update Leave' : 'Request Leave'}
+                </Button>
             </form>
         </>
     );

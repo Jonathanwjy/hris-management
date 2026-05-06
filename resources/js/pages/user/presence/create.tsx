@@ -94,7 +94,7 @@ export default function CreatePresence({ presence }: PresenceFormProps) {
                                 <h3 className="text-sm font-medium">Lokasi Absensi</h3>
                                 <p className="text-muted-foreground text-xs">Izinkan akses lokasi untuk mengisi koordinat otomatis.</p>
                             </div>
-                            <Button type="button" variant="outline" size="sm" onClick={getLocation}>
+                            <Button type="button" className="cursor-pointer" variant="outline" size="sm" onClick={getLocation}>
                                 📍 Ambil Lokasi Saat Ini
                             </Button>
                         </div>

@@ -23,12 +23,9 @@ return new class extends Migration
                 ->constrained('employees')
                 ->cascadeOnDelete();
 
-            $table->enum('status', [
-                'ongoing',
-                'pending',
-                'finished',
-                'canceled'
-            ])->default('pending');
+            $table->enum('status', ['ongoing', 'finished', 'canceled'])
+                ->default('ongoing');
+
 
             $table->timestamps();
         });

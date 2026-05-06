@@ -29,7 +29,7 @@ class PayrollController extends Controller
 
         $payrolls = $this->payrollService->getPayrollsAdmin($monthYear);
 
-        $availableMonths = Payroll::selectRaw('YEAR(pay_date) as year, MONTH(pay_date) as month')
+        $availableMonths = Payroll::selectRaw('EXTRACT(YEAR FROM pay_date) as year, EXTRACT(MONTH FROM pay_date) as month')
             ->distinct()
             ->orderBy('year', 'desc')
             ->orderBy('month', 'desc')

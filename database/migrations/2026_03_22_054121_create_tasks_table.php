@@ -16,6 +16,10 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->date('due_date');
+            $table->enum('status', ['ongoing', 'finished', 'canceled'])
+                ->default('ongoing');
+            $table->foreignId('department_id')->constrained('departments')->cascadeOnDelete();
+            $table->foreignId('role_id')->constrained('roles')->cascadeOnDelete();
             $table->softDeletes();
             $table->timestamps();
         });
