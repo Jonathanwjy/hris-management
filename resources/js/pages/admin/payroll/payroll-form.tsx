@@ -81,7 +81,7 @@ export default function PayrollForm({ payroll, employees }: PayrollFormProps) {
                     setSystemDeduction(res.data);
                 })
                 .catch((err) => {
-                    console.error('Gagal mengambil data potongan otomatis', err);
+                    console.error('Gagal mengambil data potongan', err);
                     setSystemDeduction(null);
                 })
                 .finally(() => {
@@ -195,7 +195,7 @@ export default function PayrollForm({ payroll, employees }: PayrollFormProps) {
                             <span className="font-medium">{systemDeduction.absence_days} hari</span>
                         </div>
                         <div className="mt-2 flex justify-between border-t border-blue-200/50 pt-2 font-bold text-red-600">
-                            <span className="text-sm">Total Potongan Otomatis:</span>
+                            <span className="text-sm">Total Potongan:</span>
                             <span>Rp {systemDeduction.total_deduction.toLocaleString('id-ID')}</span>
                         </div>
                     </div>
@@ -234,7 +234,7 @@ export default function PayrollForm({ payroll, employees }: PayrollFormProps) {
 
             {/* Input Gaji Bersih Terkalkulasi */}
             <div className="mb-6">
-                <Label htmlFor="net_salary">Estimasi Gaji Bersih (Dihitung Otomatis)</Label>
+                <Label htmlFor="net_salary">Estimasi Gaji Bersih</Label>
                 <div className="relative">
                     <span className="absolute top-1/2 left-3 -translate-y-1/2 font-medium text-gray-500">Rp</span>
                     <Input
